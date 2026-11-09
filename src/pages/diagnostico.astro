@@ -81,7 +81,7 @@ const crumbs = {
   const f = document.getElementById('lead'), err = document.getElementById('err'), send = document.getElementById('send');
   const q = new URLSearchParams(location.search);
   if (q.get('servicio') && f.servicio.querySelector(`option[value="${CSS.escape(q.get('servicio'))}"]`)) f.servicio.value = q.get('servicio');
-  const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'].forEach(k => { if (q.get(k)) utm[k] = q.get(k).slice(0, 200); });
+  const utm = {}; if (q.get('plan')) utm.plan = q.get('plan').slice(0, 40); ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'].forEach(k => { if (q.get(k)) utm[k] = q.get(k).slice(0, 200); });
   try { const saved = JSON.parse(sessionStorage.getItem('utm') || '{}'); Object.assign(saved, utm); Object.assign(utm, saved); } catch (e) {}
   const fail = msg => { err.textContent = msg; err.hidden = false; };
 

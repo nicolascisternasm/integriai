@@ -1,0 +1,131 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Precio from '../../../components/Precio.astro';
+import Moneda from '../../../components/Moneda.astro';
+import Web from '../../../components/mocks/Web.astro';
+import { PLANES, MENSUAL, type Plan } from '../../../data/web';
+import { PROCESO } from '../../../data/servicios';
+import { SITE_URL, WA_NUMBER } from '../../../site';
+
+export function getStaticPaths() {
+  return PLANES.map(p => ({ params: { plan: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Plan };
+const url = `${SITE_URL}/servicios/paginas-web/${p.slug}/`;
+const otros = PLANES.filter(x => x.slug !== p.slug);
+const wa = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hola, me interesa el plan ${p.nivel} (${p.nombre}) de IntegriAI.`)}`;
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#servicio',
+    name: p.nombre, serviceType: p.keyword, description: p.definicion, url,
+    provider: { '@id': `${SITE_URL}/#org` }, areaServed: [{ '@type': 'Country', name: 'Chile' }, { '@type': 'Place', name: 'Latinoamérica' }],
+    offers: [
+      { '@type': 'Offer', price: p.clp, priceCurrency: 'CLP', url, priceSpecification: { '@type': 'PriceSpecification', minPrice: p.clp, priceCurrency: 'CLP', valueAddedTaxIncluded: false } },
+      { '@type': 'Offer', price: p.usd, priceCurrency: 'USD', url, priceSpecification: { '@type': 'PriceSpecification', minPrice: p.usd, priceCurrency: 'USD' } },
+    ],
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Páginas web', item: SITE_URL + '/servicios/paginas-web/' },
+      { '@type': 'ListItem', position: 3, name: p.nombre, item: url },
+    ],
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: p.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title={p.title} description={p.description} schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/paginas-web/">Páginas web</a><span>/</span><span aria-current="page">{p.nombre}</span></nav>
+  <div class="lhero-grid">
+    <div class="lhero-copy">
+      <span class="eyebrow">Plan {p.nivel} · {p.nombre}</span>
+      <h1 id="t-h1">{p.h1} <em>{p.h1em}</em></h1>
+      <p class="def">{p.definicion}</p>
+      <div class="plan-precio big"><span class="desde">Desde</span><Precio clp={p.clp} usd={p.usd} /></div>
+      <Moneda />
+      <div class="ctas">
+        <a class="btn btn-dark" href={`/diagnostico/?servicio=web&plan=${p.slug}`}>Cotizar este plan <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href={wa} target="_blank" rel="noopener" data-ev="whatsapp">Preguntar por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+    <div class="lhero-mock"><Web /></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-para" style="padding-top:clamp(24px, 4vw, 48px)">
+  <div class="case">
+    <div class="case-copy">
+      <span class="eyebrow">Para quién es</span>
+      <h2 class="h2" id="t-para">Ideal para <em>{p.ideal[0].charAt(0).toLowerCase() + p.ideal[0].slice(1)}.</em></h2>
+      <p class="lead">{p.para}</p>
+    </div>
+    <ul class="ticks">
+      <li>{p.paginas}</li><li>Entrega en {p.plazo}</li><li>{p.cambios}</li>{p.ideal.slice(1).map(i => <li>{i}</li>)}
+    </ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-inc" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow">Qué incluye</span>
+    <h2 class="h2" id="t-inc">Todo lo que <em>recibes.</em></h2>
+  </div>
+  <div class="igrid">
+    {p.incluye.map((i, k) => <article class="icard"><small>{String(k + 1).padStart(2, '0')}</small><h3>{i.t}</h3><p>{i.d}</p></article>)}
+  </div>
+  <div class="noinc">
+    <strong>No incluye:</strong>
+    <ul>{p.noIncluye.map(n => <li>{n}</li>)}</ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-mensual" style="padding-top:0">
+  <div class="case">
+    <div class="case-copy">
+      <span class="eyebrow">Opcional</span>
+      <h2 class="h2" id="t-mensual">Hosting, correos <em>y soporte.</em></h2>
+      <p class="lead">Con el {MENSUAL.nombre} no te preocupas de nada técnico después de publicar.</p>
+      <div class="plan-precio"><span class="desde">Desde</span><Precio clp={MENSUAL.clp} usd={MENSUAL.usd} sufijo=" al mes" /></div>
+    </div>
+    <ul class="ticks">{MENSUAL.incluye.map(i => <li>{i}</li>)}</ul>
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-proc">
+  <div class="wrap sec">
+    <span class="eyebrow">Cómo trabajamos</span>
+    <h2 class="h2" id="t-proc" style="margin-top:18px">Cinco pasos, <em>sin sorpresas.</em></h2>
+    <ol class="proc">
+      {PROCESO.map((s, k) => <li><b>{String(k + 1).padStart(2, '0')}</b><strong>{s.t}</strong><span>{s.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-faq">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2 class="h2" id="t-faq">Sobre el plan <em>{p.nivel.toLowerCase()}.</em></h2>
+      <a class="btn btn-dark" href={`/diagnostico/?servicio=web&plan=${p.slug}`} style="align-self:flex-start">Cotizar este plan <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      {p.faq.map((f, k) => <details open={k === 0}><summary>{f.q}<i aria-hidden="true"></i></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="t-rel" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <h2 class="h3x" id="t-rel">Compara con los otros planes</h2>
+  <div class="rel">
+    {otros.map(o => (
+      <a class="relcard" href={`/servicios/paginas-web/${o.slug}/`}>
+        <small>Plan {o.nivel}</small><strong>{o.nombre}</strong><Precio clp={o.clp} usd={o.usd} />
+        <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+      </a>
+    ))}
+    <a class="relcard acc" href="/servicios/paginas-web/#planes"><small>Todos los planes</small><strong>Ver la comparación completa.</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+</section>
+</Base>

@@ -1,0 +1,6 @@
+---
+// Precio con las dos monedas; el selector de moneda muestra una u otra.
+import { fmtCLP, fmtUSD } from '../data/web';
+const { clp, usd, sufijo = '' } = Astro.props as { clp: number; usd: number; sufijo?: string };
+---
+<span class="precio"><span class="m-clp">{fmtCLP(clp)}<small> + IVA{sufijo}</small></span><span class="m-usd">{fmtUSD(usd)}<small>{sufijo}</small></span></span>

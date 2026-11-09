@@ -1,0 +1,21 @@
+---
+// Selector CLP / USD. Elige solo: CLP si el visitante está en Chile (zona horaria), USD si no. Se recuerda la elección.
+---
+<div class="moneda" role="group" aria-label="Moneda de los precios">
+  <button type="button" data-m="clp" aria-pressed="true">CLP · Chile</button>
+  <button type="button" data-m="usd" aria-pressed="false">USD · Otros países</button>
+</div>
+<script is:inline>
+(() => {
+  const set = m => {
+    document.documentElement.dataset.moneda = m;
+    document.querySelectorAll('.moneda button').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m));
+    try { localStorage.setItem('moneda', m); } catch (e) {}
+  };
+  let m = null;
+  try { m = localStorage.getItem('moneda'); } catch (e) {}
+  if (!m) { try { m = Intl.DateTimeFormat().resolvedOptions().timeZone.startsWith('America/Santiago') || Intl.DateTimeFormat().resolvedOptions().timeZone === 'America/Punta_Arenas' ? 'clp' : 'usd'; } catch (e) { m = 'clp'; } }
+  set(m);
+  document.addEventListener('click', e => { const b = e.target.closest('.moneda button'); if (b) set(b.dataset.m); });
+})();
+</script>
