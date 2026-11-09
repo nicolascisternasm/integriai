@@ -1,0 +1,144 @@
+---
+import Base from '../../layouts/Base.astro';
+import Dash from '../../components/mocks/Dash.astro';
+import Flow from '../../components/mocks/Flow.astro';
+import Wa from '../../components/mocks/Wa.astro';
+import { LINEAS, PROCESO, type Linea } from '../../data/servicios';
+import { SITE_URL, WA_URL } from '../../site';
+
+export function getStaticPaths() {
+  return LINEAS.map(l => ({ params: { linea: l.slug }, props: { l } }));
+}
+const { l } = Astro.props as { l: Linea };
+const url = `${SITE_URL}/servicios/${l.slug}/`;
+const otras = LINEAS.filter(x => x.slug !== l.slug);
+const Mock = { dash: Dash, flow: Flow, wa: Wa, web: Dash }[l.mock];
+
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#servicio',
+    name: `${l.h1} ${l.h1em}`.replace(/\.$/, ''), serviceType: l.keyword, description: l.definicion, url,
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: [{ '@type': 'Country', name: 'Chile' }, { '@type': 'Place', name: 'Latinoamérica' }],
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: l.nav, itemListElement: l.incluye.map(i => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: i.t, description: i.d } })) },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: SITE_URL + '/servicios/' },
+      { '@type': 'ListItem', position: 3, name: l.nav, item: url },
+    ],
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: l.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title={l.title} description={l.description} schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/">Servicios</a><span>/</span><span aria-current="page">{l.nav}</span></nav>
+  <div class="lhero-grid">
+    <div class="lhero-copy">
+      <span class="eyebrow">{l.eyebrow}</span>
+      <h1 id="t-h1">{l.h1} <em>{l.h1em}</em></h1>
+      <p class="def">{l.definicion}</p>
+      <p class="lead">{l.lead}</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href={`/diagnostico/?servicio=${l.servicio}`}>Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+    <div class="lhero-mock"><Mock /></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-prob">
+  <div class="sec-head">
+    <span class="eyebrow rv">El problema</span>
+    <h2 class="h2 rv" id="t-prob">¿Te pasa <em>alguna de estas?</em></h2>
+  </div>
+  <div class="pgrid">
+    {l.problemas.map(p => (
+      <article class="pcard rv">
+        <p class="b"><svg><use href="#i-x"/></svg>{p.antes}</p>
+        <p class="a"><svg><use href="#i-check"/></svg>{p.despues}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-inc" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">La solución</span>
+    <h2 class="h2 rv" id="t-inc">Qué <em>incluye.</em></h2>
+    <p class="lead rv">Partimos por lo que más le duele a tu empresa y sumamos el resto por etapas.</p>
+  </div>
+  <div class="igrid">
+    {l.incluye.map((i, k) => (
+      <article class="icard rv"><small>{String(k + 1).padStart(2, '0')}</small><h3>{i.t}</h3><p>{i.d}</p></article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-ben" style="padding-top:0">
+  <div class="why">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow rv">El beneficio</span>
+      <h2 class="h2 rv" id="t-ben">Lo que <em>cambia.</em></h2>
+    </div>
+    <div class="why-cards">
+      {l.beneficios.map(b => <article class="wcard rv"><span class="n">{b.n}</span><h3>{b.t}</h3><p>{b.d}</p></article>)}
+    </div>
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-proc">
+  <div class="wrap sec">
+    <span class="eyebrow rv">Cómo trabajamos</span>
+    <h2 class="h2 rv" id="t-proc" style="margin-top:18px">Cinco pasos, <em>sin sorpresas.</em></h2>
+    <ol class="proc">
+      {PROCESO.map((s, k) => <li class="rv"><b>{String(k + 1).padStart(2, '0')}</b><strong>{s.t}</strong><span>{s.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-case">
+  <div class="case rv">
+    <div class="case-copy">
+      <span class="eyebrow">Ejemplo real</span>
+      <span class="badge live">{l.ejemplo.badge}</span>
+      <h2 class="h2" id="t-case">{l.ejemplo.t}</h2>
+      <p class="lead">{l.ejemplo.d}</p>
+    </div>
+    <ul class="ticks">{l.ejemplo.puntos.map(p => <li>{p}</li>)}</ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-faq" style="padding-top:0">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow rv">Preguntas frecuentes</span>
+      <h2 class="h2 rv" id="t-faq">Lo que más nos <em>preguntan.</em></h2>
+      <a class="btn btn-dark rv" href={`/diagnostico/?servicio=${l.servicio}`} style="align-self:flex-start">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      {l.faq.map((f, k) => <details class="rv" open={k === 0}><summary>{f.q}<i aria-hidden="true"></i></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="t-rel" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <h2 class="h3x rv" id="t-rel">También te puede servir</h2>
+  <div class="rel">
+    {otras.map(o => (
+      <a class="relcard rv" href={`/servicios/${o.slug}/`}>
+        <small>{o.eyebrow}</small><strong>{o.h1} {o.h1em}</strong>
+        <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+      </a>
+    ))}
+    <a class="relcard acc rv" href={`/diagnostico/?servicio=${l.servicio}`}>
+      <small>Diagnóstico sin costo</small><strong>Cuéntanos qué problema necesitas resolver.</strong>
+      <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+    </a>
+  </div>
+</section>
+</Base>

@@ -9,6 +9,11 @@ export const EMAIL = 'contacto@integriai.cl';
 export const DESCRIPTION =
   'Sistemas de gestión a medida, ERP, automatización de procesos y agentes de inteligencia artificial para pymes de Chile y Latinoamérica.';
 
+// Google Analytics 4: pegar aquí el ID de medición (G-XXXXXXX). Vacío = sin medición.
+export const GA_ID = '';
+// Google Search Console por etiqueta HTML (solo si no se verifica por DNS). Vacío = no se agrega.
+export const GSC_TOKEN = '';
+
 // Supabase: la clave publicable es pública por diseño; la tabla solo permite insertar (RLS).
 export const SUPABASE_URL = 'https://uhgqtrsxszydcvhanmew.supabase.co';
 export const SUPABASE_KEY = 'sb_publishable_nDJgbK64ZT8j0tD_cSNDvA_4ll-VvIW';

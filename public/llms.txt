@@ -18,6 +18,12 @@ Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desar
 
 ## Páginas
 - [Inicio](https://integriai.cl/)
+- [Servicios](https://integriai.cl/servicios/): las tres líneas de trabajo.
+- [Software a medida, ERP y CRM](https://integriai.cl/servicios/digital/): sistemas de gestión, ERP, CRM, portales, aplicaciones web y tiendas online.
+- [Automatización de procesos para pymes](https://integriai.cl/servicios/automatizacion/): ventas, WhatsApp, administración, documentos, reportes e integración de sistemas.
+- [Agentes de IA para empresas](https://integriai.cl/servicios/inteligencia-artificial/): atención y ventas por WhatsApp, asistentes conectados a datos reales, con supervisión.
+- [Nosotros](https://integriai.cl/nosotros/): origen, experiencia y principios.
+- [Contacto](https://integriai.cl/contacto/)
 - [Diagnóstico sin costo](https://integriai.cl/diagnostico/)
 - [Política de privacidad](https://integriai.cl/privacidad/)
 

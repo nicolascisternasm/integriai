@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_URL, WA_URL } from '../site';
+
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'AboutPage', url: SITE_URL + '/nosotros/',
+    name: 'Nosotros · IntegriAI', about: { '@id': `${SITE_URL}/#org` },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Nosotros', item: SITE_URL + '/nosotros/' },
+    ],
+  },
+];
+const PROYECTOS = [
+  { badge: 'Desarrollo propio · en uso', cls: 'live', t: 'ERP de MAMKAM', d: 'Cotizaciones, proveedores, órdenes de compra, recursos humanos, CRM y finanzas de una empresa de pavimentos, pasto sintético y toldos.' },
+  { badge: 'SaaS propio', cls: '', t: 'FlowPedido', d: 'Plataforma de pedidos online para restaurantes: pedidos, administración, cocina y pagos.' },
+  { badge: 'Arquitectura propia', cls: '', t: 'Colegas AI', d: 'Agentes de IA conectados a WhatsApp, con base de datos, herramientas y supervisión de cada conversación.' },
+  { badge: 'En desarrollo', cls: 'wip', t: 'AI Marketing Studio', d: 'Experimentación con agentes para crear contenido y campañas de marketing.' },
+];
+const PRINCIPIOS = [
+  { n: '01', t: 'Primero el negocio', d: 'Antes de hablar de tecnología, entendemos cómo trabaja tu empresa y dónde pierde tiempo o dinero.' },
+  { n: '02', t: 'Cosas que funcionan', d: 'Cada etapa termina con algo que puedes usar y probar, no con presentaciones.' },
+  { n: '03', t: 'Claridad', d: 'Propuestas por escrito con etapas, plazos y precio. Sin letra chica ni palabras de moda.' },
+  { n: '04', t: 'Cercanía', d: 'Hablas directo con quien diseña y construye tu sistema, antes y después de entregarlo.' },
+];
+---
+<Base title="Quiénes somos · IntegriAI | Sistemas, automatización e IA" description="IntegriAI nace de administrar empresas y construir sus propios sistemas: el ERP de MAMKAM, FlowPedido y Colegas AI. Conoce cómo trabajamos." schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><span aria-current="page">Nosotros</span></nav>
+  <div class="sec-head" style="max-width:900px">
+    <span class="eyebrow">Nosotros</span>
+    <h1 id="t-h1">Tecnología hecha por alguien que <em>administró empresas.</em></h1>
+    <p class="def">IntegriAI es una empresa chilena que desarrolla sistemas a medida, automatizaciones y agentes de inteligencia artificial para pymes. Nace de una experiencia concreta: administrar empresas, chocar con planillas, chats y procesos manuales, y construir los sistemas que hacían falta.</p>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-origen" style="padding-top:clamp(24px, 4vw, 48px)">
+  <div class="case rv">
+    <div class="case-copy">
+      <span class="eyebrow">El origen</span>
+      <h2 class="h2" id="t-origen">Empezamos resolviendo <em>nuestros propios problemas.</em></h2>
+      <p class="lead">Nico, fundador de IntegriAI, viene de dirigir equipos comerciales, administrativos y operacionales. Cuando los programas genéricos no alcanzaban, construyó el ERP con el que hoy opera MAMKAM, una plataforma de pedidos para restaurantes y una arquitectura propia de agentes de IA para WhatsApp.</p>
+      <p class="lead">Esa mezcla, entender el negocio y saber construir la tecnología, es lo que ofrecemos: analizar un proceso, ver qué se puede mejorar y desarrollar la solución adecuada.</p>
+    </div>
+    <ul class="ticks">
+      <li>Dirección de empresas y equipos</li>
+      <li>ERP, CRM y sistemas de gestión</li>
+      <li>Automatización e integraciones</li>
+      <li>Agentes de IA y WhatsApp</li>
+      <li>Marketing digital y SEO</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-proy" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">Experiencia</span>
+    <h2 class="h2 rv" id="t-proy">Lo que ya <em>construimos.</em></h2>
+    <p class="lead rv">Distinguimos siempre lo que está en uso, lo que es producto propio y lo que todavía es experimento.</p>
+  </div>
+  <div class="igrid" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))">
+    {PROYECTOS.map(p => <article class="icard rv"><span class={`badge ${p.cls}`}>{p.badge}</span><h3>{p.t}</h3><p>{p.d}</p></article>)}
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-prin">
+  <div class="wrap sec">
+    <span class="eyebrow rv">Cómo trabajamos</span>
+    <h2 class="h2 rv" id="t-prin" style="margin-top:18px">Cuatro principios <em>que no negociamos.</em></h2>
+    <ol class="proc" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr))">
+      {PRINCIPIOS.map(p => <li class="rv"><b>{p.n}</b><strong>{p.t}</strong><span>{p.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-cta">
+  <div class="final rv">
+    <div style="display:flex;flex-direction:column;gap:18px;position:relative">
+      <span class="eyebrow">Hablemos</span>
+      <h2 class="h2" id="t-cta">¿Conversamos sobre <em>tu empresa?</em></h2>
+      <p class="lead">Cuéntanos cómo trabajas hoy y te decimos qué se puede mejorar. Sin costo.</p>
+    </div>
+    <div class="contact">
+      <a class="btn btn-dark" href="/diagnostico/" style="align-self:flex-start">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp" style="align-self:flex-start">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+  </div>
+</section>
+</Base>

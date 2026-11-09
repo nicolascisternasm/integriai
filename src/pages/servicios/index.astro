@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+import Dash from '../../components/mocks/Dash.astro';
+import Flow from '../../components/mocks/Flow.astro';
+import Wa from '../../components/mocks/Wa.astro';
+import { LINEAS, PROCESO } from '../../data/servicios';
+import { SITE_URL } from '../../site';
+
+const MOCKS = { dash: Dash, flow: Flow, wa: Wa, web: Dash };
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'ItemList', name: 'Servicios de IntegriAI',
+    itemListElement: LINEAS.map((l, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}/servicios/${l.slug}/`, name: l.nav })),
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: SITE_URL + '/servicios/' },
+    ],
+  },
+];
+const AREAS = [
+  { t: 'Ventas', d: 'Captura de contactos, CRM, cotizaciones y seguimiento automático.', l: 'automatizacion' },
+  { t: 'Administración', d: 'Facturas, cobranzas, compras y documentos sin planillas.', l: 'digital' },
+  { t: 'Operaciones', d: 'Inventario, obras, pedidos y trabajos en tiempo real.', l: 'digital' },
+  { t: 'Atención a clientes', d: 'WhatsApp atendido al instante por agentes supervisados.', l: 'inteligencia-artificial' },
+  { t: 'Marketing', d: 'Web que aparece en Google y contenido con apoyo de IA.', l: 'inteligencia-artificial' },
+];
+---
+<Base title="Servicios: software a medida, automatización e IA | IntegriAI" description="Tres líneas de servicio para pymes de Chile y Latinoamérica: sistemas y ERP a medida, automatización de procesos y agentes de inteligencia artificial." schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><span aria-current="page">Servicios</span></nav>
+  <div class="sec-head" style="max-width:860px">
+    <span class="eyebrow">Servicios</span>
+    <h1 id="t-h1">Tecnología, automatización e IA <em>para trabajar mejor.</em></h1>
+    <p class="def">IntegriAI transforma procesos de empresas con tres líneas de trabajo: sistemas a medida para ordenar la operación, automatización para eliminar tareas repetidas e inteligencia artificial para atender y vender mejor. Todo parte de un diagnóstico de cómo trabaja hoy tu empresa.</p>
+  </div>
+</section>
+
+<section class="wrap" aria-label="Líneas de servicio">
+  <div class="lines">
+    {LINEAS.map((l, i) => { const M = MOCKS[l.mock]; return (
+      <article class="line rv">
+        <div class="line-copy">
+          <small>{String(i + 1).padStart(2, '0')} / 03</small>
+          <span class="eyebrow">{l.eyebrow}</span>
+          <h2>{l.h1} <em>{l.h1em}</em></h2>
+          <p>{l.lead}</p>
+          <ul class="ticks">{l.incluye.slice(0, 4).map(x => <li>{x.t}</li>)}</ul>
+          <a class="btn btn-dark" href={`/servicios/${l.slug}/`}>Conocer más <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <M />
+      </article>
+    ); })}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-areas">
+  <div class="sec-head">
+    <span class="eyebrow rv">Por área de tu empresa</span>
+    <h2 class="h2 rv" id="t-areas">¿Dónde está <em>el problema?</em></h2>
+  </div>
+  <div class="igrid">
+    {AREAS.map(a => <a class="icard link-card rv" href={`/servicios/${a.l}/`}><h3>{a.t}</h3><p>{a.d}</p><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>)}
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-proc">
+  <div class="wrap sec">
+    <span class="eyebrow rv">Cómo trabajamos</span>
+    <h2 class="h2 rv" id="t-proc" style="margin-top:18px">Cinco pasos, <em>sin sorpresas.</em></h2>
+    <ol class="proc">
+      {PROCESO.map((s, k) => <li class="rv"><b>{String(k + 1).padStart(2, '0')}</b><strong>{s.t}</strong><span>{s.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-cta">
+  <div class="final rv">
+    <div style="display:flex;flex-direction:column;gap:18px;position:relative">
+      <span class="eyebrow">Diagnóstico sin costo</span>
+      <h2 class="h2" id="t-cta">Cuéntanos qué problema <em>necesitas resolver.</em></h2>
+      <p class="lead">Te respondemos con una primera lectura de qué se puede ordenar, automatizar o conectar.</p>
+    </div>
+    <a class="btn btn-dark" href="/diagnostico/" style="justify-self:start;position:relative">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+</section>
+</Base>

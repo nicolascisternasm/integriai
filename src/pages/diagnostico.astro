@@ -11,7 +11,7 @@ const crumbs = {
   ],
 };
 ---
-<Base title="Diagnóstico sin costo · IntegriAI" description="Cuéntanos cómo trabaja hoy tu empresa y te respondemos con una primera lectura de qué procesos se pueden ordenar, automatizar o conectar. Sin costo." schema={[crumbs]}>
+<Base title="Diagnóstico digital sin costo para tu empresa | IntegriAI" description="Cuéntanos cómo trabaja hoy tu empresa y te respondemos con una primera lectura de qué procesos se pueden ordenar, automatizar o conectar. Sin costo." schema={[crumbs]}>
 <section class="sec wrap diag" aria-labelledby="t-diag">
   <div class="diag-left">
     <span class="eyebrow">Diagnóstico sin costo</span>
@@ -112,7 +112,7 @@ const crumbs = {
       const msg = `Hola, soy ${body.nombre}${body.empresa ? ' de ' + body.empresa : ''}. Acabo de pedir un diagnóstico en integriai.cl. Lo que más nos complica: ${body.dificultades.slice(0, 300)}`;
       document.getElementById('done-wa').href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
       f.hidden = true; const d = document.getElementById("done"); d.hidden = false; d.focus({ preventScroll: true }); d.scrollIntoView({ block: "start" });
-      window.dataLayer && window.dataLayer.push({ event: 'diagnostico_enviado', servicio: body.servicio });
+      window.gtag && gtag('event', 'generate_lead', { servicio: body.servicio });
     } catch (x) {
       console.error(x);
       fail('No pudimos enviar la solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');

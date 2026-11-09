@@ -9,30 +9,31 @@ const { home = false } = Astro.props;
     </a>
     <nav class="links" aria-label="Principal">
       <a href="/" class={home ? 'on' : undefined}>Inicio</a>
-      <a href="/#nosotros">Nosotros</a>
+      <a href="/nosotros/">Nosotros</a>
       <button type="button" id="svc-btn" aria-expanded="false" aria-controls="drop">Servicios <span class="chev" aria-hidden="true"></span></button>
       <a href="/#encaja">A quién ayudamos</a>
       <a href="/#proyectos">Proyectos</a>
       <a href="/#preguntas">Preguntas</a>
-      <a href="/#contacto">Contacto</a>
+      <a href="/contacto/">Contacto</a>
     </nav>
     <div class="nav-end">
       <a class="btn btn-acc" href="/diagnostico/">Hablemos <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
       <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Abrir menú"><span></span><span></span></button>
     </div>
     <div class="drop" id="drop" hidden>
-      <a href="/#servicios" data-svc="0"><small>01</small><strong>Sistemas y ERP</strong><span>Cotizaciones, compras, inventario y personal en un solo sistema.</span></a>
-      <a href="/#servicios" data-svc="1"><small>02</small><strong>Automatización</strong><span>Procesos que avanzan solos, sin copiar datos a mano.</span></a>
-      <a href="/#servicios" data-svc="2"><small>03</small><strong>Agentes de IA</strong><span>Atención y ventas por WhatsApp con tu información real.</span></a>
-      <a href="/#servicios" data-svc="3"><small>04</small><strong>Web y tiendas online</strong><span>Sitios que explican tu negocio y venden.</span></a>
+      <a href="/servicios/digital/"><small>01</small><strong>Sistemas, ERP y web</strong><span>Software a medida: ERP, CRM, portales y tiendas online.</span></a>
+      <a href="/servicios/automatizacion/"><small>02</small><strong>Automatización</strong><span>Procesos que avanzan solos, sin copiar datos a mano.</span></a>
+      <a href="/servicios/inteligencia-artificial/"><small>03</small><strong>Agentes de IA</strong><span>Atención y ventas por WhatsApp con tu información real.</span></a>
+      <a href="/servicios/"><small>Todo</small><strong>Ver todos los servicios</strong><span>Las tres líneas y cómo trabajamos.</span></a>
     </div>
   </div>
   <nav class="mnav" id="mnav" aria-label="Menú móvil" hidden>
-    <a href="/#nosotros">Nosotros</a>
-    <a href="/#servicios">Servicios</a>
+    <a href="/servicios/">Servicios</a>
+    <a href="/nosotros/">Nosotros</a>
     <a href="/#encaja">A quién ayudamos</a>
     <a href="/#proyectos">Proyectos</a>
     <a href="/#preguntas">Preguntas</a>
+    <a href="/contacto/">Contacto</a>
     <a href="/diagnostico/">Solicitar diagnóstico</a>
   </nav>
 </header>

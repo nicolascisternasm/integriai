@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Icons from '../components/Icons.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_URL, BRAND, DESCRIPTION, EMAIL, WA_DISPLAY } from '../site';
+import { SITE_URL, BRAND, DESCRIPTION, EMAIL, WA_DISPLAY, GA_ID, GSC_TOKEN } from '../site';
 
 interface Props {
   title: string;
@@ -60,6 +60,13 @@ const ld = [org, ...schema];
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
   <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />
+  {GSC_TOKEN && <meta name="google-site-verification" content={GSC_TOKEN}>}
+  {GA_ID && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>}
+  {GA_ID && <script is:inline define:vars={{ GA_ID }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag; gtag('js', new Date()); gtag('config', GA_ID);
+  </script>}
 </head>
 <body>
   <Icons />

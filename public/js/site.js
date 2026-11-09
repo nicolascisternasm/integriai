@@ -27,6 +27,13 @@
   totop.addEventListener('click', () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
   addEventListener('scroll', () => totop.classList.toggle('off', scrollY < 600), { passive: true });
 
+  /* ---------- Medición: clics en WhatsApp, correo y diagnóstico (solo si Google Analytics está activo) ---------- */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a || !window.gtag) return;
+    const ev = a.dataset.ev || (a.pathname === '/diagnostico/' && a.host === location.host ? 'ir_diagnostico' : '');
+    if (ev) gtag('event', ev === 'whatsapp' ? 'click_whatsapp' : ev === 'email' ? 'click_email' : ev, { pagina: location.pathname });
+  });
+
   /* ---------- Aparición al bajar (solo lo que no se ve al cargar) ---------- */
   const rvs = [...document.querySelectorAll('.rv')];
   if (!reduce && 'IntersectionObserver' in window) {
