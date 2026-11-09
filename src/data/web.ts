@@ -29,7 +29,7 @@ export const MENSUAL = {
   clp: 14990, usd: 19,
   incluye: [
     'Hosting con panel cPanel y certificado de seguridad (SSL)',
-    'Correos con tu dominio (ej.: ventas@tuempresa.cl)',
+    'Hasta 5 correos con tu dominio (ej.: ventas@tuempresa.cl)',
     'Respaldos y actualizaciones de seguridad',
     'Pequeños cambios de textos o imágenes (hasta 30 min al mes)',
     'Soporte por WhatsApp',
