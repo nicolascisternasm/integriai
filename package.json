@@ -1,0 +1,21 @@
+{
+  "name": "integriai",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sitio web de IntegriAI (integriai.cl)",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "serve dist --listen tcp://0.0.0.0:${PORT:-3000} --no-clipboard"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.4.8",
+    "serve": "^14.2.7"
+  }
+}

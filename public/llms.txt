@@ -1,0 +1,26 @@
+# IntegriAI
+
+> IntegriAI desarrolla sistemas de gestión a medida (ERP y CRM), automatización de procesos y agentes de inteligencia artificial para pymes de Chile y Latinoamérica. Trabaja a partir de cómo opera cada empresa: cotizaciones, ventas, inventario, administración y atención a clientes.
+
+## Servicios
+- Sistemas y ERP a medida: cotizaciones, compras, inventario, personal y finanzas en un solo sistema.
+- Automatización de procesos: flujos que avanzan solos, integración entre sistemas, documentos y reportes automáticos.
+- Agentes de IA: atención y ventas por WhatsApp con la información real de la empresa, con supervisión humana.
+- Web y tiendas online: sitios que explican el negocio y venden.
+
+## Cómo trabaja
+Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desarrollo por módulos con avances que el cliente prueba, capacitación y soporte. Atiende de forma remota en Chile y Latinoamérica.
+
+## Experiencia
+- ERP de MAMKAM: sistema de gestión en uso (cotizaciones, proveedores, órdenes de compra, RR.HH., CRM, finanzas).
+- FlowPedido: SaaS propio de pedidos online para restaurantes.
+- Colegas AI: arquitectura propia de agentes de IA conectados a WhatsApp, con supervisión.
+
+## Páginas
+- [Inicio](https://integriai.cl/)
+- [Diagnóstico sin costo](https://integriai.cl/diagnostico/)
+- [Política de privacidad](https://integriai.cl/privacidad/)
+
+## Contacto
+- Correo: contacto@integriai.cl
+- WhatsApp: +56 9 4494 0154

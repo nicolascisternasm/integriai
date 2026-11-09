@@ -1,0 +1,601 @@
+<title>Hero IntegriAI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: hero partido (texto | personaje sobre papel), banda a todo el ancho con la palabra deformable, panel de pruebas abajo.
+   Tema único claro a propósito: las imágenes del personaje vienen con fondo blanco y se funden con el papel por "multiply". */
+:root{
+  --paper:#EEF0F4;      /* papel frío, con un leve sesgo al azul del acento */
+  --card:#FFFFFF;
+  --ink:#0D1220;
+  --mute:#596174;
+  --line:#D3D8E2;
+  --cobalt:#2340FF;     /* acento de marca */
+  --signal:#FF5A1F;     /* solo para pequeños indicadores "vivos" */
+  --f-display:"Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --s-1:.8125rem; --s0:1rem; --s1:1.125rem; --s2:1.5rem;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:var(--s0);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px;border-radius:6px}
+
+/* Nav */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px}
+.logo{font-family:var(--f-display);font-weight:800;font-size:1.25rem;letter-spacing:-.02em;text-decoration:none}
+.logo b{color:var(--cobalt);font-weight:800}
+.links{display:flex;gap:28px;font-weight:500;color:var(--mute)}
+.links a{text-decoration:none}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;font:600 var(--s0)/1 var(--f-body);text-decoration:none;border-radius:999px;padding:14px 22px;transition:transform .2s ease, background .2s ease}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--cobalt);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);padding-inline:6px}
+.btn-ghost:hover{color:var(--cobalt)}
+.btn-sm{padding:10px 18px;font-size:var(--s-1)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:32px;padding-block:24px 56px}
+.hero-copy{min-width:0;display:flex;flex-direction:column;gap:22px}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font:500 var(--s-1)/1 var(--f-mono);letter-spacing:.04em;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px color-mix(in srgb, var(--signal) 18%, transparent)}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2rem, 4.4vw, 3.5rem);line-height:1.04;letter-spacing:-.035em;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--cobalt)}
+.lede{font-size:var(--s1);color:var(--mute);max-width:46ch;margin:0}
+.ctas{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.hint{font:400 var(--s-1)/1.4 var(--f-mono);color:var(--mute);margin:0}
+.stage{position:relative;width:min(100%, 540px);aspect-ratio:1/1;max-width:100%;justify-self:center}
+#bot{position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:multiply}
+.tag{position:absolute;font:500 .6875rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.stage .tag{left:0;top:4px}
+.gaze{position:absolute;right:0;top:0;display:grid;grid-template-columns:repeat(3,12px);gap:3px}
+.gaze span{width:12px;height:12px;border-radius:3px;background:var(--line);transition:background .15s}
+.gaze span.on{background:var(--cobalt)}
+
+/* Palabra deformable */
+.band{border-block:1px solid var(--line);background:var(--paper);padding-block:20px 8px}
+.band-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.band .tag{position:static}
+#word{display:block;width:100%;height:clamp(170px, 25vw, 360px);touch-action:pan-y;cursor:crosshair}
+.word-fallback{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem, 16vw, 13rem);text-align:center;letter-spacing:-.04em;margin:0}
+
+/* Panel de pruebas */
+.lab{padding-block:56px 72px;display:flex;flex-direction:column;gap:20px}
+.lab-head{display:flex;flex-direction:column;gap:6px}
+.lab-head h2{font-family:var(--f-display);font-weight:500;font-size:var(--s2);letter-spacing:-.02em;margin:0}
+.lab-head p{margin:0;color:var(--mute);max-width:62ch}
+.cards{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card h3{font-size:var(--s1);margin:0;font-weight:600}
+.card h4{font-size:.9375rem;margin:0;font-weight:600}
+.card p{margin:0;color:var(--mute);font-size:.9375rem}
+.ways{margin:0;padding-left:1.1em;color:var(--mute);font-size:.9375rem;display:flex;flex-direction:column;gap:4px}
+.ways strong{color:var(--ink);font-weight:600}
+.grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font:500 .6875rem/1.2 var(--f-mono);color:var(--mute);text-align:center}
+.grid9 span{border:1px dashed var(--line);border-radius:6px;padding:8px 2px}
+.grid9 span.c{border-color:var(--cobalt);color:var(--cobalt)}
+.file{display:flex;flex-direction:column;gap:10px}
+.file input[type=file]{font:inherit;font-size:var(--s-1);max-width:100%}
+.file select{font:inherit;font-size:.9375rem;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);max-width:100%}
+.status{font:400 var(--s-1)/1.4 var(--f-mono);color:var(--mute);min-height:1.4em}
+.status.ok{color:#137a3e}
+.status.err{color:#b4261a}
+.row{display:flex;flex-direction:column;gap:6px}
+.row label{display:flex;justify-content:space-between;font-weight:500;font-size:.9375rem}
+.row output{font:400 var(--s-1)/1.6 var(--f-mono);color:var(--mute)}
+input[type=range]{width:100%;accent-color:var(--cobalt)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px;align-self:flex-start}
+.seg button{border:0;background:transparent;font:500 var(--s-1)/1 var(--f-body);padding:9px 14px;border-radius:999px;cursor:pointer;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.check{display:flex;align-items:center;gap:10px;font-size:.9375rem}
+.check input{accent-color:var(--cobalt);width:18px;height:18px}
+pre{margin:0;white-space:pre-wrap;word-break:break-word;font:400 .8125rem/1.55 var(--f-mono);background:var(--paper);border-radius:12px;padding:14px;max-height:240px;overflow:auto}
+.foot{color:var(--mute);font:400 var(--s-1)/1.5 var(--f-mono);padding-block:0 40px}
+
+@media (max-width: 900px){
+  .cards{grid-template-columns:1fr}
+}
+@media (max-width: 760px){
+  .links{display:none}
+  .hero{grid-template-columns:1fr;padding-top:8px;gap:8px}
+  .stage{width:min(100%, 420px)}
+}
+@media (prefers-reduced-motion: reduce){
+  .btn{transition:none}
+}
+</style>
+
+<header class="nav wrap">
+  <a class="logo" href="#top" id="top">Integri<b>AI</b></a>
+  <nav class="links" aria-label="Principal">
+    <a href="#efecto-2">Servicios</a>
+    <a href="#efecto-2">Casos</a>
+    <a href="#panel">Diagnóstico</a>
+  </nav>
+  <a class="btn btn-ink btn-sm" href="#panel">Hablemos</a>
+</header>
+
+<section class="hero wrap" aria-label="Portada">
+  <div class="hero-copy">
+    <span class="chip"><span class="dot" aria-hidden="true"></span>Webs · Google · Meta · Agentes IA</span>
+    <h1>Te dejamos todo funcionando. <em>Tú te dedicas a vender.</em></h1>
+    <p class="lede">Página web, Google, Meta e inteligencia artificial configurados para que tu pyme aparezca, capte clientes y responda sola.</p>
+    <div class="ctas">
+      <a class="btn btn-ink" href="#panel">Agenda tu diagnóstico gratis</a>
+      <a class="btn btn-ghost" href="#efecto-2">Ver servicios →</a>
+    </div>
+    <p class="hint" id="hint">Efecto 1 · Mueve el mouse: el personaje te sigue con la mirada.</p>
+  </div>
+  <div class="stage">
+    <span class="tag" id="stage-tag">Robot provisorio · dibujado en vivo</span>
+    <div class="gaze" id="gaze" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <canvas id="bot" role="img" aria-label="Robot de IntegriAI que mira hacia donde está el cursor"></canvas>
+  </div>
+</section>
+
+<section class="band" id="efecto-2" aria-label="Palabra interactiva">
+  <div class="wrap band-head">
+    <span class="tag">Efecto 2 · Pasa el mouse o el dedo sobre la palabra</span>
+    <span class="tag">WebGL</span>
+  </div>
+  <canvas id="word" aria-label="La palabra IntegriAI, que se deforma donde pasa el cursor"></canvas>
+</section>
+
+<section class="lab wrap" id="panel" aria-label="Panel de pruebas">
+  <div class="lab-head">
+    <span class="tag" style="position:static">Solo para pruebas · no va en la web final</span>
+    <h2>Panel del prototipo</h2>
+    <p>Sube tu personaje para verlo funcionando acá mismo, ajusta la deformación del texto y copia los prompts para generarlo.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <h3>Prueba con tu personaje</h3>
+      <p>Tres formas de subirlo, de más fluida a menos:</p>
+      <ol class="ways">
+        <li><strong>Video</strong> del personaje girando la cabeza de izquierda a derecha. El mouse "rebobina" el video.</li>
+        <li><strong>Una imagen con grilla de poses</strong> de 3×3, 5×5 o 7×7. Más poses, más fluido.</li>
+        <li><strong>Imágenes sueltas</strong> numeradas en orden (9, 25 o 49).</li>
+      </ol>
+      <div class="grid9" aria-label="Orden de las poses en una grilla 3×3">
+        <span>1 · arriba izq.</span><span>2 · arriba</span><span>3 · arriba der.</span>
+        <span>4 · izquierda</span><span class="c">5 · al frente</span><span>6 · derecha</span>
+        <span>7 · abajo izq.</span><span>8 · abajo</span><span>9 · abajo der.</span>
+      </div>
+      <div class="file">
+        <label for="gridsize" style="font-weight:500;font-size:.9375rem">Tamaño de la grilla (si subes imágenes)</label>
+        <select id="gridsize">
+          <option value="3">3×3 · 9 poses</option>
+          <option value="5">5×5 · 25 poses</option>
+          <option value="7">7×7 · 49 poses</option>
+        </select>
+        <input type="file" id="files" accept="image/*,video/*" multiple>
+        <label class="check"><input type="checkbox" id="flip"> Invertir dirección del video</label>
+        <div class="status" id="status" role="status">Usando el robot provisorio, dibujado en vivo.</div>
+      </div>
+      <button class="btn btn-ghost" id="reset" type="button" style="align-self:flex-start;padding-inline:0">Volver al robot provisorio</button>
+    </div>
+
+    <div class="card">
+      <h3>Ajustes</h3>
+      <div class="row">
+        <label for="strength">Fuerza de la deformación <output id="o-strength">55%</output></label>
+        <input type="range" id="strength" min="0" max="90" value="55">
+      </div>
+      <div class="row">
+        <label for="radius">Tamaño de la burbuja <output id="o-radius">40%</output></label>
+        <input type="range" id="radius" min="15" max="75" value="40">
+      </div>
+      <div class="row">
+        <span style="font-weight:500;font-size:.9375rem">Cambio entre poses (imágenes y video)</span>
+        <div class="seg" role="group" aria-label="Cambio entre poses">
+          <button type="button" id="m-soft" aria-pressed="true">Suave</button>
+          <button type="button" id="m-snap" aria-pressed="false">Directo</button>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" id="showgrid" checked> Mostrar la guía 3×3 de la mirada</label>
+    </div>
+
+    <div class="card">
+      <h3>Prompts</h3>
+      <h4>Opción video (recomendada) · Higgsfield, Kling o similar</h4>
+      <p>Sube la imagen del personaje mirando al frente y pega esto:</p>
+      <pre id="prompt-video">Cámara fija y completamente quieta. Fondo blanco puro con una sombra suave en el piso. El personaje empieza mirando hacia el lado izquierdo de la imagen y gira la cabeza y la mirada lenta y suavemente, a velocidad constante, hasta mirar hacia el lado derecho de la imagen. Duración: 5 segundos. El cuerpo no se mueve. Sin cortes, sin zoom, sin cambios de luz, sin texto.</pre>
+      <button class="btn btn-ink btn-sm" data-copy="prompt-video" type="button" style="align-self:flex-start">Copiar prompt de video</button>
+      <h4>Opción grilla · ChatGPT</h4>
+      <p>Adjunta la imagen de Pinterest y pega esto:</p>
+      <pre id="prompt-grid">Usa este personaje como referencia. Crea UNA sola imagen cuadrada con una grilla de 3×3 (9 cuadros iguales) del mismo personaje.
+
+Los 9 cuadros deben ser idénticos en todo excepto la dirección de la cabeza y la mirada: mismo personaje, mismo tamaño, misma posición dentro del cuadro, misma luz, fondo blanco puro y una sombra suave en el piso. El cuerpo no se mueve; solo giran la cabeza y los ojos.
+
+Orden (izquierda y derecha según quien mira la imagen):
+Fila de arriba: mira arriba a la izquierda · mira arriba · mira arriba a la derecha
+Fila del medio: mira a la izquierda · mira al frente, a la cámara · mira a la derecha
+Fila de abajo: mira abajo a la izquierda · mira abajo · mira abajo a la derecha
+
+Sin texto, sin números, sin bordes ni líneas entre los cuadros.</pre>
+      <button class="btn btn-ink btn-sm" data-copy="prompt-grid" type="button" style="align-self:flex-start">Copiar prompt de grilla</button>
+    </div>
+  </div>
+</section>
+
+<p class="foot wrap">Prototipo de IntegriAI · noviembre 2026 · textos, colores y personaje son provisorios.</p>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch = matchMedia('(hover: none)').matches;
+  if (isTouch) $('#hint').textContent = 'Efecto 1 · Toca y arrastra en la pantalla: el personaje te sigue con la mirada.';
+
+  /* ---------- Puntero compartido ---------- */
+  const P = { x: innerWidth / 2, y: innerHeight / 2, last: -1e9 };
+  const setP = (x, y) => { P.x = x; P.y = y; P.last = performance.now(); };
+  addEventListener('pointermove', e => setP(e.clientX, e.clientY), { passive: true });
+  addEventListener('pointerdown', e => setP(e.clientX, e.clientY), { passive: true });
+  addEventListener('touchmove', e => { const t = e.touches[0]; if (t) setP(t.clientX, t.clientY); }, { passive: true });
+  addEventListener('touchstart', e => { const t = e.touches[0]; if (t) setP(t.clientX, t.clientY); }, { passive: true });
+  const idle = () => performance.now() - P.last > 2600;
+
+  /* ---------- Efecto 1: personaje ---------- */
+  const bot = $('#bot'), bctx = bot.getContext('2d');
+  const gazeCells = [...document.querySelectorAll('#gaze span')];
+  // source: 'robot' (dibujado en vivo) | 'grid' (poses N×N) | 'video' (fotogramas de un giro)
+  let source = 'robot', frames = [], gridN = 3, flip = false, mode = 'soft';
+  const G = { x: 0, y: 0 };                 // mirada (cabeza)
+  const B = { x: 0 };                       // cuerpo: sigue más lento
+  const A = { x: 0, y: 0, vx: 0, vy: 0 };   // punta de la antena: resorte con inercia
+  let nextBlink = performance.now() + 1800, blinkStart = -1;
+
+  function rr(g, x, y, w, h, r) {
+    r = Math.max(0, Math.min(r, w / 2, h / 2));
+    g.beginPath();
+    g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+  }
+
+  // Robot provisorio. dx, dy son continuos en [-1, 1]: se dibuja de nuevo en cada fotograma, por eso el giro es fluido.
+  const live = document.createElement('canvas'); live.width = live.height = 640;
+  function drawRobot(dx, dy, o) {
+    const g = live.getContext('2d'), W = 640, bob = o.bob, open = o.open;
+    g.globalCompositeOperation = 'source-over';
+    g.fillStyle = '#fff'; g.fillRect(0, 0, W, W);
+    // sombra en el piso
+    g.save(); g.translate(W / 2 - o.bx * 10, 568); g.scale(1 - bob * .004, .2);
+    const sg = g.createRadialGradient(0, 0, 0, 0, 0, 190);
+    sg.addColorStop(0, 'rgba(13,18,32,.30)'); sg.addColorStop(1, 'rgba(13,18,32,0)');
+    g.fillStyle = sg; g.beginPath(); g.arc(0, 0, 190, 0, Math.PI * 2); g.fill(); g.restore();
+    // cuerpo
+    g.save(); g.translate(W / 2 + o.bx * 6, bob * .5);
+    g.fillStyle = '#1A2236'; g.fillRect(-26 + (dx - o.bx) * 8, 372, 52, 40);
+    const bg = g.createLinearGradient(-100, 0, 100, 0);
+    bg.addColorStop(0, '#1C35E8'); bg.addColorStop(clamp(.5 + o.bx * .2, .05, .95), '#3A55FF'); bg.addColorStop(1, '#1A30D6');
+    g.fillStyle = bg; rr(g, -100, 400, 200, 160, 52); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.16)'; rr(g, -46 + o.bx * 10, 438, 92, 56, 18); g.fill();
+    g.fillStyle = '#FF5A1F'; g.beginPath(); g.arc(28 + o.bx * 10, 466, 9, 0, Math.PI * 2); g.fill();
+    g.restore();
+    // cabeza
+    g.save(); g.translate(W / 2 + dx * 20, 252 + dy * 16 + bob); g.rotate(dx * .05);
+    // antena: la punta llega con retraso (inercia)
+    const tx = dx * 30 + 6 + o.lx * 70, ty = -178 + dy * 6 + o.ly * 30;
+    g.strokeStyle = '#1A2236'; g.lineWidth = 8; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(dx * 14, -122); g.quadraticCurveTo(dx * 18, -150, tx, ty + 4); g.stroke();
+    g.fillStyle = '#FF5A1F'; g.beginPath(); g.arc(tx, ty, 15, 0, Math.PI * 2); g.fill();
+    // orejas (la del lado contrario al giro se ve más)
+    g.fillStyle = '#1A2236';
+    g.beginPath(); g.ellipse(-152 + dx * 12, 4, 30 * (1 + .4 * dx), 44, 0, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.ellipse(152 + dx * 12, 4, 30 * (1 - .4 * dx), 44, 0, 0, Math.PI * 2); g.fill();
+    // casco
+    const hg = g.createLinearGradient(-150, -120, 150, 120);
+    hg.addColorStop(0, '#FFFFFF'); hg.addColorStop(clamp(.55 + dx * .25, .05, .95), '#E4E8F0'); hg.addColorStop(1, '#C9D0DD');
+    g.fillStyle = hg; rr(g, -152, -128, 304, 256, 96); g.fill();
+    g.strokeStyle = 'rgba(13,18,32,.12)'; g.lineWidth = 3; g.stroke();
+    // pantalla de la cara (se desplaza más que el casco: sensación de giro 3D)
+    const fx = dx * 26, fy = dy * 20;
+    g.fillStyle = '#0D1220'; rr(g, -114 + fx, -84 + fy, 228, 168, 64); g.fill();
+    g.fillStyle = 'rgba(255,255,255,.07)'; rr(g, -96 + fx, -70 + fy, 92, 26, 13); g.fill();
+    // ojos (con parpadeo)
+    const ex = dx * 40, ey = dy * 30, sep = 48 * (1 - .14 * Math.abs(dx));
+    const eh = Math.max(6, 54 * open), eyY = -34 + ey + (54 - eh) / 2;
+    g.shadowColor = '#5B7CFF'; g.shadowBlur = 28; g.fillStyle = '#8EA8FF';
+    rr(g, -sep - 17 + ex, eyY, 34, eh, 17); g.fill();
+    rr(g, sep - 17 + ex, eyY, 34, eh, 17); g.fill();
+    g.shadowBlur = 0;
+    // sonrisa
+    g.strokeStyle = '#8EA8FF'; g.lineWidth = 7; g.lineCap = 'round';
+    g.beginPath(); g.arc(ex * .9, 30 + ey * .8, 22, .18 * Math.PI, .82 * Math.PI); g.stroke();
+    g.restore();
+  }
+
+  function sizeCanvas(cv) {
+    const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(r.width * d)), h = Math.max(1, Math.round(r.height * d));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; return true; }
+    return false;
+  }
+  function blit(img, alpha) {
+    const W = bot.width, H = bot.height, s = Math.min(W / img.width, H / img.height), dw = img.width * s, dh = img.height * s;
+    bctx.globalAlpha = alpha;
+    bctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
+  }
+
+  function renderBot(t) {
+    sizeCanvas(bot);
+    const rect = bot.getBoundingClientRect();
+    let tx, ty;
+    if (idle()) {
+      if (reduce) { tx = 0; ty = 0; }
+      else { tx = Math.sin(t * .00065) * .9; ty = Math.sin(t * .001 + .7) * .7; }
+    } else {
+      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height * .42;
+      tx = clamp((P.x - cx) / (innerWidth * .3), -1, 1);
+      ty = clamp((P.y - cy) / (innerHeight * .3), -1, 1);
+    }
+    G.x += (tx - G.x) * .1; G.y += (ty - G.y) * .1;
+
+    bctx.globalCompositeOperation = 'source-over';
+    bctx.globalAlpha = 1;
+    bctx.clearRect(0, 0, bot.width, bot.height);
+
+    if (source === 'robot') {
+      B.x += (G.x - B.x) * .04;
+      A.vx = (A.vx + (G.x - A.x) * .09) * .8; A.x += A.vx;
+      A.vy = (A.vy + (G.y - A.y) * .09) * .8; A.y += A.vy;
+      let open = 1;
+      if (!reduce) {
+        if (blinkStart < 0 && t > nextBlink) blinkStart = t;
+        if (blinkStart >= 0) {
+          const ph = (t - blinkStart) / 170;
+          if (ph >= 1) { blinkStart = -1; nextBlink = t + 2200 + Math.random() * 3200; }
+          else open = 1 - Math.sin(ph * Math.PI);
+        }
+      }
+      drawRobot(G.x, G.y, { bx: B.x, lx: A.x - G.x, ly: A.y - G.y, open, bob: reduce ? 0 : Math.sin(t * .0021) * 5 });
+      blit(live, 1);
+    } else {
+      bctx.globalCompositeOperation = 'lighter';
+      let ws;
+      if (source === 'video') {
+        const m = frames.length, k = flip ? 1 - (G.x + 1) / 2 : (G.x + 1) / 2, f = k * (m - 1);
+        if (mode === 'snap') ws = [[Math.round(f), 1]];
+        else { const i0 = Math.min(m - 2, Math.floor(f)), fr = f - i0; ws = [[i0, 1 - fr], [i0 + 1, fr]]; }
+      } else {
+        const N = gridN, u = (G.x + 1) / 2 * (N - 1), v = (G.y + 1) / 2 * (N - 1);
+        if (mode === 'snap') ws = [[Math.round(v) * N + Math.round(u), 1]];
+        else {
+          const c0 = Math.min(N - 2, Math.floor(u)), r0 = Math.min(N - 2, Math.floor(v)), fu = u - c0, fv = v - r0;
+          ws = [[r0 * N + c0, (1 - fu) * (1 - fv)], [r0 * N + c0 + 1, fu * (1 - fv)], [(r0 + 1) * N + c0, (1 - fu) * fv], [(r0 + 1) * N + c0 + 1, fu * fv]];
+          const p = N === 3 ? 3 : 1.6;   // afila la mezcla para que no se vean dos caras superpuestas
+          ws.forEach(w => w[1] = Math.pow(w[1], p));
+          const s = ws.reduce((a, w) => a + w[1], 0) || 1;
+          ws.forEach(w => w[1] /= s);
+        }
+      }
+      for (const [i, w] of ws) if (w > .003 && frames[i]) blit(frames[i], w);
+      bctx.globalAlpha = 1;
+      bctx.globalCompositeOperation = 'source-over';
+    }
+    const on = Math.round(G.y + 1) * 3 + Math.round(G.x + 1);
+    gazeCells.forEach((el, i) => el.classList.toggle('on', i === on));
+  }
+
+  /* ---------- Efecto 2: palabra deformable (WebGL) ---------- */
+  const word = $('#word');
+  const gl = word.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  const N = 16;
+  const pts = new Float32Array(N * 3);
+  const trail = [];
+  const head = { x: 0, y: 0, z: 0, has: false };
+  let strength = .55, radiusK = .40;
+  let wordReady = false, tex, uni = {};
+  const mask = document.createElement('canvas'), mctx = mask.getContext('2d');
+
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  function buildMask() {
+    mask.width = word.width; mask.height = word.height;
+    const W = mask.width, H = mask.height, text = 'IntegriAI';
+    mctx.fillStyle = '#000'; mctx.fillRect(0, 0, W, H);
+    mctx.font = '800 100px Unbounded, "Arial Black", sans-serif';
+    const w100 = mctx.measureText(text).width || 1;
+    const size = Math.min(H * .74, (W * .92) / w100 * 100);
+    mctx.font = `800 ${size}px Unbounded, "Arial Black", sans-serif`;
+    mctx.fillStyle = '#fff'; mctx.textAlign = 'center'; mctx.textBaseline = 'middle';
+    mctx.fillText(text, W / 2, H * .53);
+    if (tex) {
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mask);
+    }
+  }
+
+  function initGL() {
+    if (!gl) {
+      word.replaceWith(Object.assign(document.createElement('p'), { className: 'word-fallback', textContent: 'IntegriAI' }));
+      return;
+    }
+    const vs = `attribute vec2 a; varying vec2 vUv; void main(){ vUv = a*.5+.5; gl_Position = vec4(a,0.,1.); }`;
+    const fs = `precision highp float;
+      varying vec2 vUv;
+      uniform sampler2D uTex; uniform vec2 uRes; uniform vec3 uPts[${N}];
+      uniform float uRadius; uniform float uStrength;
+      uniform vec3 uBg; uniform vec3 uInk; uniform vec3 uAcc;
+      void main(){
+        vec2 p = vUv * uRes; vec2 disp = vec2(0.); float s = 0.;
+        for (int i = 0; i < ${N}; i++) {
+          vec3 pt = uPts[i];
+          if (pt.z < .002) continue;
+          vec2 d = p - pt.xy;
+          float r = uRadius * (.55 + .45 * pt.z);
+          float f = 1. - smoothstep(0., r, length(d));
+          f = f * f * pt.z;
+          disp += d * f; s += f;
+        }
+        disp /= max(1., s);
+        float infl = clamp(s, 0., 1.);
+        vec2 off = disp * uStrength / uRes;
+        float cr = texture2D(uTex, vUv - off * 1.12).r;
+        float cg = texture2D(uTex, vUv - off).r;
+        float cb = texture2D(uTex, vUv - off * .88).r;
+        vec3 ink = mix(uInk, uAcc, smoothstep(.04, .55, infl));
+        gl_FragColor = vec4(mix(uBg.r, ink.r, cr), mix(uBg.g, ink.g, cg), mix(uBg.b, ink.b, cb), 1.);
+      }`;
+    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+    const prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog); gl.useProgram(prog);
+    const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    ['uTex', 'uRes', 'uPts', 'uRadius', 'uStrength', 'uBg', 'uInk', 'uAcc'].forEach(n => uni[n] = gl.getUniformLocation(prog, n));
+    tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.uniform1i(uni.uTex, 0);
+    gl.uniform3fv(uni.uBg, hex(css('--paper')));
+    gl.uniform3fv(uni.uInk, hex(css('--ink')));
+    gl.uniform3fv(uni.uAcc, hex(css('--cobalt')));
+    sizeCanvas(word); buildMask(); wordReady = true;
+  }
+
+  function renderWord(t) {
+    if (!wordReady) return;
+    if (sizeCanvas(word)) buildMask();
+    const rect = word.getBoundingClientRect(), W = word.width, H = word.height;
+    const kx = W / rect.width, ky = H / rect.height;
+    let target = null;
+    if (!idle()) {
+      if (P.x >= rect.left && P.x <= rect.right && P.y >= rect.top - 20 && P.y <= rect.bottom + 20)
+        target = [(P.x - rect.left) * kx, (rect.bottom - P.y) * ky];
+    } else if (!reduce) {
+      target = [W * (.5 + .43 * Math.sin(t * .00052)), H * (.5 + .22 * Math.sin(t * .0013 + 1.2))];
+    }
+    if (target) {
+      if (!head.has) { head.x = target[0]; head.y = target[1]; head.has = true; }
+      head.x += (target[0] - head.x) * .22; head.y += (target[1] - head.y) * .22;
+      head.z += (1 - head.z) * .12;
+      const last = trail[trail.length - 1];
+      if (!last || Math.hypot(head.x - last.x, head.y - last.y) > 14 * kx) {
+        trail.push({ x: head.x, y: head.y, z: .9 });
+        if (trail.length > N - 1) trail.shift();
+      }
+    } else {
+      head.z *= .9; if (head.z < .01) head.has = false;
+    }
+    trail.forEach(p => p.z *= .94);
+    pts.fill(0);
+    pts[0] = head.x; pts[1] = head.y; pts[2] = head.z;
+    trail.forEach((p, i) => { pts[(i + 1) * 3] = p.x; pts[(i + 1) * 3 + 1] = p.y; pts[(i + 1) * 3 + 2] = p.z; });
+    gl.viewport(0, 0, W, H);
+    gl.uniform2f(uni.uRes, W, H);
+    gl.uniform3fv(uni.uPts, pts);
+    gl.uniform1f(uni.uRadius, H * radiusK);
+    gl.uniform1f(uni.uStrength, strength);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+
+  /* ---------- Bucle ---------- */
+  const vis = { bot: true, word: true };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { vis[e.target === bot ? 'bot' : 'word'] = e.isIntersecting; }));
+    io.observe(bot); io.observe(word);
+  }
+  function loop(t) {
+    if (vis.bot) renderBot(t);
+    if (vis.word && document.body.contains(word)) renderWord(t);
+    requestAnimationFrame(loop);
+  }
+
+  try { initGL(); } catch (e) { console.error(e); word.replaceWith(Object.assign(document.createElement('p'), { className: 'word-fallback', textContent: 'IntegriAI' })); }
+  requestAnimationFrame(loop);
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('800 100px Unbounded').then(() => { if (wordReady) buildMask(); }).catch(() => {});
+  }
+
+  /* ---------- Panel ---------- */
+  const status = $('#status'), stageTag = $('#stage-tag');
+  const say = (msg, cls) => { status.textContent = msg; status.className = 'status' + (cls ? ' ' + cls : ''); };
+  const loadImg = f => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(f); });
+  const toCanvas = (src, sx, sy, sw, sh, maxSide = 900) => {
+    const k = Math.min(1, maxSide / Math.max(sw, sh));
+    const c = document.createElement('canvas'); c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(src, sx, sy, sw, sh, 0, 0, c.width, c.height); return c;
+  };
+
+  // Extrae fotogramas parejos de un video para poder "rebobinarlo" con el mouse sin tirones.
+  async function videoFrames(file, count = 60) {
+    const v = document.createElement('video');
+    v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = URL.createObjectURL(file);
+    await new Promise((res, rej) => { v.onloadeddata = res; v.onerror = () => rej(new Error('video')); v.load(); });
+    const dur = v.duration, out = [];
+    if (!isFinite(dur) || dur <= 0) throw new Error('video');
+    for (let i = 0; i < count; i++) {
+      await new Promise(res => { v.onseeked = res; v.currentTime = Math.min(dur - .04, dur * i / (count - 1)); });
+      out.push(toCanvas(v, 0, 0, v.videoWidth, v.videoHeight, 720));
+      say(`Procesando video… ${i + 1} de ${count}`);
+    }
+    return out;
+  }
+
+  $('#files').addEventListener('change', async e => {
+    const files = [...e.target.files].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+    if (!files.length) return;
+    gridN = +$('#gridsize').value;
+    try {
+      if (files.length === 1 && files[0].type.startsWith('video/')) {
+        say('Procesando video…');
+        frames = await videoFrames(files[0]); source = 'video';
+        stageTag.textContent = 'Tu personaje · video';
+        say(`Listo: video convertido en ${frames.length} fotogramas. Mueve el mouse de lado a lado.`, 'ok');
+      } else if (files.length === 1) {
+        const img = await loadImg(files[0]), N = gridN;
+        const cw = img.naturalWidth / N, ch = img.naturalHeight / N, f = [];
+        for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) f.push(toCanvas(img, c * cw, r * ch, cw, ch));
+        frames = f; source = 'grid';
+        stageTag.textContent = `Tu personaje · grilla ${N}×${N}`;
+        say(`Listo: grilla ${N}×${N} cortada en ${N * N} poses.`, 'ok');
+      } else if (files.length === gridN * gridN) {
+        const imgs = await Promise.all(files.map(loadImg));
+        frames = imgs.map(i => toCanvas(i, 0, 0, i.naturalWidth, i.naturalHeight)); source = 'grid';
+        stageTag.textContent = `Tu personaje · ${files.length} imágenes`;
+        say(`Listo: ${files.length} imágenes cargadas en orden.`, 'ok');
+      } else {
+        say(`Subiste ${files.length} archivos y elegiste grilla ${gridN}×${gridN}. Sube 1 video, 1 imagen con la grilla o exactamente ${gridN * gridN} imágenes.`, 'err');
+      }
+    } catch { say('No pude leer ese archivo. Prueba con PNG, JPG o un video MP4.', 'err'); }
+  });
+  $('#reset').addEventListener('click', () => {
+    source = 'robot'; frames = []; $('#files').value = '';
+    stageTag.textContent = 'Robot provisorio · dibujado en vivo';
+    say('Usando el robot provisorio, dibujado en vivo.');
+  });
+  $('#flip').addEventListener('change', e => flip = e.target.checked);
+
+  const bindRange = (id, out, fn) => { const el = $(id), o = $(out); const up = () => { o.textContent = el.value + '%'; fn(el.value / 100); }; el.addEventListener('input', up); up(); };
+  bindRange('#strength', '#o-strength', v => strength = v);
+  bindRange('#radius', '#o-radius', v => radiusK = v);
+  const setMode = m => { mode = m; $('#m-soft').setAttribute('aria-pressed', m === 'soft'); $('#m-snap').setAttribute('aria-pressed', m === 'snap'); };
+  $('#m-soft').addEventListener('click', () => setMode('soft'));
+  $('#m-snap').addEventListener('click', () => setMode('snap'));
+  $('#showgrid').addEventListener('change', e => { $('#gaze').hidden = !e.target.checked; });
+
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    const label = btn.textContent, pre = document.getElementById(btn.dataset.copy);
+    btn.addEventListener('click', () => {
+      const done = ok => { btn.textContent = ok ? 'Copiado' : 'Selecciona y copia'; setTimeout(() => btn.textContent = label, 1800); };
+      const select = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); };
+      try { navigator.clipboard.writeText(pre.textContent).then(() => done(true), select); } catch { select(); }
+    });
+  });
+})();
+</script>

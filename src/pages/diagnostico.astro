@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import { SUPABASE_URL, SUPABASE_KEY, WA_NUMBER, WA_URL, WA_DISPLAY, SITE_URL } from '../site';
+
+const SISTEMAS = ['Planillas Excel o Google Sheets', 'Grupos de WhatsApp', 'Correo', 'Software contable', 'Un ERP o CRM', 'Tienda online', 'Cuadernos o papel', 'Otro'];
+const crumbs = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Diagnóstico', item: SITE_URL + '/diagnostico/' },
+  ],
+};
+---
+<Base title="Diagnóstico sin costo · IntegriAI" description="Cuéntanos cómo trabaja hoy tu empresa y te respondemos con una primera lectura de qué procesos se pueden ordenar, automatizar o conectar. Sin costo." schema={[crumbs]}>
+<section class="sec wrap diag" aria-labelledby="t-diag">
+  <div class="diag-left">
+    <span class="eyebrow">Diagnóstico sin costo</span>
+    <h1 class="h2" id="t-diag">Cuéntanos cómo trabajas hoy. <em>Te decimos qué se puede mejorar.</em></h1>
+    <p class="lead">El diagnóstico es una primera lectura de tus procesos: dónde se pierde tiempo, qué se puede automatizar y qué sistema tendría sentido para tu empresa. No te comprometes a nada.</p>
+    <ol class="steps">
+      <li><b>01</b><span><strong>Completas el formulario</strong>Toma unos 4 minutos.</span></li>
+      <li><b>02</b><span><strong>Te contactamos</strong>En menos de 2 días hábiles, por WhatsApp o correo.</span></li>
+      <li><b>03</b><span><strong>Conversamos 45 minutos</strong>Online, para entender tu operación.</span></li>
+      <li><b>04</b><span><strong>Recibes una propuesta</strong>Por escrito, con etapas, plazos y precio.</span></li>
+    </ol>
+    <a class="link" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">¿Prefieres escribir? WhatsApp {WA_DISPLAY} <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+
+  <form class="form" id="lead" novalidate>
+    <fieldset>
+      <legend>Tú y tu empresa</legend>
+      <div class="two">
+        <label><span>Nombre<span class="req">*</span></span><input name="nombre" required minlength="2" maxlength="120" autocomplete="name"></label>
+        <label>Empresa<input name="empresa" maxlength="160" autocomplete="organization"></label>
+      </div>
+      <div class="two">
+        <label>Correo<input name="email" type="email" maxlength="200" autocomplete="email" inputmode="email"></label>
+        <label>WhatsApp<input name="whatsapp" type="tel" maxlength="40" autocomplete="tel" placeholder="+56 9 1234 5678"></label>
+      </div>
+      <p class="hint" id="contact-hint">Déjanos al menos un correo o un WhatsApp para responderte.</p>
+      <label>¿A qué se dedica tu empresa?<input name="rubro" maxlength="200" placeholder="Ej.: distribuidora de materiales, 12 personas"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Cómo trabajan hoy</legend>
+      <label><span>¿Qué es lo que más les complica hoy?<span class="req">*</span></span><textarea name="dificultades" required minlength="10" maxlength="3000" rows="3" placeholder="Ej.: las cotizaciones se pierden, no sabemos el stock real, respondemos lo mismo todo el día…"></textarea></label>
+      <label>¿Qué tareas hacen a mano y se repiten?<textarea name="tareas_manuales" maxlength="3000" rows="3" placeholder="Ej.: pasar pedidos de WhatsApp a una planilla, armar reportes cada lunes…"></textarea></label>
+      <div class="lab-g">¿Qué usan hoy para trabajar?</div>
+      <div class="checks">
+        {SISTEMAS.map(s => <label class="ck"><input type="checkbox" name="sistemas" value={s}><span>{s}</span></label>)}
+      </div>
+      <label>¿Qué proceso te gustaría automatizar o mejorar primero?<textarea name="procesos" maxlength="3000" rows="3"></textarea></label>
+      <label>¿Qué tipo de solución te interesa?
+        <select name="servicio">
+          <option value="no-se">Todavía no lo sé</option>
+          <option value="sistemas">Sistema de gestión, ERP o CRM</option>
+          <option value="automatizacion">Automatización de procesos</option>
+          <option value="agentes-ia">Agente de IA o WhatsApp</option>
+          <option value="web">Web o tienda online</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <label class="hp" aria-hidden="true">No completar<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+    <label class="ck ok"><input type="checkbox" name="acepta" required><span>Acepto que IntegriAI use estos datos para responder mi solicitud, según la <a href="/privacidad/" target="_blank">política de privacidad</a>.</span></label>
+
+    <p class="err" id="err" role="alert" hidden></p>
+    <button class="btn btn-dark" type="submit" id="send">Enviar solicitud <span class="ic"><svg><use href="#i-arrow"/></svg></span></button>
+  </form>
+
+  <div class="form done" id="done" hidden tabindex="-1">
+    <span class="eyebrow">Solicitud recibida</span>
+    <h2 class="h2">¡Gracias! <em>Ya tenemos tu información.</em></h2>
+    <p class="lead">Te contactamos en menos de 2 días hábiles. Si quieres adelantar la conversación, avísanos por WhatsApp.</p>
+    <a class="btn btn-acc" id="done-wa" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Avisar por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+</section>
+
+<script is:inline define:vars={{ SUPABASE_URL, SUPABASE_KEY, WA_NUMBER }}>
+(() => {
+  const f = document.getElementById('lead'), err = document.getElementById('err'), send = document.getElementById('send');
+  const q = new URLSearchParams(location.search);
+  if (q.get('servicio') && f.servicio.querySelector(`option[value="${CSS.escape(q.get('servicio'))}"]`)) f.servicio.value = q.get('servicio');
+  const utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'].forEach(k => { if (q.get(k)) utm[k] = q.get(k).slice(0, 200); });
+  try { const saved = JSON.parse(sessionStorage.getItem('utm') || '{}'); Object.assign(saved, utm); Object.assign(utm, saved); } catch (e) {}
+  const fail = msg => { err.textContent = msg; err.hidden = false; };
+
+  f.addEventListener('submit', async e => {
+    e.preventDefault(); err.hidden = true;
+    if (f.sitio_web.value) return;                       // bots
+    const v = n => (f[n].value || '').trim();
+    if (v('nombre').length < 2) { f.nombre.focus(); return fail('Escribe tu nombre.'); }
+    if (!v('email') && !v('whatsapp')) { f.email.focus(); return fail('Déjanos un correo o un WhatsApp para responderte.'); }
+    if (v('email') && !f.email.checkValidity()) { f.email.focus(); return fail('Revisa el correo, parece incompleto.'); }
+    if (v('dificultades').length < 10) { f.dificultades.focus(); return fail('Cuéntanos en una o dos frases qué les complica hoy.'); }
+    if (!f.acepta.checked) { f.acepta.focus(); return fail('Necesitamos que aceptes la política de privacidad para responderte.'); }
+    const sistemas = [...f.querySelectorAll('input[name=sistemas]:checked')].map(i => i.value).join(', ');
+    const body = {
+      nombre: v('nombre'), empresa: v('empresa') || null, email: v('email') || null, whatsapp: v('whatsapp') || null,
+      rubro: v('rubro') || null, dificultades: v('dificultades'), tareas_manuales: v('tareas_manuales') || null,
+      sistemas: sistemas || null, procesos: v('procesos') || null, servicio: f.servicio.value,
+      pagina_origen: (document.referrer || '').slice(0, 500) || null, utm: Object.keys(utm).length ? utm : null, acepta_privacidad: true,
+    };
+    send.disabled = true; send.firstChild.textContent = 'Enviando… ';
+    try {
+      const r = await fetch(SUPABASE_URL + '/rest/v1/leads', {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(body),
+      });
+      if (!r.ok) throw new Error(r.status + ' ' + (await r.text()));
+      const msg = `Hola, soy ${body.nombre}${body.empresa ? ' de ' + body.empresa : ''}. Acabo de pedir un diagnóstico en integriai.cl. Lo que más nos complica: ${body.dificultades.slice(0, 300)}`;
+      document.getElementById('done-wa').href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+      f.hidden = true; const d = document.getElementById("done"); d.hidden = false; d.focus({ preventScroll: true }); d.scrollIntoView({ block: "start" });
+      window.dataLayer && window.dataLayer.push({ event: 'diagnostico_enviado', servicio: body.servicio });
+    } catch (x) {
+      console.error(x);
+      fail('No pudimos enviar la solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');
+      send.disabled = false; send.firstChild.textContent = 'Enviar solicitud ';
+    }
+  });
+})();
+</script>
+</Base>

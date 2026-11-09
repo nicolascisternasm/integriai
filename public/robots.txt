@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://integriai.cl/sitemap-index.xml

@@ -1,0 +1,309 @@
+---
+import Base from '../layouts/Base.astro';
+import { WA_URL, WA_DISPLAY, EMAIL } from '../site';
+const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
+  {
+    "@type": "Question",
+    "name": "¿Qué hace IntegriAI?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "IntegriAI desarrolla sistemas de gestión a medida, automatizaciones y agentes de inteligencia artificial para pymes de Chile y Latinoamérica. Cada solución se construye según cómo trabaja la empresa: cotizaciones, ventas, inventario, administración y atención a clientes."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "¿Trabajan con empresas fuera de Chile?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí. Todo el proceso funciona a distancia: reuniones online, avances que puedes probar en cada etapa y sistemas en la nube. Facturamos en dólares a clientes del extranjero."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "¿Qué es un ERP a medida y lo necesita mi empresa?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Un ERP es el sistema que reúne en un solo lugar las cotizaciones, compras, inventario, personal y finanzas. Lo necesitas cuando tu equipo pierde horas pasando datos entre planillas o cuando no sabes con certeza cuánto stock o cuántas ventas tienes hoy."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "¿Qué diferencia hay entre un sistema genérico y uno a medida?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Un sistema genérico te obliga a trabajar como él quiere. Uno a medida sigue tu forma de trabajar, se conecta con lo que ya usas y crece por módulos cuando lo necesitas."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "¿Cuánto cuesta?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando."
+    }
+  }
+] };
+---
+<Base title="IntegriAI · Sistemas a medida, automatización e IA para pymes" home schema={[faq]}>
+<section class="hero" id="inicio" aria-label="Portada">
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Sistemas a medida · Automatización · IA · Chile</span>
+      <h1>Tu empresa, ordenada y <em>en automático.</em></h1>
+      <p class="lead">Desarrollamos sistemas de gestión, automatizaciones y agentes de inteligencia artificial para que tu equipo deje de depender de planillas, correos y tareas repetidas.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="/diagnostico/">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href="#proyectos">Ver proyectos <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+      <div class="chips"><span class="chip">100% a medida</span><span class="chip">Chile y Latinoamérica</span></div>
+    </div>
+    <div class="stage" id="stage" role="img" aria-label="Robot de IntegriAI que sigue el cursor con la mirada y se desarma en partículas al bajar">
+      <a class="now" href="#servicios" id="now"><b id="now-n">01</b><span id="now-t">Sistemas y ERP</span><span class="bar"><i id="now-bar"></i></span><span class="dots" id="now-dots"><span class="on"></span><span></span><span></span><span></span></span></a>
+    </div>
+  </div>
+  <span class="scroll-cue" aria-hidden="true">Scroll</span>
+</section>
+
+<section class="sec wrap about" id="nosotros" aria-label="Quiénes somos">
+  <span class="eyebrow rv">Quiénes somos</span>
+  <p class="big rv">¿Tu empresa todavía funciona con <span>planillas, cuadernos y grupos de WhatsApp?</span> Construimos <mark>el sistema donde trabaja todo tu equipo</mark>, hecho a tu medida.</p>
+  <a class="link rv" href="#por-que">Conoce IntegriAI <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+</section>
+
+<section class="sec wrap" id="encaja" aria-labelledby="t-encaja" style="padding-top:0">
+  <div class="fit">
+    <div class="fit-left">
+      <span class="eyebrow rv">A quién ayudamos</span>
+      <h2 class="h2 rv" id="t-encaja">Mira dónde encaja <em>tu empresa.</em></h2>
+      <p class="lead rv">Cuatro tipos de empresa con las que trabajamos y cómo cambia su día cuando todo pasa por un sistema. Elige una o deja que avancen solas.</p>
+      <div class="opts rv" role="tablist" aria-label="Tipos de empresa" id="opts">
+        <button class="opt" role="tab" id="o0" aria-selected="true" aria-controls="panel" type="button"><span class="oi"><svg><use href="#i-chat"/></svg></span><span><strong>Atención a clientes</strong><small>Respuestas al instante, a cualquier hora</small></span><span class="oa"><svg><use href="#i-arrow"/></svg></span><span class="prog"></span></button>
+        <button class="opt" role="tab" id="o1" aria-selected="false" aria-controls="panel" type="button" tabindex="-1"><span class="oi"><svg><use href="#i-brief"/></svg></span><span><strong>Empresas de servicios</strong><small>Agenda, clientes, cotizaciones y avisos</small></span><span class="oa"><svg><use href="#i-arrow"/></svg></span><span class="prog"></span></button>
+        <button class="opt" role="tab" id="o2" aria-selected="false" aria-controls="panel" type="button" tabindex="-1"><span class="oi"><svg><use href="#i-factory"/></svg></span><span><strong>Pymes, constructoras y distribuidoras</strong><small>De planillas a un sistema en tiempo real</small></span><span class="oa"><svg><use href="#i-arrow"/></svg></span><span class="prog"></span></button>
+        <button class="opt" role="tab" id="o3" aria-selected="false" aria-controls="panel" type="button" tabindex="-1"><span class="oi"><svg><use href="#i-rocket"/></svg></span><span><strong>Emprendedores</strong><small>De la idea a una plataforma funcionando</small></span><span class="oa"><svg><use href="#i-arrow"/></svg></span><span class="prog"></span></button>
+      </div>
+    </div>
+    <div class="panel rv" id="panel" role="tabpanel" aria-labelledby="o0" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="servicios" aria-labelledby="t-svc" style="padding-top:0">
+  <div class="svc-head">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow rv">Servicios</span>
+      <h2 class="h2 rv" id="t-svc">Cuatro formas de <em>trabajar contigo.</em></h2>
+    </div>
+    <p class="lead rv">Desde el sistema que ordena tu operación hasta el agente que responde a tus clientes. Todo se diseña desde cero según cómo trabajas.</p>
+  </div>
+  <div class="acc rv" id="acc">
+    <article class="svc open">
+      <button type="button" aria-expanded="true"><small>01</small><strong>Sistemas y ERP</strong></button>
+      <div class="svc-body">
+        <div class="svc-text">
+          <small>01 / 04</small>
+          <h3>Sistemas y ERP</h3>
+          <p>Un sistema hecho según cómo opera tu empresa: de la cotización al pago, en un solo lugar.</p>
+          <ul class="ticks"><li>Cotizaciones, órdenes de compra y proveedores</li><li>Inventario y personal al día</li><li>Paneles con tus números en tiempo real</li><li>Crece contigo, módulo por módulo</li></ul>
+          <a class="link" href="/diagnostico/?servicio=sistemas">Conversemos tu sistema <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="dash">
+            <div class="side"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="main">
+              <div class="inv-head"><b style="font:700 .875rem var(--f-display)">Panel general</b><span class="live">En vivo</span></div>
+              <div class="stats" style="margin:0"><div><small>Stock</small><b>650</b></div><div><small>Pedidos del mes</small><b>128</b></div><div><small>A tiempo</small><b>96%</b></div></div>
+              <div class="bars"><span style="height:42%;--d:.05s"></span><span style="height:58%;--d:.1s"></span><span style="height:50%;--d:.15s"></span><span style="height:72%;--d:.2s"></span><span style="height:64%;--d:.25s"></span><span style="height:86%;--d:.3s"></span><span style="height:78%;--d:.35s"></span><span style="height:94%;--d:.4s"></span></div>
+              <div class="orders"><div><code>COT-1042</code><span>Pasto sintético 80 m²</span><span class="st g">Aprobada</span></div><div><code>OC-0388</code><span>Rollos de caucho</span><span class="st a">En camino</span></div><div><code>COT-1043</code><span>Toldo retráctil</span><span class="st w">Seguimiento</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="svc">
+      <button type="button" aria-expanded="false"><small>02</small><strong>Automatización</strong></button>
+      <div class="svc-body">
+        <div class="svc-text">
+          <small>02 / 04</small>
+          <h3>Automatización</h3>
+          <p>Las tareas repetidas pasan a hacerse solas: el dato se ingresa una vez y llega a donde se necesita.</p>
+          <ul class="ticks"><li>Seguimiento automático de cotizaciones</li><li>WhatsApp conectado a tus sistemas</li><li>Documentos y reportes que se arman solos</li><li>Integración entre tus programas</li></ul>
+          <a class="link" href="/diagnostico/?servicio=automatizacion">Automatiza un proceso <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="flow">
+            <div class="fnode"><i>01</i><span>Llega una solicitud<small>Web, WhatsApp o formulario de Meta</small></span></div>
+            <div class="flink"></div>
+            <div class="fnode"><i>02</i><span>Queda en el CRM<small>Con su origen y un vendedor asignado</small></span></div>
+            <div class="flink"></div>
+            <div class="fnode hot"><i>03</i><span>Se envía la cotización<small>Armada con tu lista de precios</small></span></div>
+            <div class="flink"></div>
+            <div class="fnode"><i>04</i><span>Aviso de seguimiento<small>Si no responde en 3 días</small></span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="svc">
+      <button type="button" aria-expanded="false"><small>03</small><strong>Agentes de IA</strong></button>
+      <div class="svc-body">
+        <div class="svc-text">
+          <small>03 / 04</small>
+          <h3>Agentes de IA</h3>
+          <p>Agentes que atienden, venden y ordenan información con los datos reales de tu empresa, siempre con una persona detrás.</p>
+          <ul class="ticks"><li>Atención por WhatsApp las 24 horas</li><li>Precios, stock y horarios reales</li><li>Derivación a una persona con contexto</li><li>Supervisión de cada conversación</li></ul>
+          <a class="link" href="/diagnostico/?servicio=agentes-ia">Crea tu agente <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="wa-ui">
+            <div class="wa-top"><span class="avatar" style="width:34px;height:34px;font-size:.8rem">IA</span><span><b>Agente de ventas</b><small>en línea</small></span></div>
+            <div class="wa-msgs">
+              <span class="bub">Hola, ¿tienen pasto sintético de 40 mm?</span>
+              <span class="bub r">Sí, nos quedan 120 m². El m² instalado sale $18.900. ¿Para qué comuna lo necesitas?</span>
+              <span class="bub">Para Rancagua, unos 60 m²</span>
+              <span class="bub r">Perfecto. Te envío la cotización y te contacta Javiera para coordinar la visita.</span>
+            </div>
+            <div class="sup"><span>Derivado a una persona</span><b>Supervisado ✓</b></div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="svc">
+      <button type="button" aria-expanded="false"><small>04</small><strong>Web y tiendas online</strong></button>
+      <div class="svc-body">
+        <div class="svc-text">
+          <small>04 / 04</small>
+          <h3>Web y tiendas online</h3>
+          <p>Sitios que explican tu negocio, aparecen en Google y llevan cada contacto directo a tu sistema.</p>
+          <ul class="ticks"><li>Páginas web y landing pages</li><li>Tiendas online con pagos</li><li>Google, Search Console y Meta configurados</li><li>Formularios conectados a tu CRM</li></ul>
+          <a class="link" href="/diagnostico/?servicio=web">Cotiza tu web <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <div class="mock" aria-hidden="true" style="position:relative">
+          <div class="browser">
+            <div class="bar"><i></i><i></i><i></i><span>tuempresa.cl</span></div>
+            <div class="site"><div><div class="t1"></div><div class="t2"></div><div class="t3"></div><div class="t3 s"></div><div class="cta"></div></div><div class="img"></div><div class="prods"><span></span><span></span><span></span><span></span></div></div>
+          </div>
+          <span class="cart">Nuevo pedido · $64.900</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec wrap" id="proyectos" aria-labelledby="t-proj" style="padding-top:0">
+  <div class="proj-head">
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:680px">
+      <span class="eyebrow rv">Proyectos</span>
+      <h2 class="h2 rv" id="t-proj">Sistemas que ya <em>están funcionando.</em></h2>
+      <p class="lead rv">Los construimos primero para nuestras propias empresas. Los usamos y mejoramos todos los días.</p>
+    </div>
+    <a class="btn btn-light rv" href="/diagnostico/">Cuéntanos tu proyecto <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+  <div class="projs">
+    <article class="proj rv">
+      <div class="pv" aria-hidden="true"><div class="prow"><code>COT-1042</code><span>Pasto 80 m²</span><span class="st g">OK</span></div><div class="prow"><code>OC-0388</code><span>Caucho</span><span class="st a">Ruta</span></div><div class="prow"><code>RRHH</code><span>Asistencia</span><span class="st g">Al día</span></div><div class="prow"><code>FIN</code><span>Flujo de caja</span><span class="st a">Nov</span></div></div>
+      <div class="pb"><span class="badge live">ERP · en uso</span><h3>ERP MAMKAM</h3><p>Cotizaciones, compras, proveedores, personal, CRM y finanzas para una empresa de pavimentos y pasto sintético.</p></div>
+    </article>
+    <article class="proj rv">
+      <div class="pv" aria-hidden="true"><div class="kan"><div><b>Nuevo</b><span class="h">#214 · 2 pizzas</span><span>#215 · menú</span></div><div><b>Cocina</b><span>#212 · sushi</span><span>#213 · bebidas</span></div><div><b>Listo</b><span>#211 · pagado</span></div></div></div>
+      <div class="pb"><span class="badge live">SaaS propio</span><h3>FlowPedido</h3><p>Pedidos online, pantalla de cocina, administración y pagos para restaurantes.</p></div>
+    </article>
+    <article class="proj rv">
+      <div class="pv" aria-hidden="true" style="justify-content:flex-end"><span class="bub" style="background:var(--card);font-size:.6875rem">¿Despachan a Rancagua?</span><span class="bub r" style="font-size:.6875rem">Sí, martes y jueves. ¿Qué día te acomoda?</span><span class="lab" style="margin:0">Agente supervisado ✓</span></div>
+      <div class="pb"><span class="badge">Arquitectura propia</span><h3>Colegas AI</h3><p>Agentes de IA conectados a WhatsApp y a una base de datos, con supervisión de cada respuesta.</p></div>
+    </article>
+    <article class="proj rv">
+      <div class="pv" aria-hidden="true"><div class="thumbs"><span></span><span></span><span>+3</span></div><span class="lab" style="margin:4px 0 0">Generando piezas de la semana…</span><div class="pbar"><i></i></div></div>
+      <div class="pb"><span class="badge wip">En desarrollo</span><h3>AI Marketing Studio</h3><p>Agentes que planifican y producen contenido: imágenes, videos y textos para redes.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="sec wrap" id="por-que" aria-labelledby="t-why" style="padding-top:0">
+  <div class="why">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow rv">Por qué IntegriAI</span>
+      <h2 class="h2 rv" id="t-why">Lo hacemos contigo y <em>después lo cuidamos.</em></h2>
+      <p class="lead rv">Venimos de administrar empresas, no solo de programar. Por eso empezamos por tu proceso y nos quedamos después de la entrega.</p>
+    </div>
+    <div class="why-cards">
+      <article class="wcard rv"><span class="n">01</span><h3>100% a tu medida</h3><p>Nada de sistemas genéricos: cada solución sigue cómo trabaja tu equipo.</p></article>
+      <article class="wcard rv"><span class="n">02</span><h3>Primero el problema</h3><p>Te decimos qué conviene construir, y también qué no hace falta.</p></article>
+      <article class="wcard rv"><span class="n">03</span><h3>Contigo después de lanzar</h3><p>Soporte, mantención y mejoras mes a mes, con tiempos de respuesta claros.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-ind">
+  <div class="sec wrap">
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:760px">
+      <span class="eyebrow rv">Industrias</span>
+      <h2 class="h2 rv" id="t-ind">Donde el trabajo todavía <em>se hace a mano.</em></h2>
+      <p class="lead rv">Así cambia el día a día cuando la información deja de vivir en planillas y chats.</p>
+    </div>
+    <div class="inds">
+      <article class="ind rv"><h3><i><svg><use href="#i-factory"/></svg></i>Construcción y terreno</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Cotizaciones y asistencia en planillas</div><div class="a"><svg><use href="#i-check"/></svg>Obras, compras y equipo en un panel</div></div></article>
+      <article class="ind rv"><h3><i><svg><use href="#i-truck"/></svg></i>Distribución y comercio</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Stock repartido en tres archivos</div><div class="a"><svg><use href="#i-check"/></svg>Un inventario para todos los canales</div></div></article>
+      <article class="ind rv"><h3><i><svg><use href="#i-brief"/></svg></i>Empresas de servicios</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Trabajos seguidos en grupos de chat</div><div class="a"><svg><use href="#i-check"/></svg>Cada trabajo, estado y cliente en un lugar</div></div></article>
+      <article class="ind rv"><h3><i><svg><use href="#i-store"/></svg></i>Ecommerce y retail</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Las mismas preguntas todo el día</div><div class="a"><svg><use href="#i-check"/></svg>Un agente responde y tú vendes</div></div></article>
+      <article class="ind rv"><h3><i><svg><use href="#i-food"/></svg></i>Restaurantes</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Pedidos por WhatsApp y comisiones de apps</div><div class="a"><svg><use href="#i-check"/></svg>Pedidos propios directo a cocina</div></div></article>
+      <article class="ind rv"><h3><i><svg><use href="#i-users"/></svg></i>Pymes en crecimiento</h3><div class="ba"><div class="b"><svg><use href="#i-x"/></svg>Cotizaciones y facturas a mano</div><div class="a"><svg><use href="#i-check"/></svg>De la cotización a la factura en clics</div></div></article>
+    </div>
+    <div class="marquee" aria-hidden="true"><div><span>A medida</span><span>Conectado</span><span>Automático</span><span>Con IA</span><span>A medida</span><span>Conectado</span><span>Automático</span><span>Con IA</span></div></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-cover">
+  <div class="cover">
+    <div class="cover-left">
+      <span class="eyebrow rv">Chile y Latinoamérica</span>
+      <h2 class="h2 rv" id="t-cover">Desde Chile, para empresas <em>de toda la región.</em></h2>
+      <p class="lead rv">Trabajamos a distancia con el mismo equipo y el mismo proceso, estés donde estés.</p>
+      <div class="how">
+        <div class="rv"><i><svg><use href="#i-video"/></svg></i><b>Reunión online o visita</b><p>Partimos entendiendo cómo trabaja hoy tu equipo y qué lo frena.</p></div>
+        <div class="rv"><i><svg><use href="#i-screen"/></svg></i><b>Avances que puedes probar</b><p>En cada etapa revisas pantallas funcionando, no presentaciones.</p></div>
+        <div class="rv"><i><svg><use href="#i-cloud"/></svg></i><b>En la nube</b><p>Tu sistema funciona desde cualquier sucursal o celular.</p></div>
+        <div class="rv"><i><svg><use href="#i-users"/></svg></i><b>Capacitación y soporte</b><p>Capacitamos a tu equipo y seguimos contigo después.</p></div>
+      </div>
+    </div>
+    <div class="map rv">
+      <svg id="map" viewBox="0 0 520 560" role="img" aria-label="Mapa con conexiones desde Chile hacia ciudades de Latinoamérica"></svg>
+      <div class="legend"><span><i class="h"></i>Base en Chile</span><span><i></i>Ciudades donde atendemos online</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="preguntas" aria-labelledby="t-faq" style="padding-top:0">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow rv">Preguntas frecuentes</span>
+      <h2 class="h2 rv" id="t-faq">Respuestas claras <em>antes de empezar.</em></h2>
+      <p class="lead rv">¿Te queda alguna duda? Escríbele a Nico por WhatsApp y cuéntale cómo funciona hoy tu empresa.</p>
+      <a class="btn btn-dark rv" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp" style="align-self:flex-start">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      <details class="rv" open><summary>¿Qué hace IntegriAI?<i aria-hidden="true"></i></summary><p>IntegriAI desarrolla sistemas de gestión a medida, automatizaciones y agentes de inteligencia artificial para pymes de Chile y Latinoamérica. Cada solución se construye según cómo trabaja la empresa: cotizaciones, ventas, inventario, administración y atención a clientes.</p></details>
+      <details class="rv"><summary>¿Trabajan con empresas fuera de Chile?<i aria-hidden="true"></i></summary><p>Sí. Todo el proceso funciona a distancia: reuniones online, avances que puedes probar en cada etapa y sistemas en la nube. Facturamos en dólares a clientes del extranjero.</p></details>
+      <details class="rv"><summary>¿Qué es un ERP a medida y lo necesita mi empresa?<i aria-hidden="true"></i></summary><p>Un ERP es el sistema que reúne en un solo lugar las cotizaciones, compras, inventario, personal y finanzas. Lo necesitas cuando tu equipo pierde horas pasando datos entre planillas o cuando no sabes con certeza cuánto stock o cuántas ventas tienes hoy.</p></details>
+      <details class="rv"><summary>¿Qué diferencia hay entre un sistema genérico y uno a medida?<i aria-hidden="true"></i></summary><p>Un sistema genérico te obliga a trabajar como él quiere. Uno a medida sigue tu forma de trabajar, se conecta con lo que ya usas y crece por módulos cuando lo necesitas.</p></details>
+      <details class="rv"><summary>¿Cuánto cuesta?<i aria-hidden="true"></i></summary><p>Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="contacto" aria-labelledby="t-final" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <div class="final rv">
+    <div style="display:flex;flex-direction:column;gap:18px;position:relative">
+      <span class="eyebrow">Hablemos</span>
+      <h2 class="h2" id="t-final">¿Tienes un proceso que <em>necesita un sistema?</em></h2>
+      <p class="lead">Cuéntanos cómo trabajas hoy. Te respondemos con una primera lectura de qué se puede mejorar, sin costo.</p>
+      <a class="btn btn-dark" href="/diagnostico/" style="align-self:flex-start">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="contact">
+      <a class="row" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp"><span class="ri" style="color:#1FA855"><svg><use href="#i-wa"/></svg></span><span><small>WhatsApp</small><b>{WA_DISPLAY}</b></span></a>
+      <a class="row" href={'mailto:' + EMAIL} data-ev="email"><span class="ri"><svg><use href="#i-mail"/></svg></span><span><small>Correo</small><b>{EMAIL}</b></span></a>
+      <a class="row" href="/diagnostico/"><span class="ri"><svg><use href="#i-video"/></svg></span><span><small>Diagnóstico sin costo</small><b>Completa el formulario</b></span></a>
+    </div>
+  </div>
+</section>
+
+</Base>
