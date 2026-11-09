@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Sitio web de IntegriAI (integriai.cl)",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.23.4"
   },
   "scripts": {
     "dev": "astro dev",
