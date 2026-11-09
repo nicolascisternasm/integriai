@@ -54,10 +54,20 @@
 
   /* ---------- Puntero ---------- */
   const P = { x: innerWidth * .7, y: innerHeight * .4, last: -1e9 };
-  const setP = (x, y) => { P.x = x; P.y = y; P.last = performance.now(); };
-  addEventListener('pointermove', e => setP(e.clientX, e.clientY), { passive: true });
-  addEventListener('pointerdown', e => setP(e.clientX, e.clientY), { passive: true });
-  addEventListener('touchmove', e => { const t = e.touches[0]; if (t) setP(t.clientX, t.clientY); }, { passive: true });
+  // Ánimo del robot: '' normal, 'happy' (lo tocan), 'dizzy' (muchos toques), 'wow' (mouse muy rápido o lo despiertan), dormido.
+  const M = { mood: '', t0: 0, until: 0, clicks: [], fast: -1e9, sleep: false, sp: 0, px: 0, py: 0, pt: 0, act: performance.now() };
+  function setMood(m, ms) { M.mood = m; M.t0 = performance.now(); M.until = M.t0 + ms; }
+  function wake() { M.act = performance.now(); if (M.sleep) { M.sleep = false; setMood('wow', 900); } }
+  const setP = (x, y, mouse) => {
+    const n = performance.now(), dt = n - M.pt;
+    if (mouse && dt > 0 && dt < 120) { M.sp = M.sp * .7 + Math.hypot(x - M.px, y - M.py) / dt * .3; if (M.sp > 2.6) M.fast = n; }
+    M.px = x; M.py = y; M.pt = n; P.x = x; P.y = y; P.last = n; wake();
+  };
+  addEventListener('pointermove', e => setP(e.clientX, e.clientY, e.pointerType === 'mouse'), { passive: true });
+  addEventListener('pointerdown', e => setP(e.clientX, e.clientY, false), { passive: true });
+  addEventListener('touchmove', e => { const t = e.touches[0]; if (t) setP(t.clientX, t.clientY, false); }, { passive: true });
+  addEventListener('scroll', wake, { passive: true });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && !reduce) M.sleep = true; });   // te vas de la pestaña: se duerme
   const idle = () => performance.now() - P.last > 2600;
 
   function sizeCanvas(cv) {
@@ -73,6 +83,13 @@
   let nextBlink = performance.now() + 1800, blinkStart = -1;
   const live = document.createElement('canvas'); live.width = live.height = 640;
   const ACC = css('--acc');
+  if (stage) stage.addEventListener('click', e => {      // tocar al robot: se ríe; 5 toques seguidos: se marea
+    if (e.target.closest('#now')) return;
+    const n = performance.now();
+    if (M.sleep) { wake(); return; }
+    M.clicks = M.clicks.filter(c => n - c < 2200); M.clicks.push(n);
+    if (M.clicks.length >= 5) { M.clicks = []; setMood('dizzy', 2800); } else if (M.mood !== 'dizzy' || n > M.until) setMood('happy', 1100);
+  });
 
   function rr(g, x, y, w, h, r) {
     r = Math.max(0, Math.min(r, w / 2, h / 2));
@@ -80,13 +97,13 @@
     g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
   }
   function drawRobot(dx, dy, o) {
-    const g = live.getContext('2d'), W = 640, bob = o.bob, open = o.open;
+    const g = live.getContext('2d'), W = 640, open = o.open, mood = o.mood, hop = o.hop, bob = o.bob + hop;
     g.fillStyle = '#fff'; g.fillRect(0, 0, W, W);
-    g.save(); g.translate(W / 2 - o.bx * 10, 568); g.scale(1 - bob * .004, .2);
+    g.save(); g.translate(W / 2 - o.bx * 10, 568); g.scale(1 - o.bob * .004 + hop * .006, .2);
     const sg = g.createRadialGradient(0, 0, 0, 0, 0, 190);
     sg.addColorStop(0, 'rgba(31,28,29,.28)'); sg.addColorStop(1, 'rgba(31,28,29,0)');
     g.fillStyle = sg; g.beginPath(); g.arc(0, 0, 190, 0, Math.PI * 2); g.fill(); g.restore();
-    g.save(); g.translate(W / 2 + o.bx * 6, bob * .5);
+    g.save(); g.translate(W / 2 + o.bx * 6, o.bob * .5 + hop);
     g.fillStyle = '#221E3D'; g.fillRect(-26 + (dx - o.bx) * 8, 372, 52, 40);
     const bg = g.createLinearGradient(-100, 0, 100, 0);
     bg.addColorStop(0, '#3426D9'); bg.addColorStop(clamp(.5 + o.bx * .2, .05, .95), '#6151FF'); bg.addColorStop(1, '#2E21C4');
@@ -94,7 +111,7 @@
     g.fillStyle = 'rgba(255,255,255,.16)'; rr(g, -46 + o.bx * 10, 438, 92, 56, 18); g.fill();
     g.fillStyle = '#FF7A3D'; g.beginPath(); g.arc(28 + o.bx * 10, 466, 9, 0, Math.PI * 2); g.fill();
     g.restore();
-    g.save(); g.translate(W / 2 + dx * 20, 252 + dy * 16 + bob); g.rotate(dx * .05);
+    g.save(); g.translate(W / 2 + dx * 20, 252 + dy * 16 + bob); g.rotate(dx * .05 + (mood === 'dizzy' ? Math.sin(o.t * .011) * .14 : 0));
     const tx = dx * 30 + 6 + o.lx * 70, ty = -178 + dy * 6 + o.ly * 30;
     g.strokeStyle = '#221E3D'; g.lineWidth = 8; g.lineCap = 'round';
     g.beginPath(); g.moveTo(dx * 14, -122); g.quadraticCurveTo(dx * 18, -150, tx, ty + 4); g.stroke();
@@ -110,13 +127,32 @@
     g.fillStyle = '#16132B'; rr(g, -114 + fx2, -84 + fy, 228, 168, 64); g.fill();
     g.fillStyle = 'rgba(255,255,255,.07)'; rr(g, -96 + fx2, -70 + fy, 92, 26, 13); g.fill();
     const ex = dx * 40, ey = dy * 30, sep = 48 * (1 - .14 * Math.abs(dx));
-    const eh = Math.max(6, 54 * open), eyY = -34 + ey + (54 - eh) / 2;
-    g.shadowColor = '#7A6CFF'; g.shadowBlur = 28; g.fillStyle = '#ABA2FF';
-    rr(g, -sep - 17 + ex, eyY, 34, eh, 17); g.fill();
-    rr(g, sep - 17 + ex, eyY, 34, eh, 17); g.fill();
-    g.shadowBlur = 0;
-    g.strokeStyle = '#ABA2FF'; g.lineWidth = 7; g.lineCap = 'round';
-    g.beginPath(); g.arc(ex * .9, 30 + ey * .8, 22, .18 * Math.PI, .82 * Math.PI); g.stroke();
+    const L = -sep + ex, R = sep + ex, cy = -7 + ey;
+    g.shadowColor = '#7A6CFF'; g.shadowBlur = 28; g.fillStyle = g.strokeStyle = '#ABA2FF'; g.lineCap = 'round'; g.lineJoin = 'round';
+    if (mood === 'happy') {                 // ojos ^ ^
+      g.lineWidth = 10; [L, R].forEach(x => { g.beginPath(); g.arc(x, cy + 12, 18, 1.15 * Math.PI, 1.85 * Math.PI); g.stroke(); });
+    } else if (mood === 'sleep') {          // ojos cerrados
+      g.lineWidth = 8; [L, R].forEach(x => { g.beginPath(); g.arc(x, cy - 6, 16, .15 * Math.PI, .85 * Math.PI); g.stroke(); });
+    } else if (mood === 'dizzy') {          // espirales que giran
+      g.lineWidth = 6;
+      [L, R].forEach((x, i) => { g.beginPath(); for (let a = 0; a < 4.2 * Math.PI; a += .2) { const r = 2 + a * 1.6, an = a + (i ? -1 : 1) * o.t * .012, px = x + Math.cos(an) * r, py = cy + Math.sin(an) * r; a ? g.lineTo(px, py) : g.moveTo(px, py); } g.stroke(); });
+    } else {                                // normal o sorprendido (ojos más grandes)
+      const s = mood === 'wow' ? 1.32 : 1, w = 34 * s, h = Math.max(6, 54 * open * s);
+      rr(g, L - w / 2, cy - h / 2, w, h, w / 2); g.fill(); rr(g, R - w / 2, cy - h / 2, w, h, w / 2); g.fill();
+    }
+    g.shadowBlur = 0; g.lineWidth = 7;
+    const mx = ex * .9, my = 30 + ey * .8;
+    g.beginPath();
+    if (mood === 'happy') { g.arc(mx, my - 4, 26, .05 * Math.PI, .95 * Math.PI); g.closePath(); g.fill(); }
+    else if (mood === 'wow') { g.ellipse(mx, my + 12, 10, 13, 0, 0, Math.PI * 2); g.stroke(); }
+    else if (mood === 'sleep') { g.moveTo(mx - 12, my + 14); g.lineTo(mx + 12, my + 14); g.stroke(); }
+    else if (mood === 'dizzy') { for (let i = 0; i <= 20; i++) { const xx = mx - 24 + i * 2.4, yy = my + 12 + Math.sin(i * .9 + o.t * .01) * 5; i ? g.lineTo(xx, yy) : g.moveTo(xx, yy); } g.stroke(); }
+    else { g.arc(mx, my, 22, .18 * Math.PI, .82 * Math.PI); g.stroke(); }
+    if (mood === 'sleep') {                 // Z z Z que suben
+      g.fillStyle = ACC; g.textAlign = 'center'; g.textBaseline = 'middle';
+      for (let i = 0; i < 3; i++) { const k = (o.t * .00035 + i / 3) % 1; g.globalAlpha = Math.sin(k * Math.PI); g.font = `800 ${Math.round(24 + k * 30)}px Outfit, "Arial Black", sans-serif`; g.fillText(i % 2 ? 'z' : 'Z', 150 + k * 60, -120 - k * 110); }
+      g.globalAlpha = 1;
+    }
     g.restore();
   }
 
@@ -147,20 +183,30 @@
     // progreso de la desintegración: empieza cuando el robot llega bajo el menú
     const p = reduce ? 0 : clamp((96 - sr.top) / (sr.height * .75), 0, 1);
 
+    // sin actividad por 25 s, se queda dormido
+    if (!reduce && !M.sleep && performance.now() - M.act > 25000) M.sleep = true;
+    const mood = M.sleep ? 'sleep' : t < M.until ? M.mood : t - M.fast < 450 ? 'wow' : '';
+    const mk = t < M.until ? clamp((t - M.t0) / (M.until - M.t0), 0, 1) : 0;
+
     let tx, ty;
-    if (idle()) { if (reduce) { tx = 0; ty = 0; } else { tx = Math.sin(t * .00065) * .8; ty = Math.sin(t * .001 + .7) * .5; } }
+    if (mood === 'sleep') { tx = 0; ty = .55; }
+    else if (mood === 'dizzy') { tx = Math.sin(t * .008) * .9; ty = Math.cos(t * .008) * .5; }
+    else if (idle()) { if (reduce) { tx = 0; ty = 0; } else { tx = Math.sin(t * .00065) * .8; ty = Math.sin(t * .001 + .7) * .5; } }
     else { tx = clamp((P.x - cx) / (innerWidth * .3), -1, 1); ty = clamp((P.y - cy) / (innerHeight * .3), -1, 1); }
     if (p < .02) {   // mientras está entero, sigue moviéndose; al desarmarse queda congelado en su pose
-      G.x += (tx - G.x) * .1; G.y += (ty - G.y) * .1;
+      const fol = mood === 'wow' ? .28 : mood === 'sleep' ? .03 : .1;
+      G.x += (tx - G.x) * fol; G.y += (ty - G.y) * fol;
       B.x += (G.x - B.x) * .04;
       A.vx = (A.vx + (G.x - A.x) * .09) * .8; A.x += A.vx;
       A.vy = (A.vy + (G.y - A.y) * .09) * .8; A.y += A.vy;
       let open = 1;
-      if (!reduce) {
+      if (!reduce && !mood) {
         if (blinkStart < 0 && t > nextBlink) blinkStart = t;
         if (blinkStart >= 0) { const ph = (t - blinkStart) / 170; if (ph >= 1) { blinkStart = -1; nextBlink = t + 2200 + Math.random() * 3200; } else open = 1 - Math.sin(ph * Math.PI); }
       }
-      drawRobot(G.x, G.y, { bx: B.x, lx: A.x - G.x, ly: A.y - G.y, open, bob: reduce ? 0 : Math.sin(t * .0021) * 5 });
+      const hop = mood === 'happy' && !reduce ? -Math.abs(Math.sin(mk * Math.PI * 2)) * 34 * (1 - mk * .5) : 0;   // dos saltitos
+      const bob = reduce ? 0 : mood === 'sleep' ? Math.sin(t * .0011) * 8 : Math.sin(t * .0021) * 5;            // dormido respira lento
+      drawRobot(G.x, G.y, { bx: B.x, lx: A.x - G.x, ly: A.y - G.y, open, bob, hop, mood, t });
     }
 
     fctx.clearRect(0, 0, fx.width, fx.height);
