@@ -12,7 +12,7 @@ export const DESCRIPTION =
   'Sistemas de gestión a medida, ERP, automatización de procesos y agentes de inteligencia artificial para pymes de Chile y Latinoamérica.';
 
 // Google Analytics 4: pegar aquí el ID de medición (G-XXXXXXX). Vacío = sin medición.
-export const GA_ID = '';
+export const GA_ID = 'G-QRJ49KSZM3';
 // Google Search Console por etiqueta HTML (solo si no se verifica por DNS). Vacío = no se agrega.
 export const GSC_TOKEN = '';
 
