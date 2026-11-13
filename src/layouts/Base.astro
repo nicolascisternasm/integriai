@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Icons from '../components/Icons.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_URL, BRAND, DESCRIPTION, EMAIL, WA_DISPLAY, GA_ID, GSC_TOKEN } from '../site';
+import { SITE_URL, BRAND, DESCRIPTION, EMAIL, WA_DISPLAY, GA_ID, GSC_TOKEN, SOCIAL } from '../site';
 
 interface Props {
   title: string;
@@ -27,6 +27,7 @@ const org = {
   description: DESCRIPTION,
   email: EMAIL,
   telephone: WA_DISPLAY.replace(/\s/g, ''),
+  sameAs: SOCIAL,
   address: { '@type': 'PostalAddress', addressCountry: 'CL' },
   areaServed: [{ '@type': 'Country', name: 'Chile' }, { '@type': 'Place', name: 'Latinoamérica' }],
   knowsAbout: ['ERP a medida', 'CRM a medida', 'Automatización de procesos', 'Agentes de inteligencia artificial', 'Automatización de WhatsApp', 'Desarrollo web'],

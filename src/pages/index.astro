@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import { WA_URL, WA_DISPLAY, EMAIL } from '../site';
+import { PLANES, fmtCLP } from '../data/web';
+const webDesde = fmtCLP(PLANES[0].clp);
 const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   {
     "@type": "Question",
@@ -39,12 +41,12 @@ const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: 
     "name": "¿Cuánto cuesta?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando."
+      "text": `Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando. Las páginas web tienen precio publicado: desde ${webDesde} + IVA.`
     }
   }
 ] };
 ---
-<Base title="IntegriAI · Sistemas a medida, automatización e IA para pymes" home schema={[faq]}>
+<Base title="IntegriAI: ERP, automatización e IA para pymes en Chile" home schema={[faq]}>
 <section class="hero" id="inicio" aria-label="Portada">
   <canvas id="fx" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
@@ -285,7 +287,7 @@ const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: 
       <details class="rv"><summary>¿Trabajan con empresas fuera de Chile?<i aria-hidden="true"></i></summary><p>Sí. Todo el proceso funciona a distancia: reuniones online, avances que puedes probar en cada etapa y sistemas en la nube. Facturamos en dólares a clientes del extranjero.</p></details>
       <details class="rv"><summary>¿Qué es un ERP a medida y lo necesita mi empresa?<i aria-hidden="true"></i></summary><p>Un ERP es el sistema que reúne en un solo lugar las cotizaciones, compras, inventario, personal y finanzas. Lo necesitas cuando tu equipo pierde horas pasando datos entre planillas o cuando no sabes con certeza cuánto stock o cuántas ventas tienes hoy.</p></details>
       <details class="rv"><summary>¿Qué diferencia hay entre un sistema genérico y uno a medida?<i aria-hidden="true"></i></summary><p>Un sistema genérico te obliga a trabajar como él quiere. Uno a medida sigue tu forma de trabajar, se conecta con lo que ya usas y crece por módulos cuando lo necesitas.</p></details>
-      <details class="rv"><summary>¿Cuánto cuesta?<i aria-hidden="true"></i></summary><p>Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando.</p></details>
+      <details class="rv"><summary>¿Cuánto cuesta?<i aria-hidden="true"></i></summary><p>Depende del alcance. Partimos con un diagnóstico sin costo y después te enviamos una propuesta por escrito con etapas, plazos y precio. Los proyectos se pagan por etapas, y cada etapa termina con algo funcionando. Las páginas web tienen <a href="/servicios/paginas-web/">precio publicado</a>: desde {webDesde} + IVA.</p></details>
     </div>
   </div>
 </section>

@@ -6,7 +6,16 @@
 - Sistemas y ERP a medida: cotizaciones, compras, inventario, personal y finanzas en un solo sistema.
 - Automatización de procesos: flujos que avanzan solos, integración entre sistemas, documentos y reportes automáticos.
 - Agentes de IA: atención y ventas por WhatsApp con la información real de la empresa, con supervisión humana.
-- Web y tiendas online: sitios que explican el negocio y venden.
+- Páginas web y tiendas online: tres planes con precio publicado (ver abajo).
+
+## Páginas web: planes y precios
+Precios "desde", en pesos chilenos más IVA. Para clientes fuera de Chile se cobra en dólares (sin IVA).
+- Landing page (plan Básico): desde $290.000 + IVA (US$390). Una página con hasta 6 secciones, diseño propio, WhatsApp, formulario, SEO básico y Google Analytics. Lista en 7 a 10 días hábiles.
+- Web corporativa (plan Medio): desde $590.000 + IVA (US$790). Hasta 6 páginas, textos ordenados para Google, formulario conectado a correo o CRM, Google Business Profile, Analytics y Search Console. Lista en 2 a 3 semanas.
+- Tienda online o web avanzada (plan Alto): desde $1.190.000 + IVA (US$1.590). Una pasarela de pago a elección (Webpay, Mercado Pago o Flow) más transferencia, carga de hasta 50 productos, panel de administración, o funciones a medida como reservas, cotizador o portal de clientes, conectadas al CRM o sistema de la empresa. Lista en 4 a 6 semanas.
+- Plan Web Activa (mensual, opcional): $14.990 + IVA al mes (US$19). Hosting con SSL, hasta 5 correos con el dominio de la empresa, respaldos, actualizaciones de seguridad, pequeños cambios (hasta 30 minutos al mes) y soporte por WhatsApp.
+- El dominio se compra a nombre de la empresa del cliente (un .cl cuesta cerca de $12.000 al año en NIC Chile). Pago: 50% al iniciar y 50% al entregar, con factura.
+- Referencia de mercado en Chile: una landing page suele costar entre $130.000 y $400.000 + IVA, una web corporativa entre $350.000 y $1.000.000, y una tienda online desde $400.000 hasta más de $1.200.000.
 
 ## Cómo trabaja
 Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desarrollo por módulos con avances que el cliente prueba, capacitación y soporte. Atiende de forma remota en Chile y Latinoamérica.
@@ -22,6 +31,10 @@ Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desar
 - [Software a medida, ERP y CRM](https://integriai.cl/servicios/digital/): sistemas de gestión, ERP, CRM, portales, aplicaciones web y tiendas online.
 - [Automatización de procesos para pymes](https://integriai.cl/servicios/automatizacion/): ventas, WhatsApp, administración, documentos, reportes e integración de sistemas.
 - [Agentes de IA para empresas](https://integriai.cl/servicios/inteligencia-artificial/): atención y ventas por WhatsApp, asistentes conectados a datos reales, con supervisión.
+- [Páginas web para empresas: planes y precios](https://integriai.cl/servicios/paginas-web/): comparación de los tres planes, qué incluye cada uno y preguntas frecuentes sobre precios.
+- [Landing page desde $290.000](https://integriai.cl/servicios/paginas-web/landing-page/)
+- [Página web corporativa desde $590.000](https://integriai.cl/servicios/paginas-web/web-corporativa/)
+- [Tienda online o web avanzada desde $1.190.000](https://integriai.cl/servicios/paginas-web/tienda-online/)
 - [Nosotros](https://integriai.cl/nosotros/): origen, experiencia y principios.
 - [Contacto](https://integriai.cl/contacto/)
 - [Diagnóstico sin costo](https://integriai.cl/diagnostico/)
@@ -30,3 +43,5 @@ Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desar
 ## Contacto
 - Correo: contacto@integriai.cl
 - WhatsApp: +56 9 6373 5456
+- Instagram: https://www.instagram.com/integriai.cl/
+- Facebook: https://www.facebook.com/integriai

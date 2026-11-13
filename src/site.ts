@@ -8,6 +8,11 @@ export const WA_DISPLAY = '+56 9 6373 5456';
 export const WA_TEXT = 'Hola, vi la web de IntegriAI y quiero conversar sobre mi empresa.';
 export const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_TEXT)}`;
 export const EMAIL = 'contacto@integriai.cl';
+// Perfiles oficiales: van en el schema (sameAs) y en public/llms.txt. Agregar LinkedIn cuando exista.
+export const SOCIAL = [
+  'https://www.instagram.com/integriai.cl/',
+  'https://www.facebook.com/integriai',
+];
 export const DESCRIPTION =
   'Sistemas de gestión a medida, ERP, automatización de procesos y agentes de inteligencia artificial para pymes de Chile y Latinoamérica.';
 

@@ -1,6 +1,7 @@
 // Planes de páginas web. Precios "desde", netos (+ IVA en Chile). USD para clientes fuera de Chile (sin IVA).
 // Referencia de mercado en Chile (nov 2026): landing $130.000–$400.000, corporativa $350.000–$1.000.000, tienda $400.000–$1.200.000+ (todo + IVA).
 // Cambiar un precio aquí lo cambia en todas las páginas y en los datos para Google.
+// Además hay que cambiarlo a mano en public/llms.txt y avisar al agente cotizador (docs/agente-cotizador.md).
 
 export type Plan = {
   slug: string;
