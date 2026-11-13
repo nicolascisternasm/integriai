@@ -6,6 +6,13 @@
   const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  // Ejecuta fn cuando el elemento se acerca a la pantalla (para no preparar al cargar lo que está más abajo).
+  const whenNear = (el, fn, margin = '400px 0px') => {
+    if (!el) return;
+    if (!('IntersectionObserver' in window)) return fn();
+    const o = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { o.disconnect(); fn(); } }, { rootMargin: margin });
+    o.observe(el);
+  };
 
   /* ---------- Campaña: guarda los utm del primer enlace para el formulario ---------- */
   try {
@@ -38,7 +45,9 @@
   const rvs = [...document.querySelectorAll('.rv')];
   if (!reduce && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
-    rvs.forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); el.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(el); } });
+    // primero se leen todas las posiciones y después se escribe, para no forzar al navegador a recalcular la página en cada elemento
+    const below = rvs.map(el => el.getBoundingClientRect().top > innerHeight);
+    rvs.forEach((el, i) => { if (below[i]) { el.classList.add('pre'); el.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(el); } });
     setTimeout(() => rvs.forEach(el => el.classList.remove('pre')), 9000);   // por si algo no llega a verse
   }
 
@@ -52,9 +61,10 @@
   function nowSet(i) {
     nowI = i; $('#now-n').textContent = '0' + (i + 1); $('#now-t').textContent = NOW[i];
     nowDots.forEach((d, k) => d.classList.toggle('on', k === i));
-    if (!reduce) { nowBar.style.transition = 'none'; nowBar.style.width = '0'; nowBar.offsetWidth; nowBar.style.transition = 'width 3.4s linear'; nowBar.style.width = '100%'; }
+    // la barra crece con transform (no con width) para no recalcular la página en cada cuadro
+    if (!reduce) { nowBar.style.transition = 'none'; nowBar.style.transform = 'scaleX(0)'; nowBar.offsetWidth; nowBar.style.transition = 'transform 3.4s linear'; nowBar.style.transform = 'scaleX(1)'; }
   }
-  nowSet(0);
+  requestAnimationFrame(() => nowSet(0));   // el texto inicial ya viene en el HTML; la barra parte en el primer cuadro
   if (!reduce) setInterval(() => nowSet((nowI + 1) % NOW.length), 3500);
   $('#now').addEventListener('click', () => openSvc(nowI));
   }
@@ -308,7 +318,7 @@
     o.addEventListener('click', () => { auto = false; showScene(i); });
     o.addEventListener('keydown', e => { if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return; e.preventDefault(); auto = false; showScene((i + (e.key === 'ArrowDown' ? 1 : SCENES.length - 1)) % SCENES.length, true); });
   });
-  if (panel) showScene(0);
+  whenNear(panel, () => { if (!panel.children.length) showScene(0); });
 
   /* ---------- Servicios en acordeón ---------- */
   function openSvc(i) {
@@ -326,27 +336,34 @@
   ];
   const proj = (lat, lon) => [40 + (lon + 106) / 66 * 440, 30 + (24 - lat) / 70 * 500];
   const map = $('#map'), NS = 'http://www.w3.org/2000/svg';
-  if (map) {
+  whenNear(map, () => {
+  // Los colores se leen una sola vez y todo se arma fuera de la página antes de insertarlo de una vez.
+  const LINE = css('--line'), ACC2 = css('--acc'), WARM = css('--warm'), INK2 = css('--ink-2');
   const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  for (let gx = 0; gx < 520; gx += 20) for (let gy = 0; gy < 560; gy += 20) map.appendChild(el('circle', { cx: gx + 10, cy: gy + 10, r: 1.2, fill: css('--line') }));
+  const frag = document.createDocumentFragment();
+  // Grilla de puntos: un patrón SVG (mismo dibujo que 26×28 círculos sueltos, con un solo elemento).
+  const defs = el('defs', {}), pat = el('pattern', { id: 'map-dots', width: 20, height: 20, patternUnits: 'userSpaceOnUse' });
+  pat.appendChild(el('circle', { cx: 10, cy: 10, r: 1.2, fill: LINE })); defs.appendChild(pat); frag.appendChild(defs);
+  frag.appendChild(el('rect', { width: 520, height: 560, fill: 'url(#map-dots)' }));
   const [hx, hy] = proj(CITIES[0][1], CITIES[0][2]);
   CITIES.slice(1).forEach(([, la, lo], i) => {
     const [x, y] = proj(la, lo), mx = (x + hx) / 2 + (y - hy) * .18, my = (y + hy) / 2 - (x - hx) * .18;
-    map.appendChild(el('path', { d: `M${hx} ${hy}Q${mx} ${my} ${x} ${y}`, fill: 'none', stroke: css('--acc'), 'stroke-width': 1.3, opacity: .45, class: 'route', style: `animation-delay:${-i * .2}s` }));
+    frag.appendChild(el('path', { d: `M${hx} ${hy}Q${mx} ${my} ${x} ${y}`, fill: 'none', stroke: ACC2, 'stroke-width': 1.3, opacity: .45, class: 'route', style: `animation-delay:${-i * .2}s` }));
   });
   CITIES.forEach(([name, la, lo, home, side], i) => {
-    const [x, y] = proj(la, lo), c = home ? css('--warm') : css('--acc'), L = side === 'l';
-    map.appendChild(el('circle', { cx: x, cy: y, r: home ? 7 : 5, fill: c, class: 'pulse', style: `animation-delay:${i * .25}s` }));
-    map.appendChild(el('circle', { cx: x, cy: y, r: home ? 7 : 4.5, fill: c, stroke: '#fff', 'stroke-width': 2 }));
-    const tl = el('text', { x: x + (L ? -12 : 12), y: y + 4, 'font-size': home ? 14 : 12, 'font-weight': home ? 700 : 500, 'font-family': 'Figtree, sans-serif', fill: css('--ink-2'), 'text-anchor': L ? 'end' : 'start' });
-    tl.textContent = home ? 'IntegriAI · Chile' : name; map.appendChild(tl);
+    const [x, y] = proj(la, lo), c = home ? WARM : ACC2, L = side === 'l';
+    frag.appendChild(el('circle', { cx: x, cy: y, r: home ? 7 : 5, fill: c, class: 'pulse', style: `animation-delay:${i * .25}s` }));
+    frag.appendChild(el('circle', { cx: x, cy: y, r: home ? 7 : 4.5, fill: c, stroke: '#fff', 'stroke-width': 2 }));
+    const tl = el('text', { x: x + (L ? -12 : 12), y: y + 4, 'font-size': home ? 14 : 12, 'font-weight': home ? 700 : 500, 'font-family': 'Figtree, sans-serif', fill: INK2, 'text-anchor': L ? 'end' : 'start' });
+    tl.textContent = home ? 'IntegriAI · Chile' : name; frag.appendChild(tl);
   });
-  }
+  map.appendChild(frag);
+  });
 
   /* ---------- Firma deformable (WebGL) ---------- */
   const word = $('#word');
   const fallback = () => word.replaceWith(Object.assign(document.createElement('p'), { className: 'word-fallback', textContent: BRAND }));
-  const gl = word.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  let gl = null;   // el contexto WebGL se crea en initGL, cuando la firma se acerca a la pantalla
   const N = 16, pts = new Float32Array(N * 3), trail = [], head = { x: 0, y: 0, z: 0, has: false };
   let wordReady = false, tex, uni = {};
   const mask = document.createElement('canvas'), mctx = mask.getContext('2d');
@@ -364,6 +381,7 @@
     if (tex) { gl.bindTexture(gl.TEXTURE_2D, tex); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mask); }
   }
   function initGL() {
+    gl = word.getContext('webgl', { antialias: false, premultipliedAlpha: false });
     if (!gl) { fallback(); return; }
     const vs = `attribute vec2 a; varying vec2 vUv; void main(){ vUv = a*.5+.5; gl_Position = vec4(a,0.,1.); }`;
     const fs = `precision highp float; varying vec2 vUv;
@@ -415,11 +433,15 @@
 
   /* ---------- Bucle: cada efecto corre solo cuando está en pantalla ---------- */
   const vis = { hero: !!hero, word: false };
+  let glTried = false;
+  const startGL = () => { if (glTried) return; glTried = true; try { initGL(); } catch (e) { console.error(e); fallback(); } };
   if ('IntersectionObserver' in window) {
     const io2 = new IntersectionObserver(es => es.forEach(e => { vis[e.target === hero ? 'hero' : 'word'] = e.isIntersecting; }));
     if (hero) io2.observe(hero); io2.observe(word);
-  } else vis.word = true;
-  try { initGL(); } catch (e) { console.error(e); fallback(); }
+    // la firma del pie se prepara (WebGL) recién cuando se acerca a la pantalla, no al cargar la página
+    const io3 = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io3.disconnect(); startGL(); } }, { rootMargin: '600px 0px' });
+    io3.observe(word);
+  } else { vis.word = true; startGL(); }
   function loop(t) {
     if (vis.hero) renderHero(t);
     if (vis.word && document.body.contains(word)) renderWord(t);
@@ -427,4 +449,5 @@
   }
   requestAnimationFrame(loop);
   if (document.fonts && document.fonts.load) document.fonts.load('800 100px Outfit').then(() => { if (wordReady) buildMask(); }).catch(() => {});
+  // (si la fuente llega después de preparar la firma, la máscara se rehace arriba; si llega antes, initGL ya la usa)
 })();
