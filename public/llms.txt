@@ -21,7 +21,7 @@ Precios "desde", en pesos chilenos más IVA. Para clientes fuera de Chile se cob
 Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desarrollo por módulos con avances que el cliente prueba, capacitación y soporte. Atiende de forma remota en Chile y Latinoamérica.
 
 ## Experiencia
-- ERP de MAMKAM: sistema de gestión en uso (cotizaciones, proveedores, órdenes de compra, RR.HH., CRM, finanzas).
+- ERP de MAMKAM: sistema propio con el que MAMKAM opera el 100% de su gestión. Incluye CRM con leads de los anuncios de Meta, un agente de IA en WhatsApp que actualiza el avance de cada lead, cotizaciones, productos y compras, proyectos con análisis de costos, RR.HH., remuneraciones, libro diario y facturas, y dos apps móviles para el equipo en terreno (asistencia con GPS y gastos con lectura de boletas por IA; visitas técnicas con resumen por IA). Caso completo: https://integriai.cl/casos/erp-mamkam/
 - FlowPedido: SaaS propio de pedidos online para restaurantes.
 - Colegas AI: arquitectura propia de agentes de IA conectados a WhatsApp, con supervisión.
 
@@ -35,6 +35,7 @@ Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desar
 - [Landing page desde $290.000](https://integriai.cl/servicios/paginas-web/landing-page/)
 - [Página web corporativa desde $590.000](https://integriai.cl/servicios/paginas-web/web-corporativa/)
 - [Tienda online o web avanzada desde $1.190.000](https://integriai.cl/servicios/paginas-web/tienda-online/)
+- [Caso: ERP a medida de MAMKAM](https://integriai.cl/casos/erp-mamkam/): de planillas y chats a un ERP propio con apps móviles para el equipo en terreno.
 - [Nosotros](https://integriai.cl/nosotros/): origen, experiencia y principios.
 - [Contacto](https://integriai.cl/contacto/)
 - [Diagnóstico sin costo](https://integriai.cl/diagnostico/)

@@ -108,6 +108,7 @@ const schema = [
       <span class="badge live">{l.ejemplo.badge}</span>
       <h2 class="h2" id="t-case">{l.ejemplo.t}</h2>
       <p class="lead">{l.ejemplo.d}</p>
+      {l.ejemplo.link && <a class="btn btn-light" href={l.ejemplo.link} style="align-self:flex-start">Ver el caso completo <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>}
     </div>
     <ul class="ticks">{l.ejemplo.puntos.map(p => <li>{p}</li>)}</ul>
   </div>

@@ -1,0 +1,197 @@
+---
+// Caso de estudio: ERP de MAMKAM. Todo lo que dice esta página sale de la documentación técnica del sistema
+// (módulos y apps que existen y están en uso). Sin cifras de resultados: no las publicamos hasta tener datos medidos.
+import Base from '../../layouts/Base.astro';
+import Dash from '../../components/mocks/Dash.astro';
+import { SITE_URL, WA_URL } from '../../site';
+
+const url = `${SITE_URL}/casos/erp-mamkam/`;
+
+const PROBLEMAS = [
+  { antes: 'Contactos de los anuncios que había que anotar y seguir a mano', despues: 'Los leads de Meta llegan solos al CRM y un agente de IA en WhatsApp actualiza su avance' },
+  { antes: 'Cotizaciones armadas a mano y su seguimiento repartido en chats', despues: 'Cada cotización con su estado, su PDF y su envío por WhatsApp o correo desde el sistema' },
+  { antes: 'Compras a proveedores sin un registro central de pagos y facturas', despues: 'Órdenes de compra con comprobante, factura y estado de entrega en un solo lugar' },
+  { antes: 'Asistencia y gastos del equipo en terreno en papel y mensajes sueltos', despues: 'El equipo marca asistencia y rinde gastos desde el celular, con foto de la boleta' },
+  { antes: 'Las cuentas y los movimientos bancarios se revisaban por separado', despues: 'Un libro diario con las cuentas de la empresa y los gastos ya clasificados' },
+];
+
+const MODULOS = [
+  { t: 'CRM y leads', d: 'Los formularios de los anuncios de Meta (Facebook e Instagram) llegan directo al CRM. Cada lead tiene su etapa, su historial y su próximo paso.' },
+  { t: 'Agente de IA en WhatsApp', d: 'Conversa con los clientes por WhatsApp con la información de la empresa y actualiza el avance de cada lead en el CRM a medida que la conversación progresa.' },
+  { t: 'Cotizaciones', d: 'Ítems, condiciones de pago por cuotas y un estado para cada etapa: borrador, enviada, visita, aprobada, en ejecución y cerrada. Se descargan en PDF y se envían por WhatsApp o correo.' },
+  { t: 'Productos y compras', d: 'Catálogo de productos, proveedores y órdenes de compra creadas desde cero o desde una cotización aprobada, con el comprobante de pago y la factura del proveedor.' },
+  { t: 'Proyectos y costos', d: 'Cada instalación tiene cliente, responsable, tareas, fechas y avance. Las compras y los gastos se asocian al proyecto para analizar cuánto costó realmente.' },
+  { t: 'Personal y remuneraciones', d: 'Trabajadores con permisos por persona, asistencia, solicitudes de vacaciones, adelantos y bonos, y liquidaciones calculadas a partir de las marcaciones y horas extra.' },
+  { t: 'Finanzas y libro diario', d: 'Cuentas bancarias, importación de cartolas, libro diario con saldo acumulado, resúmenes por categoría y un calendario de pagos recurrentes de la empresa.' },
+  { t: 'Facturas y planificación', d: 'Registro de facturas del SII con importación masiva y un calendario con los trabajos programados.' },
+  { t: 'Asesoría con IA', d: 'Un asistente de IA que responde preguntas sobre la información financiera de la empresa dentro del mismo sistema.' },
+];
+
+const APPS = [
+  { t: 'App de asistencia', d: 'El equipo marca entrada y salida con ubicación GPS. Si no hay señal, la marcación se guarda en el celular y se envía después. También rinde gastos con foto de la boleta: la IA lee los datos y el administrador aprueba o rechaza.' },
+  { t: 'App de visitas técnicas', d: 'Quien visita al cliente completa una lista de revisión según el producto, graba notas de voz y obtiene un resumen hecho con IA. La visita se comparte en PDF por WhatsApp o correo.' },
+  { t: 'Una sola base de datos', d: 'El ERP y las dos apps trabajan sobre la misma información. Lo que se registra en terreno aparece en la oficina sin copiar nada a mano.' },
+];
+
+const CAMBIOS = [
+  { n: '01', t: 'Ventas conectadas de punta a punta', d: 'Del anuncio en Meta al CRM, de ahí a la cotización y al proyecto, sin copiar datos entre programas.' },
+  { n: '02', t: 'El dato se ingresa una vez', d: 'Una cotización aprobada se convierte en orden de compra y en proyecto sin volver a escribirla.' },
+  { n: '03', t: 'La oficina ve lo que pasa en terreno', d: 'Asistencia, gastos y visitas llegan desde el celular del equipo al sistema.' },
+];
+
+const WEB = ['Catálogo completo de productos', 'Carrito para armar un proyecto y pedir cotización', 'Trabajo de SEO continuo', 'Primera página de Google en varias búsquedas de sus productos'];
+
+const STACK = ['Aplicación web en React', 'Servidor en Node.js', 'Base de datos PostgreSQL (Supabase)', 'Apps móviles para iOS y Android', 'Conexión con los anuncios de Meta', 'Agente de IA conectado a WhatsApp', 'IA para leer boletas y resumir visitas'];
+
+const FAQ = [
+  { q: '¿Qué es MAMKAM?', a: 'MAMKAM es una empresa chilena que vende e instala pavimentos de caucho, pasto sintético, toldos y baldosas. Este sistema lo construimos nosotros y la empresa opera el 100% de su gestión con él: ventas, proyectos, personal y finanzas.' },
+  { q: '¿Cómo llegan los leads de los anuncios al sistema?', a: 'Los formularios de los anuncios de Meta se conectan directo al CRM. Cada contacto entra con su información, queda en una etapa del proceso de venta y el agente de IA de WhatsApp actualiza su avance cuando conversa con el cliente.' },
+  { q: '¿Se puede hacer un sistema así para mi empresa?', a: 'Sí, adaptado a tus procesos. No copiamos el sistema de MAMKAM: partimos por un diagnóstico de cómo trabajas y construimos primero el módulo que más te urge.' },
+  { q: '¿Hay que construir todo de una vez?', a: 'No. Un ERP a medida se construye por módulos. Cada etapa termina con algo que tu equipo ya puede usar, y los módulos siguientes se suman según prioridad.' },
+  { q: '¿Funciona en el celular y sin señal?', a: 'El sistema web funciona en el computador, la tablet y el celular. Para el equipo en terreno se pueden hacer apps móviles; la de asistencia de MAMKAM guarda las marcaciones sin señal y las envía cuando vuelve la conexión.' },
+  { q: '¿El sistema se conecta con WhatsApp?', a: 'Sí. En este caso las cotizaciones y los informes de visita se envían por WhatsApp desde el mismo sistema, sin descargarlos y adjuntarlos a mano.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article', '@id': url + '#caso',
+    headline: 'Caso ERP a medida: el sistema de gestión de MAMKAM',
+    description: 'Cómo una empresa de instalaciones pasó de planillas y chats a un ERP propio con CRM conectado a Meta, agente de IA en WhatsApp y apps móviles para su equipo en terreno.',
+    url, datePublished: '2026-11-14', dateModified: '2026-11-14', inLanguage: 'es-CL',
+    author: { '@id': `${SITE_URL}/#org` }, publisher: { '@id': `${SITE_URL}/#org` },
+    about: [{ '@type': 'Thing', name: 'ERP a medida' }, { '@type': 'Organization', name: 'MAMKAM', url: 'https://mamkam.cl' }],
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Sistemas, ERP y web', item: SITE_URL + '/servicios/digital/' },
+      { '@type': 'ListItem', position: 3, name: 'Caso ERP de MAMKAM', item: url },
+    ],
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title="Caso ERP a medida: MAMKAM, de planillas a sistema | IntegriAI" description="Cómo MAMKAM pasó de planillas y chats a un ERP propio: CRM con leads de Meta, agente de IA en WhatsApp, proyectos, finanzas y apps para su equipo en terreno." schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/digital/">Sistemas, ERP y web</a><span>/</span><span aria-current="page">Caso ERP de MAMKAM</span></nav>
+  <div class="lhero-grid">
+    <div class="lhero-copy">
+      <span class="eyebrow">Caso de estudio · ERP a medida</span>
+      <h1 id="t-h1">De planillas y chats a <em>un ERP propio.</em></h1>
+      <p class="def">MAMKAM vende e instala pavimentos de caucho, pasto sintético y toldos en Chile. Su operación vivía en planillas y conversaciones de WhatsApp. Construimos un ERP propio, pensado tanto para vender productos como para ejecutar proyectos: CRM conectado a los anuncios de Meta, un agente de IA en WhatsApp, módulos de gestión y dos apps móviles para el equipo en terreno. Hoy la empresa opera el 100% de su gestión con este sistema.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="/diagnostico/?servicio=sistemas">Quiero algo así para mi empresa <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+    <div class="lhero-mock"><Dash /></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-prob">
+  <div class="sec-head">
+    <span class="eyebrow rv">El problema</span>
+    <h2 class="h2 rv" id="t-prob">Una operación repartida <em>en muchos lugares.</em></h2>
+    <p class="lead rv">Una empresa de instalaciones cotiza, compra materiales, coordina cuadrillas y cobra por etapas. Cuando cada parte vive en una planilla o un chat distinto, nadie tiene la foto completa.</p>
+  </div>
+  <div class="pgrid">
+    {PROBLEMAS.map(p => (
+      <article class="pcard rv">
+        <p class="b"><svg><use href="#i-x"/></svg>{p.antes}</p>
+        <p class="a"><svg><use href="#i-check"/></svg>{p.despues}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-erp" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">La solución</span>
+    <h2 class="h2 rv" id="t-erp">Un ERP con los módulos <em>que la empresa usa.</em></h2>
+    <p class="lead rv">El sistema sigue el recorrido real de un trabajo: del lead que llega por un anuncio a la cotización, la compra de materiales, la instalación y el cobro. Estos son los módulos principales; hay otros en construcción, porque el sistema crece por etapas.</p>
+  </div>
+  <div class="igrid">
+    {MODULOS.map((m, k) => (
+      <article class="icard rv"><small>{String(k + 1).padStart(2, '0')}</small><h3>{m.t}</h3><p>{m.d}</p></article>
+    ))}
+  </div>
+</section>
+
+<section class="dark" aria-labelledby="t-apps">
+  <div class="wrap sec">
+    <span class="eyebrow rv">En terreno</span>
+    <h2 class="h2 rv" id="t-apps" style="margin-top:18px">Dos apps para quien <em>no está en la oficina.</em></h2>
+    <ol class="proc" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))">
+      {APPS.map((a, k) => <li class="rv"><b>{String(k + 1).padStart(2, '0')}</b><strong>{a.t}</strong><span>{a.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-ben">
+  <div class="why">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow rv">El beneficio</span>
+      <h2 class="h2 rv" id="t-ben">Lo que <em>cambió.</em></h2>
+    </div>
+    <div class="why-cards">
+      {CAMBIOS.map(b => <article class="wcard rv"><span class="n">{b.n}</span><h3>{b.t}</h3><p>{b.d}</p></article>)}
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-web" style="padding-top:0">
+  <div class="case rv">
+    <div class="case-copy">
+      <span class="eyebrow">La web</span>
+      <h2 class="h2" id="t-web">Una web que trae clientes <em>al sistema.</em></h2>
+      <p class="lead">La página de MAMKAM no es solo una vitrina. Tiene el catálogo completo y un carrito para armar un proyecto: el cliente elige productos y pide su cotización. Con un trabajo de SEO constante, aparece en la primera página de Google en varias búsquedas de sus productos.</p>
+      <a class="btn btn-light" href="https://mamkam.cl" target="_blank" rel="noopener" style="align-self:flex-start">Ver mamkam.cl <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <ul class="ticks">{WEB.map(s => <li>{s}</li>)}</ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-tec" style="padding-top:0">
+  <div class="case rv">
+    <div class="case-copy">
+      <span class="eyebrow">Cómo está hecho</span>
+      <span class="badge live">Desarrollo propio · en uso</span>
+      <h2 class="h2" id="t-tec">Tecnología conocida, <em>sin licencias por usuario.</em></h2>
+      <p class="lead">El sistema es de la empresa. Se construyó por módulos y sigue creciendo: cuando aparece una necesidad nueva, se agrega un módulo en vez de cambiar de programa.</p>
+    </div>
+    <ul class="ticks">{STACK.map(s => <li>{s}</li>)}</ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-faq" style="padding-top:0">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow rv">Preguntas frecuentes</span>
+      <h2 class="h2 rv" id="t-faq">Sobre <em>este caso.</em></h2>
+      <a class="btn btn-dark rv" href="/diagnostico/?servicio=sistemas" style="align-self:flex-start">Solicitar diagnóstico <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      {FAQ.map((f, k) => <details class="rv" open={k === 0}><summary>{f.q}<i aria-hidden="true"></i></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="t-rel" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <h2 class="h3x rv" id="t-rel">Sigue leyendo</h2>
+  <div class="rel">
+    <a class="relcard rv" href="/servicios/digital/">
+      <small>Línea Digital</small><strong>Software a medida, ERP y CRM para tu empresa.</strong>
+      <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+    </a>
+    <a class="relcard rv" href="/servicios/automatizacion/">
+      <small>Línea Automatización</small><strong>Automatización de procesos para pymes.</strong>
+      <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+    </a>
+    <a class="relcard acc rv" href="/diagnostico/?servicio=sistemas">
+      <small>Diagnóstico sin costo</small><strong>Cuéntanos cómo trabaja hoy tu empresa.</strong>
+      <span class="ic"><svg><use href="#i-arrow"/></svg></span>
+    </a>
+  </div>
+</section>
+</Base>

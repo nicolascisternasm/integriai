@@ -15,7 +15,7 @@ export type Linea = {
   servicio: string;            // valor del select del formulario de diagnóstico
   problemas: { antes: string; despues: string }[];
   incluye: { t: string; d: string }[];
-  ejemplo: { badge: string; t: string; d: string; puntos: string[] };
+  ejemplo: { badge: string; t: string; d: string; puntos: string[]; link?: string };
   beneficios: { n: string; t: string; d: string }[];
   faq: { q: string; a: string }[];
 };
@@ -51,7 +51,8 @@ export const LINEAS: Linea[] = [
       badge: 'Desarrollo propio · en uso',
       t: 'ERP de MAMKAM',
       d: 'MAMKAM vende e instala pavimentos de caucho, pasto sintético y toldos. Su operación vivía en planillas y chats. Construimos un ERP propio que hoy usa todo el equipo.',
-      puntos: ['Cotizaciones y órdenes de compra', 'Proveedores e inventario', 'Recursos humanos y asistencia', 'CRM y control financiero'],
+      puntos: ['CRM con leads de Meta y agente de IA en WhatsApp', 'Cotizaciones, productos y órdenes de compra', 'Proyectos con análisis de costos', 'Recursos humanos, asistencia y finanzas'],
+      link: '/casos/erp-mamkam/',
     },
     beneficios: [
       { n: '01', t: 'Menos horas en tareas administrativas', d: 'El dato se ingresa una vez y queda disponible para todos.' },

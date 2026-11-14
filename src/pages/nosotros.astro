@@ -16,7 +16,7 @@ const schema = [
   },
 ];
 const PROYECTOS = [
-  { badge: 'Desarrollo propio · en uso', cls: 'live', t: 'ERP de MAMKAM', d: 'Cotizaciones, proveedores, órdenes de compra, recursos humanos, CRM y finanzas de una empresa de pavimentos, pasto sintético y toldos.' },
+  { badge: 'Desarrollo propio · en uso', cls: 'live', t: 'ERP de MAMKAM', d: 'CRM con leads de Meta, agente de IA en WhatsApp, cotizaciones, proyectos, recursos humanos y finanzas de una empresa de pavimentos, pasto sintético y toldos.', link: '/casos/erp-mamkam/' },
   { badge: 'SaaS propio', cls: '', t: 'FlowPedido', d: 'Plataforma de pedidos online para restaurantes: pedidos, administración, cocina y pagos.' },
   { badge: 'Arquitectura propia', cls: '', t: 'Colegas AI', d: 'Agentes de IA conectados a WhatsApp, con base de datos, herramientas y supervisión de cada conversación.' },
   { badge: 'En desarrollo', cls: 'wip', t: 'AI Marketing Studio', d: 'Experimentación con agentes para crear contenido y campañas de marketing.' },
@@ -63,7 +63,7 @@ const PRINCIPIOS = [
     <p class="lead rv">Distinguimos siempre lo que está en uso, lo que es producto propio y lo que todavía es experimento.</p>
   </div>
   <div class="igrid" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))">
-    {PROYECTOS.map(p => <article class="icard rv"><span class={`badge ${p.cls}`}>{p.badge}</span><h3>{p.t}</h3><p>{p.d}</p></article>)}
+    {PROYECTOS.map(p => <article class="icard rv"><span class={`badge ${p.cls}`}>{p.badge}</span><h3>{p.t}</h3><p>{p.d}</p>{p.link && <a href={p.link}>Ver el caso completo →</a>}</article>)}
   </div>
 </section>
 
