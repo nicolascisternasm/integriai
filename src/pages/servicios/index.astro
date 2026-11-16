@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Dash from '../../components/mocks/Dash.astro';
 import Flow from '../../components/mocks/Flow.astro';
 import Wa from '../../components/mocks/Wa.astro';
-import { LINEAS, PROCESO } from '../../data/servicios';
+import { LINEAS, ESPECIFICOS, PROCESO } from '../../data/servicios';
 import { SITE_URL } from '../../site';
 
 const MOCKS = { dash: Dash, flow: Flow, wa: Wa, web: Dash };
@@ -63,6 +63,17 @@ const AREAS = [
   </div>
   <div class="igrid">
     {AREAS.map(a => <a class="icard link-card rv" href={`/servicios/${a.l}/`}><h3>{a.t}</h3><p>{a.d}</p><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>)}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-esp" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">Soluciones específicas</span>
+    <h2 class="h2 rv" id="t-esp">Busca la solución <em>por lo que necesitas.</em></h2>
+  </div>
+  <div class="igrid">
+    {ESPECIFICOS.map(e => <a class="icard link-card rv" href={`/servicios/${e.slug}/`}><h3>{e.nav}</h3><p>{e.lead}</p><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>)}
+    <a class="icard link-card rv" href="/servicios/paginas-web/restaurantes/"><h3>Páginas web para restaurantes</h3><p>Carta digital, Google Maps, reservas y pedidos online sin apps de delivery.</p><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
   </div>
 </section>
 

@@ -1,0 +1,167 @@
+---
+// Landing por rubro: "pagina web para restaurante". Prueba real: FlowPedido (SaaS propio de pedidos online).
+// No publicar precios de FlowPedido aquí: se cotiza aparte.
+import Base from '../../../layouts/Base.astro';
+import Precio from '../../../components/Precio.astro';
+import Moneda from '../../../components/Moneda.astro';
+import Web from '../../../components/mocks/Web.astro';
+import { PLANES, fmtCLP } from '../../../data/web';
+import { SITE_URL, WA_URL } from '../../../site';
+
+const url = `${SITE_URL}/servicios/paginas-web/restaurantes/`;
+
+const PROBLEMAS = [
+  { antes: 'Tu carta es un PDF que no se lee en el celular', despues: 'Una carta digital clara, rápida y fácil de actualizar' },
+  { antes: 'Cuando buscan dónde comer cerca, aparecen otros locales', despues: 'Ficha de Google Maps completa y conectada a tu web' },
+  { antes: 'Las reservas llegan por teléfono, Instagram y WhatsApp, y algunas se pierden', despues: 'Reservas que llegan ordenadas desde tu web' },
+  { antes: 'Para vender online dependes de apps de delivery', despues: 'Pedidos directos desde tu propia web' },
+];
+
+const INCLUYE = [
+  { t: 'Carta digital', d: 'Platos, precios, fotos y categorías pensados para leerse en el celular. En la web corporativa y la avanzada, con un panel para cambiarlos cuando quieras.' },
+  { t: 'Google Maps y reseñas', d: 'Ficha de Google Business Profile con horario, ubicación, fotos y carta, para aparecer cuando buscan dónde comer.' },
+  { t: 'Reservas', d: 'Un formulario de reserva que llega a tu correo y un botón para reservar por WhatsApp, o un sistema de reservas a medida en la web avanzada.' },
+  { t: 'Pedidos online', d: 'Pedidos para retiro o despacho desde tu web con FlowPedido, nuestra plataforma para restaurantes.' },
+  { t: 'WhatsApp a un toque', d: 'Botón de WhatsApp y teléfono visibles para consultas, eventos y pedidos especiales.' },
+  { t: 'Rápida y medible', d: 'Carga rápida con datos móviles y Google Analytics para saber cuántos te visitan y te escriben.' },
+];
+
+const QUE_PLAN = [
+  { p: 0, t: 'Un local que quiere estar en internet rápido: carta, ubicación, horario y WhatsApp en una sola página.' },
+  { p: 1, t: 'Un restaurante que quiere aparecer en Google y Maps, con carta editable, galería, eventos y formulario de reservas.' },
+  { p: 2, t: 'Un restaurante que quiere recibir pedidos online o reservas con sistema propio, conectados a su operación.' },
+];
+
+const FAQ = [
+  { q: '¿Cuánto cuesta una página web para un restaurante?', a: `Depende de lo que necesites. En IntegriAI una landing page con carta y WhatsApp parte en ${fmtCLP(PLANES[0].clp)} + IVA, una web completa con Google Maps y carta editable en ${fmtCLP(PLANES[1].clp)} + IVA, y una web con pedidos online o reservas a medida en ${fmtCLP(PLANES[2].clp)} + IVA.` },
+  { q: '¿Puedo cambiar la carta y los precios yo mismo?', a: 'Sí. En la web corporativa y en la web avanzada tienes un panel simple para cambiar platos, precios y fotos, con una capacitación al entregar.' },
+  { q: '¿Puedo recibir pedidos online sin apps de delivery?', a: 'Sí. Con FlowPedido, nuestra plataforma de pedidos para restaurantes, el pedido entra por tu web, llega a cocina, se paga en línea y queda en la administración. Se cotiza aparte según tu local.' },
+  { q: '¿Se pueden recibir reservas desde la web?', a: 'Sí. Lo más simple es un formulario que llega a tu correo, más un botón para reservar por WhatsApp. Si manejas muchas mesas o turnos, se puede hacer un sistema de reservas a medida en la web avanzada.' },
+  { q: '¿Me ayudan a aparecer en Google Maps?', a: 'Sí. El plan Web corporativa incluye crear o mejorar tu ficha de Google Business Profile con horario, ubicación, fotos y carta, y conectarla con tu web.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#servicio',
+    name: 'Páginas web para restaurantes', serviceType: 'Diseño de páginas web para restaurantes', url,
+    description: 'Páginas web para restaurantes en Chile: carta digital, Google Maps, reservas y pedidos online directos.',
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: [{ '@type': 'Country', name: 'Chile' }, { '@type': 'Place', name: 'Latinoamérica' }],
+    audience: { '@type': 'BusinessAudience', name: 'Restaurantes, cafeterías y locales de comida' },
+    offers: PLANES.map(p => ({ '@type': 'Offer', name: p.nombre, url: `${SITE_URL}/servicios/paginas-web/${p.slug}/`, price: p.clp, priceCurrency: 'CLP', priceSpecification: { '@type': 'PriceSpecification', minPrice: p.clp, priceCurrency: 'CLP', valueAddedTaxIncluded: false } })),
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Páginas web', item: SITE_URL + '/servicios/paginas-web/' },
+      { '@type': 'ListItem', position: 3, name: 'Restaurantes', item: url },
+    ],
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title="Página web para restaurantes con carta y pedidos | IntegriAI" description={`Páginas web para restaurantes en Chile: carta digital, Google Maps, reservas y pedidos online sin apps de delivery. Desde ${fmtCLP(PLANES[0].clp)} + IVA.`} schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/paginas-web/">Páginas web</a><span>/</span><span aria-current="page">Restaurantes</span></nav>
+  <div class="lhero-grid">
+    <div class="lhero-copy">
+      <span class="eyebrow">Páginas web · Restaurantes y cafeterías</span>
+      <h1 id="t-h1">Página web para restaurantes, <em>con carta, reservas y pedidos.</em></h1>
+      <p class="def">Una página web para tu restaurante que se lee bien en el celular, aparece en Google Maps cuando buscan dónde comer y recibe reservas y pedidos directos, sin depender de las apps de delivery. Desde {fmtCLP(PLANES[0].clp)} + IVA.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="/diagnostico/?servicio=web">Cotizar mi web <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+    <div class="lhero-mock"><Web /></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-prob">
+  <div class="sec-head">
+    <span class="eyebrow rv">El problema</span>
+    <h2 class="h2 rv" id="t-prob">¿Te pasa <em>alguna de estas?</em></h2>
+  </div>
+  <div class="pgrid">
+    {PROBLEMAS.map(p => (
+      <article class="pcard rv">
+        <p class="b"><svg><use href="#i-x"/></svg>{p.antes}</p>
+        <p class="a"><svg><use href="#i-check"/></svg>{p.despues}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-inc" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">La solución</span>
+    <h2 class="h2 rv" id="t-inc">Lo que necesita <em>la web de un restaurante.</em></h2>
+  </div>
+  <div class="igrid">
+    {INCLUYE.map((i, k) => (
+      <article class="icard rv"><small>{String(k + 1).padStart(2, '0')}</small><h3>{i.t}</h3><p>{i.d}</p></article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" id="planes" aria-labelledby="t-planes" style="padding-top:0">
+  <div class="planes-head">
+    <div class="sec-head" style="margin-bottom:0">
+      <span class="eyebrow">Planes</span>
+      <h2 class="h2" id="t-planes">¿Qué plan <em>le sirve a tu local?</em></h2>
+    </div>
+    <Moneda />
+  </div>
+  <div class="planes">
+    {QUE_PLAN.map(q => { const p = PLANES[q.p]; return (
+      <article class:list={['plan', { dest: p.destacado }]}>
+        {p.destacado && <span class="plan-flag">El más elegido</span>}
+        <small class="plan-nivel">{p.nivel}</small>
+        <h3>{p.nombre}</h3>
+        <p class="plan-para">{q.t}</p>
+        <div class="plan-precio"><span class="desde">Desde</span><Precio clp={p.clp} usd={p.usd} /></div>
+        <ul class="ticks">{p.resumen.map(r => <li>{r}</li>)}</ul>
+        <div class="plan-cta">
+          <a class={p.destacado ? 'btn btn-acc' : 'btn btn-dark'} href={`/servicios/paginas-web/${p.slug}/`}>Ver plan {p.nivel.toLowerCase()} <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+      </article>
+    ); })}
+  </div>
+  <p class="plan-nota">Precios de referencia "desde", sin IVA. La fotografía de platos no está incluida. Los pedidos online con FlowPedido se cotizan aparte.</p>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-case" style="padding-top:0">
+  <div class="case rv">
+    <div class="case-copy">
+      <span class="eyebrow">Ejemplo real</span>
+      <span class="badge live">SaaS propio</span>
+      <h2 class="h2" id="t-case">FlowPedido</h2>
+      <p class="lead">Nuestra plataforma de pedidos online para restaurantes. El pedido entra por la web, llega solo a cocina, se cobra en línea y queda en la administración, sin que nadie lo transcriba.</p>
+    </div>
+    <ul class="ticks"><li>Pedidos online directo a cocina</li><li>Pagos integrados</li><li>Administración y reportes</li><li>Sin comisiones de apps de terceros</li></ul>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-faq" style="padding-top:0">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow rv">Preguntas frecuentes</span>
+      <h2 class="h2 rv" id="t-faq">Webs para restaurantes: <em>lo que más nos preguntan.</em></h2>
+      <a class="btn btn-dark rv" href="/diagnostico/?servicio=web" style="align-self:flex-start">Cotizar mi web <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      {FAQ.map((f, k) => <details class="rv" open={k === 0}><summary>{f.q}<i aria-hidden="true"></i></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="t-rel" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <h2 class="h3x rv" id="t-rel">También te puede servir</h2>
+  <div class="rel">
+    <a class="relcard rv" href="/guias/cuanto-cuesta-una-pagina-web-en-chile/"><small>Guía</small><strong>¿Cuánto cuesta una página web en Chile?</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    <a class="relcard rv" href="/servicios/inteligencia-artificial/"><small>Agentes de IA</small><strong>Un agente que responde reservas y consultas por WhatsApp.</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    <a class="relcard acc rv" href="/diagnostico/?servicio=web"><small>Cotización sin costo</small><strong>Cuéntanos cómo es tu local.</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+</section>
+</Base>

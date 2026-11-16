@@ -30,9 +30,14 @@ Diagnóstico sin costo, propuesta por escrito con etapas, plazos y precio, desar
 - [Servicios](https://integriai.cl/servicios/): las tres líneas de trabajo.
 - [Desarrollo de software a medida](https://integriai.cl/servicios/digital/): sistemas de gestión empresarial, ERP, CRM, portales y aplicaciones web.
 - [ERP a medida para pymes](https://integriai.cl/servicios/erp-a-medida/): ventas y cotizaciones, compras, inventario, proyectos con costos, personal y finanzas en un solo sistema, construido por módulos.
+- [Sistema de inventario a medida](https://integriai.cl/servicios/sistema-de-inventario/): stock por bodega, entradas y salidas, conectado a compras y ventas.
+- [Software de cotizaciones a medida](https://integriai.cl/servicios/software-de-cotizaciones/): cotizaciones con tus precios y condiciones, PDF por WhatsApp o correo y seguimiento hasta el cierre.
+- [CRM a medida](https://integriai.cl/servicios/crm-a-medida/): contactos de la web, anuncios de Meta y WhatsApp en un solo lugar, con etapas y seguimiento.
+- [Software para constructoras y empresas de instalación](https://integriai.cl/servicios/software-para-constructoras/): cotizaciones, proyectos con costos por obra, compras y equipo en terreno.
 - [Automatización de procesos para pymes](https://integriai.cl/servicios/automatizacion/): ventas, WhatsApp, administración, documentos, reportes e integración de sistemas.
 - [Agentes de IA para empresas](https://integriai.cl/servicios/inteligencia-artificial/): atención y ventas por WhatsApp, asistentes conectados a datos reales, con supervisión.
 - [Diseño de páginas web en Chile: planes y precios](https://integriai.cl/servicios/paginas-web/): comparación de los tres planes, qué incluye cada uno y preguntas frecuentes sobre precios.
+- [Páginas web para restaurantes](https://integriai.cl/servicios/paginas-web/restaurantes/): carta digital, Google Maps, reservas y pedidos online con FlowPedido.
 - [Diseño web en Santiago](https://integriai.cl/diseno-web-santiago/): páginas web para pymes de Santiago, con Google Maps y precios publicados.
 - [Landing page desde $290.000](https://integriai.cl/servicios/paginas-web/landing-page/)
 - [Página web corporativa desde $590.000](https://integriai.cl/servicios/paginas-web/web-corporativa/)
