@@ -1,0 +1,72 @@
+---
+import Guia from '../../components/Guia.astro';
+
+const FAQ = [
+  { q: '¿Qué es más importante para una pyme, un ERP o un CRM?', a: 'El que resuelve el problema que más te cuesta hoy. Si pierdes clientes por falta de seguimiento, empieza por el CRM. Si el desorden está en compras, inventario, personal o finanzas, empieza por el ERP.' },
+  { q: '¿Un ERP incluye CRM?', a: 'Algunos ERP traen un módulo de CRM y algunos CRM agregan funciones de gestión. Lo importante no es el nombre, sino que los datos de ventas y de operación estén conectados y no haya que copiarlos a mano.' },
+  { q: '¿Puedo usar Excel como CRM o ERP?', a: 'Para partir, sí. El problema aparece cuando varias personas editan la misma planilla, cuando hay que cruzar datos entre planillas o cuando nadie sabe cuál es la versión correcta.' },
+  { q: '¿Conviene un sistema genérico o uno a medida?', a: 'Un sistema genérico sirve si tu forma de trabajar es estándar. Uno a medida conviene cuando tu proceso es parte de tu ventaja o cuando el genérico te obliga a mantener planillas por fuera.' },
+];
+---
+<Guia
+  slug="erp-vs-crm"
+  title="ERP vs CRM: diferencias y cuál necesita tu pyme | IntegriAI"
+  description="El ERP ordena la operación interna (compras, inventario, personal, finanzas) y el CRM la relación con clientes y ventas. Cuál necesitas y cómo se conectan."
+  h1="ERP vs CRM: diferencias y cuál necesita tu pyme"
+  respuesta={`Un <b>ERP</b> ordena la operación interna de la empresa: compras, inventario, proyectos, personal y finanzas. Un <b>CRM</b> ordena la relación con los clientes: contactos, oportunidades de venta y seguimiento. El ERP responde "¿cómo estamos operando?"; el CRM, "¿a quién le estamos vendiendo y en qué va cada venta?". La mayoría de las pymes parte por el que resuelve su problema más urgente y después los conecta.`}
+  cta={{ t: '¿No sabes por cuál partir?', d: 'En el diagnóstico sin costo revisamos cómo trabaja hoy tu empresa y te decimos qué conviene ordenar primero: ventas, operación o ambas.', href: '/diagnostico/?servicio=sistemas', boton: 'Solicitar diagnóstico' }}
+  faq={FAQ}
+>
+  <h2>Qué es un ERP</h2>
+  <p>ERP viene del inglés <i>Enterprise Resource Planning</i>, planificación de recursos empresariales. Es el sistema donde vive la operación: lo que compras, lo que tienes en bodega, los trabajos que ejecutas, tu equipo y tu dinero. Su objetivo es que cada dato se ingrese una vez y esté disponible para todas las áreas.</p>
+
+  <h2>Qué es un CRM</h2>
+  <p>CRM viene de <i>Customer Relationship Management</i>, gestión de la relación con clientes. Es el sistema donde vive el proceso de venta: quién te contactó, por qué canal, en qué etapa va cada oportunidad y cuál es el próximo paso. Su objetivo es que ningún cliente potencial se quede sin respuesta.</p>
+
+  <h2>Diferencias principales</h2>
+  <div class="tabla-wrap">
+    <table class="tabla">
+      <thead><tr><th scope="col"></th><th scope="col">ERP</th><th scope="col">CRM</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Qué ordena</th><td>La operación interna</td><td>Las ventas y los clientes</td></tr>
+        <tr><th scope="row">Quién lo usa más</th><td>Administración, finanzas, bodega, operaciones</td><td>Ventas, atención al cliente, marketing</td></tr>
+        <tr><th scope="row">Módulos típicos</th><td>Compras, proveedores, inventario, proyectos, personal, remuneraciones, contabilidad</td><td>Contactos, leads, oportunidades, cotizaciones, seguimiento, campañas</td></tr>
+        <tr><th scope="row">Pregunta que responde</th><td>¿Cuánto nos costó este trabajo? ¿Qué tenemos en stock?</td><td>¿Cuántos leads llegaron? ¿Qué cotizaciones siguen abiertas?</td></tr>
+        <tr><th scope="row">Qué pasa sin él</th><td>Planillas que no cuadran, compras duplicadas, cierres de mes eternos</td><td>Clientes que nadie llamó de vuelta, ventas que dependen de la memoria</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Señales de que necesitas un CRM</h2>
+  <ul>
+    <li>Los contactos llegan por WhatsApp, formularios, redes y anuncios, y no hay un solo lugar donde verlos.</li>
+    <li>No sabes cuántas cotizaciones enviaste este mes ni cuántas se cerraron.</li>
+    <li>El seguimiento depende de que un vendedor se acuerde.</li>
+    <li>Si un vendedor se va, se lleva la historia de sus clientes.</li>
+  </ul>
+
+  <h2>Señales de que necesitas un ERP</h2>
+  <ul>
+    <li>Cada área tiene su planilla y hay que cruzarlas a mano.</li>
+    <li>No sabes con certeza cuánto stock tienes ni cuánto te costó realmente un trabajo.</li>
+    <li>Las compras, los gastos del equipo y los pagos se revisan por separado.</li>
+    <li>El cierre de mes toma días porque hay que juntar información de muchos lados.</li>
+  </ul>
+
+  <h2>Por cuál empezar</h2>
+  <p>Por el que resuelve el problema que más dinero o tiempo te cuesta hoy. Una empresa que recibe muchos contactos y cierra pocos suele partir por el CRM. Una empresa que vende bien pero no controla sus costos ni su operación suele partir por el ERP.</p>
+  <p>No hace falta construir todo de una vez. Un sistema bien hecho se arma por módulos: primero el más urgente y después el resto, conectados a la misma información.</p>
+
+  <h2>Cuando tienes los dos: conectados, no duplicados</h2>
+  <p>El valor real aparece cuando el CRM y el ERP comparten los datos. Un ejemplo es el <a href="/casos/erp-mamkam/">sistema que construimos para MAMKAM</a>, una empresa de pavimentos de caucho, pasto sintético y toldos:</p>
+  <ol>
+    <li>El lead llega desde un anuncio de Meta directo al CRM.</li>
+    <li>Un agente de IA conversa con el cliente por WhatsApp y actualiza su etapa.</li>
+    <li>La cotización aprobada se convierte en proyecto y en órdenes de compra, sin volver a escribirla.</li>
+    <li>Los gastos y las compras quedan asociados al proyecto para ver cuánto costó realmente.</li>
+  </ol>
+  <p>Así, ventas y operación trabajan sobre la misma información y nadie copia datos de un programa a otro.</p>
+
+  <h2>Genérico o a medida</h2>
+  <p>Hay ERP y CRM genéricos que funcionan bien para procesos estándar. Un <a href="/servicios/erp-a-medida/">ERP a medida</a> o un <a href="/servicios/digital/">sistema hecho a medida</a> conviene cuando tu forma de trabajar es parte de tu ventaja, cuando el programa genérico te obliga a mantener planillas por fuera o cuando necesitas conectar áreas que hoy funcionan por separado.</p>
+</Guia>

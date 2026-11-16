@@ -14,22 +14,24 @@ export type Linea = {
   mock: 'dash' | 'flow' | 'wa' | 'web';
   servicio: string;            // valor del select del formulario de diagnóstico
   problemas: { antes: string; despues: string }[];
-  incluye: { t: string; d: string }[];
+  incluye: { t: string; d: string; href?: string }[];
   ejemplo: { badge: string; t: string; d: string; puntos: string[]; link?: string };
   beneficios: { n: string; t: string; d: string }[];
   faq: { q: string; a: string }[];
+  padre?: string;              // slug de la línea a la que pertenece (solo en servicios específicos)
+  rel?: { href: string; small: string; strong: string }[];   // enlaces extra en "También te puede servir"
 };
 
 export const LINEAS: Linea[] = [
   {
     slug: 'digital',
-    nav: 'Sistemas, ERP y web',
+    nav: 'Software a medida',
     eyebrow: 'Línea Digital · Software a medida',
-    title: 'Software a medida, ERP y CRM para pymes en Chile | IntegriAI',
-    description: 'Desarrollamos ERP, CRM, sistemas de gestión, portales y tiendas online a medida para pymes de Chile. Toda tu operación en un solo sistema, hecho como trabajas.',
-    keyword: 'desarrollo de software a medida para empresas',
-    h1: 'Software a medida, ERP y CRM', h1em: 'para tu empresa.',
-    definicion: 'Un sistema a medida es un software construido según cómo trabaja tu empresa, en vez de obligarte a trabajar como dice un programa genérico. En IntegriAI desarrollamos ERP, CRM, portales y tiendas online para pymes que quieren dejar las planillas y tener su operación en un solo lugar.',
+    title: 'Desarrollo de software a medida en Chile | IntegriAI',
+    description: 'Desarrollo de software a medida para empresas en Chile: ERP, CRM, sistemas de gestión empresarial, portales y aplicaciones web, hechos como trabaja tu empresa.',
+    keyword: 'desarrollo de software a medida',
+    h1: 'Desarrollo de software a medida', h1em: 'para empresas.',
+    definicion: 'El software a medida es un sistema construido según cómo trabaja tu empresa, en vez de obligarte a trabajar como dice un programa genérico. En IntegriAI desarrollamos ERP, CRM, sistemas de gestión empresarial, portales y aplicaciones web para pymes de Chile que quieren dejar las planillas y tener su operación en un solo lugar.',
     lead: 'Cotizaciones, compras, inventario, personal, clientes y ventas en un sistema que crece contigo, módulo por módulo.',
     mock: 'dash',
     servicio: 'sistemas',
@@ -40,9 +42,9 @@ export const LINEAS: Linea[] = [
       { antes: 'Tu web no trae clientes o no se conecta con nada', despues: 'Una web que aparece en Google y lleva cada contacto a tu sistema' },
     ],
     incluye: [
-      { t: 'ERP a medida', d: 'Cotizaciones, órdenes de compra, proveedores, inventario, personal y finanzas conectados.' },
+      { t: 'ERP a medida', d: 'Cotizaciones, órdenes de compra, proveedores, inventario, personal y finanzas conectados.', href: '/servicios/erp-a-medida/' },
       { t: 'CRM a medida', d: 'Clientes, oportunidades y seguimiento comercial con el proceso de venta de tu empresa.' },
-      { t: 'Sistemas de gestión', d: 'Paneles administrativos para controlar trabajos, obras, pedidos o servicios.' },
+      { t: 'Sistemas de gestión empresarial', d: 'Paneles administrativos para controlar trabajos, obras, pedidos o servicios.' },
       { t: 'Portales de clientes y proveedores', d: 'Acceso propio para que consulten estados, documentos y pedidos sin llamarte.' },
       { t: 'Aplicaciones web', d: 'Herramientas internas o productos digitales que funcionan desde el computador y el celular.' },
       { t: 'Web y tiendas online', d: 'Sitios rápidos, pensados para Google, con pagos y formularios conectados a tu sistema.' },
@@ -60,11 +62,14 @@ export const LINEAS: Linea[] = [
       { n: '03', t: 'Un sistema que es tuyo', d: 'Crece con nuevos módulos cuando lo necesitas, sin licencias por usuario que se disparan.' },
     ],
     faq: [
-      { q: '¿Qué es un ERP a medida?', a: 'Es un sistema que reúne en un solo lugar la operación de tu empresa (cotizaciones, compras, inventario, personal y finanzas) y que se construye según tus procesos reales, en vez de adaptar tu empresa a un software genérico.' },
+      { q: '¿Qué es el desarrollo de software a medida?', a: 'Es construir un sistema pensado para los procesos de tu empresa: lo que vendes, cómo cotizas, cómo compras y cómo se coordina tu equipo. El resultado es un programa que sigue tu forma de trabajar y crece por módulos, en vez de uno genérico al que tienes que adaptarte.' },
       { q: '¿Cuándo conviene un sistema a medida y no uno genérico?', a: 'Cuando tu forma de trabajar es parte de tu ventaja, cuando los programas genéricos te obligan a usar planillas por fuera o cuando necesitas conectar varias áreas que hoy funcionan por separado.' },
       { q: '¿Cuánto demora desarrollar un sistema de gestión?', a: 'Trabajamos por módulos. El primer módulo funcionando suele estar en semanas, no meses, y después se agregan los siguientes según prioridad.' },
       { q: '¿Qué diferencia hay entre un ERP y un CRM?', a: 'El ERP ordena la operación interna (compras, inventario, personal, finanzas). El CRM ordena la relación con clientes y el proceso de venta. Muchas pymes parten por uno y después los conectan.' },
       { q: '¿El sistema funciona en el celular?', a: 'Sí. Son aplicaciones web en la nube: funcionan desde el computador, la tablet o el celular, desde cualquier sucursal.' },
+    ],
+    rel: [
+      { href: '/servicios/erp-a-medida/', small: 'ERP a medida', strong: 'Toda la gestión de tu pyme en un solo sistema.' },
     ],
   },
   {
@@ -154,6 +159,67 @@ export const LINEAS: Linea[] = [
       { q: '¿La IA puede equivocarse con mis clientes?', a: 'Por eso diseñamos reglas, límites y derivación a personas, y dejamos un panel para revisar cada conversación. El agente solo responde con tu información y escala lo que no sabe.' },
       { q: '¿Funciona con WhatsApp?', a: 'Sí. Usamos la API oficial de WhatsApp Business, así que el agente atiende en el mismo número donde ya te escriben tus clientes.' },
       { q: '¿Cómo implemento inteligencia artificial en mi empresa?', a: 'Partiendo por un proceso concreto con mucho volumen, como la atención por WhatsApp o la calificación de clientes. Hacemos un diagnóstico, definimos qué puede hacer el agente y lo lanzamos supervisado antes de ampliarlo.' },
+    ],
+  },
+];
+
+// Servicios específicos: una página por búsqueda con intención de compra (ver docs/seo-mapa-landings-2026-11.md).
+// Usan la misma plantilla que las líneas, pero no aparecen como línea en /servicios/.
+export const ESPECIFICOS: Linea[] = [
+  {
+    slug: 'erp-a-medida',
+    padre: 'digital',
+    nav: 'ERP a medida',
+    eyebrow: 'Software a medida · ERP',
+    title: 'ERP a medida para pymes en Chile | IntegriAI',
+    description: 'Desarrollamos ERP a medida para pymes en Chile: cotizaciones, compras, inventario, proyectos, personal y finanzas en un solo sistema, construido por módulos.',
+    keyword: 'erp a medida',
+    h1: 'ERP a medida', h1em: 'para pymes en Chile.',
+    definicion: 'Un ERP a medida es un sistema de gestión que reúne en un solo lugar las cotizaciones, compras, inventario, proyectos, personal y finanzas de tu empresa, construido según cómo trabajas. A diferencia de un ERP de caja, no te obliga a cambiar tus procesos ni cobra licencias por cada usuario.',
+    lead: 'Lo construimos por módulos: el primero funcionando en semanas y el resto según prioridad. Así hicimos el ERP de MAMKAM, que hoy opera el 100% de su gestión en él.',
+    mock: 'dash',
+    servicio: 'sistemas',
+    problemas: [
+      { antes: 'Cada área trabaja en su propia planilla y los números no cuadran', despues: 'Ventas, bodega, compras y finanzas sobre la misma información' },
+      { antes: 'Probaste un ERP de caja y terminaste usando Excel por fuera', despues: 'Un sistema que sigue tus procesos, no al revés' },
+      { antes: 'Sabes cuánto ganaste en un proyecto o venta recién a fin de mes', despues: 'Costos y márgenes de cada proyecto a la vista' },
+      { antes: 'El equipo en terreno informa por WhatsApp, papel o llamadas', despues: 'Apps en el celular conectadas al mismo sistema' },
+    ],
+    incluye: [
+      { t: 'Ventas y cotizaciones', d: 'Cotizaciones con ítems, condiciones de pago y estados, en PDF y enviadas por WhatsApp o correo desde el sistema.' },
+      { t: 'CRM', d: 'Clientes, oportunidades y seguimiento comercial. Los contactos de tu web o de tus anuncios pueden llegar solos.' },
+      { t: 'Compras y proveedores', d: 'Órdenes de compra, proveedores, comprobantes de pago y facturas en un solo lugar.' },
+      { t: 'Inventario y bodega', d: 'Productos, stock por bodega, entradas y salidas, conectados a ventas y compras.' },
+      { t: 'Proyectos y costos', d: 'Cada trabajo con responsable, tareas, avance y los gastos asociados, para saber cuánto costó realmente.' },
+      { t: 'Personal y asistencia', d: 'Trabajadores, permisos, asistencia, vacaciones y cálculo de remuneraciones a partir de las marcaciones.' },
+      { t: 'Finanzas', d: 'Cuentas bancarias, libro diario, gastos clasificados y calendario de pagos recurrentes.' },
+      { t: 'Apps para terreno', d: 'Asistencia con GPS, rendición de gastos con foto de la boleta o informes de visita desde el celular.' },
+      { t: 'Integraciones', d: 'Conexión con WhatsApp, anuncios de Meta, tu web o tienda online y otros sistemas que ya usas.' },
+    ],
+    ejemplo: {
+      badge: 'Desarrollo propio · en uso',
+      t: 'ERP de MAMKAM',
+      d: 'MAMKAM vende e instala pavimentos de caucho, pasto sintético y toldos. Pasó de planillas y chats a un ERP propio con CRM conectado a Meta, agente de IA en WhatsApp, proyectos con costos, personal, finanzas y dos apps para su equipo en terreno.',
+      puntos: ['Del anuncio en Meta al CRM, la cotización y el proyecto', 'Compras asociadas a cada proyecto', 'Remuneraciones calculadas desde la asistencia', 'Libro diario con cartolas importadas'],
+      link: '/casos/erp-mamkam/',
+    },
+    beneficios: [
+      { n: '01', t: 'Un solo lugar para toda la operación', d: 'El dato se ingresa una vez y lo ve quien lo necesita, sin reenviar planillas.' },
+      { n: '02', t: 'Inversión por etapas', d: 'Partes por el módulo que más te urge y sumas los demás cuando el primero ya está funcionando.' },
+      { n: '03', t: 'Crece con tu empresa', d: 'Si aparece una necesidad nueva, se agrega un módulo en vez de cambiar de programa.' },
+    ],
+    faq: [
+      { q: '¿Qué es un ERP a medida?', a: 'Es un sistema de gestión que reúne la operación de tu empresa (ventas, compras, inventario, proyectos, personal y finanzas) y que se construye según tus procesos reales, en vez de adaptar tu empresa a un software genérico.' },
+      { q: '¿Conviene un ERP a medida o uno de caja?', a: 'Un ERP de caja funciona bien si tus procesos son estándar. Un ERP a medida conviene cuando trabajas por proyectos o con productos configurables, cuando el programa genérico te obliga a usar planillas por fuera o cuando necesitas conectar áreas que hoy funcionan por separado.' },
+      { q: '¿Cuánto cuesta un ERP a medida?', a: 'Depende de los módulos que necesites y de con qué sistemas se tenga que conectar. Partimos con un diagnóstico sin costo y te enviamos una propuesta por escrito con etapas, plazos y precio. Como se construye por módulos, puedes empezar por uno y repartir la inversión.' },
+      { q: '¿Cuánto demora desarrollar un ERP?', a: 'El primer módulo funcionando suele estar en semanas, no meses. Los siguientes se suman según prioridad, y cada etapa termina con algo que tu equipo ya puede usar.' },
+      { q: '¿Puedo pasar al sistema la información que tengo en Excel?', a: 'Sí. Revisamos tus planillas en el diagnóstico y migramos los datos que sirven (clientes, productos, proveedores o trabajadores) al nuevo sistema.' },
+      { q: '¿Hay que pagar licencias por usuario?', a: 'No cobramos licencias por usuario. Los costos mensuales son los del servidor y la base de datos, más el soporte si lo contratas, y te los detallamos en la propuesta.' },
+      { q: '¿Funciona en el celular?', a: 'Sí. Es una aplicación web en la nube que funciona en computador, tablet y celular. Para el equipo en terreno también se pueden hacer apps móviles.' },
+    ],
+    rel: [
+      { href: '/casos/erp-mamkam/', small: 'Caso de estudio', strong: 'Cómo MAMKAM pasó de planillas a un ERP propio.' },
+      { href: '/guias/erp-vs-crm/', small: 'Guía', strong: 'ERP vs CRM: cuál necesita tu pyme.' },
     ],
   },
 ];

@@ -1,0 +1,165 @@
+---
+// Landing local para "diseño web santiago" y "paginas web santiago".
+// Regla: contenido propio de búsqueda local (Google Maps, competencia por comuna, trabajo remoto), no una copia de /servicios/paginas-web/.
+// No prometer reuniones presenciales ni oficina en Santiago mientras no estén confirmadas.
+import Base from '../layouts/Base.astro';
+import Precio from '../components/Precio.astro';
+import Moneda from '../components/Moneda.astro';
+import Web from '../components/mocks/Web.astro';
+import { PLANES, fmtCLP } from '../data/web';
+import { SITE_URL, WA_URL } from '../site';
+
+const url = `${SITE_URL}/diseno-web-santiago/`;
+
+const PROBLEMAS = [
+  { antes: 'Cuando buscan tu rubro en Santiago, aparece tu competencia y no tú', despues: 'Una web con páginas pensadas para lo que busca tu cliente, y tu comuna' },
+  { antes: 'No sales en Google Maps o tu ficha está incompleta', despues: 'Ficha de Google Business Profile creada o mejorada y conectada a tu web' },
+  { antes: 'Tu web es lenta en el celular y la gente se va antes de que cargue', despues: 'Una web rápida, pensada primero para el teléfono' },
+  { antes: 'Los contactos llegan por varios lados y algunos se pierden', despues: 'WhatsApp y formulario que llegan a tu correo, planilla o CRM' },
+];
+
+const LOCAL = [
+  { t: 'Google Maps primero', d: 'En Santiago, buena parte de las búsquedas de servicios muestran un mapa con tres negocios antes de los resultados normales. La ficha de Google Business Profile es la forma de entrar ahí, y la web le da respaldo.' },
+  { t: 'Una página por servicio', d: 'La gente no busca "empresa", busca lo que necesita: "mantención de piscinas en La Florida" o "abogado laboral en Santiago Centro". Cada servicio importante merece su propia página con esas palabras.' },
+  { t: 'Rápida en el celular', d: 'La mayoría de las búsquedas locales se hacen desde el teléfono, muchas veces en movimiento. Una web rápida, con WhatsApp y formulario a la vista, permite que quien te encontró te escriba en ese mismo momento.' },
+];
+
+const PASOS = [
+  { t: 'Diagnóstico', d: 'Videollamada sin costo para entender tu negocio, tus clientes y qué buscan en Google.' },
+  { t: 'Propuesta', d: 'Plan, plazo y precio por escrito. Pagas 50% al iniciar y 50% al entregar, con factura.' },
+  { t: 'Diseño y desarrollo', d: 'Ves los avances antes de publicar y pides cambios según las rondas de tu plan.' },
+  { t: 'Publicación', d: 'Publicamos, damos de alta tu web en Google Search Console y dejamos lista la medición.' },
+];
+
+const FAQ = [
+  { q: '¿Cuánto cuesta una página web en Santiago?', a: `Lo mismo que en el resto de Chile: una landing page suele costar entre $130.000 y $400.000 + IVA, una web corporativa entre $350.000 y $1.000.000, y una tienda online desde $400.000 hasta más de $1.200.000. En IntegriAI parten en ${fmtCLP(PLANES[0].clp)}, ${fmtCLP(PLANES[1].clp)} y ${fmtCLP(PLANES[2].clp)} + IVA.` },
+  { q: '¿Trabajan con empresas de cualquier comuna?', a: 'Sí. Trabajamos de forma remota con empresas de toda la Región Metropolitana y del resto de Chile. Lo que cambia según tu comuna son las búsquedas a las que apunta tu web y tu ficha de Google.' },
+  { q: '¿Hay que juntarse en persona?', a: 'No es necesario. El diagnóstico y las revisiones se hacen por videollamada, los avances se comparten por WhatsApp y ves la web funcionando antes de publicarla.' },
+  { q: '¿Cómo aparezco en Google Maps en Santiago?', a: 'Con una ficha de Google Business Profile verificada y completa: categoría correcta, horario, fotos, servicios y reseñas reales de clientes. El plan Web corporativa incluye crearla o mejorarla y conectarla con tu web.' },
+  { q: '¿En cuánto tiempo aparezco en Google?', a: 'La web queda enviada a Google el día de la entrega. Aparecer en buenas posiciones depende de la competencia de tu rubro en Santiago y suele tomar de semanas a algunos meses. La ficha de Google Maps ayuda a aparecer antes en búsquedas cercanas.' },
+  { q: '¿Cuánto demoran en entregar la web?', a: 'Una landing page está lista en 7 a 10 días hábiles, una web corporativa en 2 a 3 semanas y una tienda online o web avanzada en 4 a 6 semanas.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#servicio',
+    name: 'Diseño de páginas web en Santiago', serviceType: 'Diseño web', url,
+    description: 'Diseño y desarrollo de páginas web para pymes de Santiago: landing page, web corporativa con Google Business Profile y tienda online.',
+    provider: { '@id': `${SITE_URL}/#org` },
+    areaServed: { '@type': 'City', name: 'Santiago', containedInPlace: { '@type': 'Country', name: 'Chile' } },
+    offers: PLANES.map(p => ({ '@type': 'Offer', name: p.nombre, url: `${SITE_URL}/servicios/paginas-web/${p.slug}/`, price: p.clp, priceCurrency: 'CLP', priceSpecification: { '@type': 'PriceSpecification', minPrice: p.clp, priceCurrency: 'CLP', valueAddedTaxIncluded: false } })),
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Páginas web', item: SITE_URL + '/servicios/paginas-web/' },
+      { '@type': 'ListItem', position: 3, name: 'Diseño web en Santiago', item: url },
+    ],
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base title="Diseño web en Santiago para pymes, con precios | IntegriAI" description={`Diseño de páginas web para empresas de Santiago: landing page desde ${fmtCLP(PLANES[0].clp)}, web corporativa con Google Maps desde ${fmtCLP(PLANES[1].clp)} y tienda online. Precios + IVA.`} schema={schema}>
+<section class="wrap lhero" aria-labelledby="t-h1">
+  <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/paginas-web/">Páginas web</a><span>/</span><span aria-current="page">Diseño web en Santiago</span></nav>
+  <div class="lhero-grid">
+    <div class="lhero-copy">
+      <span class="eyebrow">Diseño web · Santiago de Chile</span>
+      <h1 id="t-h1">Diseño web en Santiago <em>para pymes que quieren clientes.</em></h1>
+      <p class="def">Diseñamos páginas web para empresas de Santiago que necesitan aparecer cuando las buscan en Google y en Google Maps. Web a medida, rápida en el celular, con WhatsApp y precio publicado: desde {fmtCLP(PLANES[0].clp)} + IVA.</p>
+      <div class="ctas">
+        <a class="btn btn-dark" href="/diagnostico/?servicio=web">Cotizar mi web <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+    <div class="lhero-mock"><Web /></div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-prob">
+  <div class="sec-head">
+    <span class="eyebrow rv">El problema</span>
+    <h2 class="h2 rv" id="t-prob">En Santiago, la competencia <em>está a una búsqueda.</em></h2>
+    <p class="lead rv">Tu cliente escribe lo que necesita y su comuna, y elige entre los primeros que aparecen. Si tu web no está ahí, ese cliente no llega.</p>
+  </div>
+  <div class="pgrid">
+    {PROBLEMAS.map(p => (
+      <article class="pcard rv">
+        <p class="b"><svg><use href="#i-x"/></svg>{p.antes}</p>
+        <p class="a"><svg><use href="#i-check"/></svg>{p.despues}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-local" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow rv">Lo que cambia en una búsqueda local</span>
+    <h2 class="h2 rv" id="t-local">Cómo te encuentran <em>en Santiago.</em></h2>
+  </div>
+  <div class="igrid">
+    {LOCAL.map((i, k) => (
+      <article class="icard rv"><small>{String(k + 1).padStart(2, '0')}</small><h3>{i.t}</h3><p>{i.d}</p></article>
+    ))}
+  </div>
+</section>
+
+<section class="sec wrap" id="planes" aria-labelledby="t-planes" style="padding-top:0">
+  <div class="planes-head">
+    <div class="sec-head" style="margin-bottom:0">
+      <span class="eyebrow">Planes</span>
+      <h2 class="h2" id="t-planes">Precios <em>publicados.</em></h2>
+    </div>
+    <Moneda />
+  </div>
+  <div class="planes">
+    {PLANES.map(p => (
+      <article class:list={['plan', { dest: p.destacado }]}>
+        {p.destacado && <span class="plan-flag">Incluye Google Maps</span>}
+        <small class="plan-nivel">{p.nivel}</small>
+        <h3>{p.nombre}</h3>
+        <p class="plan-para">{p.para}</p>
+        <div class="plan-precio"><span class="desde">Desde</span><Precio clp={p.clp} usd={p.usd} /></div>
+        <ul class="ticks">{p.resumen.map(r => <li>{r}</li>)}</ul>
+        <div class="plan-cta">
+          <a class={p.destacado ? 'btn btn-acc' : 'btn btn-dark'} href={`/servicios/paginas-web/${p.slug}/`}>Ver plan {p.nivel.toLowerCase()} <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+        </div>
+      </article>
+    ))}
+  </div>
+  <p class="plan-nota">Precios de referencia "desde", sin IVA. Para una pyme de servicios que quiere aparecer en Google Maps, el plan que más conviene suele ser la Web corporativa. <a href="/servicios/paginas-web/#planes">Ver la comparación completa</a>.</p>
+</section>
+
+<section class="dark" aria-labelledby="t-proc">
+  <div class="wrap sec">
+    <span class="eyebrow rv">Cómo trabajamos</span>
+    <h2 class="h2 rv" id="t-proc" style="margin-top:18px">Todo a distancia, <em>sin perder tiempo en traslados.</em></h2>
+    <ol class="proc" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr))">
+      {PASOS.map((s, k) => <li class="rv"><b>{String(k + 1).padStart(2, '0')}</b><strong>{s.t}</strong><span>{s.d}</span></li>)}
+    </ol>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="t-faq">
+  <div class="faq">
+    <div class="faq-left">
+      <span class="eyebrow rv">Preguntas frecuentes</span>
+      <h2 class="h2 rv" id="t-faq">Diseño web en Santiago: <em>lo que más nos preguntan.</em></h2>
+      <a class="btn btn-dark rv" href="/diagnostico/?servicio=web" style="align-self:flex-start">Cotizar mi web <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="qs">
+      {FAQ.map((f, k) => <details class="rv" open={k === 0}><summary>{f.q}<i aria-hidden="true"></i></summary><p>{f.a}</p></details>)}
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="t-rel" style="padding-bottom:clamp(48px, 7vw, 96px)">
+  <h2 class="h3x rv" id="t-rel">También te puede servir</h2>
+  <div class="rel">
+    <a class="relcard rv" href="/guias/cuanto-cuesta-una-pagina-web-en-chile/"><small>Guía</small><strong>¿Cuánto cuesta una página web en Chile?</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    <a class="relcard rv" href="/servicios/paginas-web/"><small>Diseño de páginas web</small><strong>Los tres planes y qué incluye cada uno.</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+    <a class="relcard acc rv" href="/diagnostico/?servicio=web"><small>Cotización sin costo</small><strong>Cuéntanos qué web necesitas.</strong><span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
+  </div>
+</section>
+</Base>

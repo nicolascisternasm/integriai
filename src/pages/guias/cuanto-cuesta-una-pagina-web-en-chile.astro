@@ -1,0 +1,83 @@
+---
+import Guia from '../../components/Guia.astro';
+import { PLANES, MENSUAL } from '../../data/web';
+
+// Precios de IntegriAI desde src/data/web.ts. Los rangos de mercado son la misma referencia que usa web.ts y llms.txt (nov 2026).
+const fmt = (n: number) => '$' + n.toLocaleString('es-CL');
+const desde = Object.fromEntries(PLANES.map(p => [p.slug, fmt(p.clp)]));
+
+const FAQ = [
+  { q: '¿Cuánto cuesta una página web para una pyme en Chile?', a: 'Una web corporativa de 4 a 6 páginas suele costar entre $350.000 y $1.000.000 + IVA en Chile. Una landing page de una sola página, entre $130.000 y $400.000 + IVA. A eso se suma el dominio (cerca de $12.000 al año para un .cl) y el hosting.' },
+  { q: '¿Cuánto cuesta mantener una página web al mes?', a: 'Lo mínimo es el hosting y el dominio. Muchas agencias ofrecen además un plan mensual con correos, respaldos, actualizaciones de seguridad y pequeños cambios. En IntegriAI ese plan cuesta $14.990 + IVA al mes y es opcional.' },
+  { q: '¿Es mejor hacer la web uno mismo con una plataforma?', a: 'Puede servir para partir si tienes tiempo y no necesitas aparecer en Google con fuerza. El costo real es tu tiempo, el pago mensual de la plataforma y que el diseño, la velocidad y el SEO suelen quedar más limitados.' },
+  { q: '¿El precio incluye los textos y las fotos?', a: 'Depende de cada presupuesto, y es una de las diferencias más grandes entre ofertas. Pregunta siempre quién escribe los textos y de dónde salen las imágenes antes de comparar precios.' },
+  { q: '¿A nombre de quién debe quedar el dominio?', a: 'A nombre de tu empresa. Si el dominio queda a nombre del proveedor, cambiarte después puede ser difícil. Es lo primero que conviene revisar en cualquier presupuesto.' },
+];
+---
+<Guia
+  slug="cuanto-cuesta-una-pagina-web-en-chile"
+  title="¿Cuánto cuesta una página web en Chile? Precios 2026 | IntegriAI"
+  description="Una landing page cuesta entre $130.000 y $400.000 + IVA y una web corporativa entre $350.000 y $1.000.000. Qué incluye cada rango y qué costos vienen después."
+  h1="¿Cuánto cuesta una página web en Chile?"
+  respuesta={`En Chile, una <b>landing page</b> suele costar entre <b>$130.000 y $400.000 + IVA</b>, una <b>web corporativa</b> entre <b>$350.000 y $1.000.000 + IVA</b> y una <b>tienda online</b> desde $400.000 hasta más de $1.200.000 + IVA. El precio cambia según el número de páginas, si el diseño es propio o de plantilla, quién escribe los textos y qué hay que conectar (pagos, CRM, reservas). Después hay costos fijos: dominio, hosting y, si lo quieres, mantención.`}
+  cta={{ t: 'Precios publicados, sin cotizar a ciegas', d: `En IntegriAI los tres planes tienen precio publicado: landing page desde ${desde['landing-page']}, web corporativa desde ${desde['web-corporativa']} y tienda online desde ${desde['tienda-online']}, todo + IVA.`, href: '/servicios/paginas-web/', boton: 'Ver planes y precios' }}
+  faq={FAQ}
+>
+  <h2>Precios por tipo de página web</h2>
+  <p>La primera decisión es qué tipo de web necesitas. Cada tipo tiene un rango de precio distinto porque el trabajo es distinto.</p>
+  <div class="tabla-wrap">
+    <table class="tabla">
+      <thead><tr><th scope="col">Tipo</th><th scope="col">Para qué sirve</th><th scope="col">Rango en Chile (+ IVA)</th><th scope="col">IntegriAI desde</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Landing page</th><td>Una sola página con un objetivo: que te escriban o compren. Ideal para campañas y servicios puntuales.</td><td>$130.000 a $400.000</td><td>{desde['landing-page']}</td></tr>
+        <tr><th scope="row">Web corporativa</th><td>Varias páginas (inicio, servicios, nosotros, contacto) para explicar la empresa y aparecer en Google.</td><td>$350.000 a $1.000.000</td><td>{desde['web-corporativa']}</td></tr>
+        <tr><th scope="row">Tienda online o web avanzada</th><td>Venta con pago en línea, catálogo y panel de administración, o funciones a medida como reservas o cotizador.</td><td>$400.000 a más de $1.200.000</td><td>{desde['tienda-online']}</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota">Rangos de referencia del mercado chileno a noviembre de 2026, para trabajos hechos por agencias o freelancers. No incluyen dominio ni hosting.</p>
+
+  <h2>Qué hace que una web cueste más</h2>
+  <p>Dos presupuestos para "una página web" pueden diferir en el triple. Casi siempre la diferencia está en estos puntos:</p>
+  <ul>
+    <li><b>Número de páginas.</b> No es lo mismo una página que seis, cada una con su objetivo y su texto.</li>
+    <li><b>Diseño propio o plantilla.</b> Una plantilla es más barata; un diseño a medida se adapta a tu marca y suele verse y cargar mejor.</li>
+    <li><b>Textos.</b> Si tú entregas los textos, baja el costo. Si hay que escribirlos u ordenarlos para Google, es trabajo adicional.</li>
+    <li><b>Integraciones.</b> Pagos con Webpay, Mercado Pago o Flow, formularios conectados a un CRM, reservas o cotizadores suben el precio porque hay que construirlos y probarlos.</li>
+    <li><b>Catálogo.</b> En una tienda, cargar 10 productos o 500 cambia mucho el trabajo.</li>
+    <li><b>SEO.</b> "SEO básico" (título, descripción y sitemap) no es lo mismo que trabajar cada página para una búsqueda real.</li>
+    <li><b>Plazo.</b> Una web para la próxima semana suele costar más que una con un plazo normal.</li>
+  </ul>
+
+  <h2>Los costos que vienen después</h2>
+  <p>El precio de construir la web es solo una parte. Para que siga funcionando hay costos fijos:</p>
+  <ul>
+    <li><b>Dominio:</b> un .cl cuesta cerca de $12.000 al año en NIC Chile. Debe quedar a nombre de tu empresa.</li>
+    <li><b>Hosting:</b> el servicio donde vive la web, con su certificado de seguridad (el candado).</li>
+    <li><b>Correos con tu dominio:</b> por ejemplo, ventas@tuempresa.cl.</li>
+    <li><b>Mantención:</b> respaldos, actualizaciones de seguridad y pequeños cambios. Algunos proveedores lo cobran por hora y otros con un plan mensual. En IntegriAI es el {MENSUAL.nombre}: {'$' + MENSUAL.clp.toLocaleString('es-CL')} + IVA al mes, opcional.</li>
+  </ul>
+  <p>La publicidad (Google o Meta) es un gasto aparte y no forma parte del precio de la web.</p>
+
+  <h2>Hacerla uno mismo, plantilla o a medida</h2>
+  <h3>Plataformas para hacerla tú mismo</h3>
+  <p>Sirven para partir con poco presupuesto. El costo real es tu tiempo y un pago mensual permanente a la plataforma. El diseño, la velocidad y las opciones de SEO suelen quedar más limitados.</p>
+  <h3>Plantilla adaptada</h3>
+  <p>Un proveedor toma un diseño existente y le pone tu marca y tus textos. Es la opción más común en los rangos bajos.</p>
+  <h3>Diseño a medida</h3>
+  <p>La web se diseña para tu empresa: estructura, textos y diseño pensados para tus clientes y para las búsquedas que quieres ganar. Cuesta más al inicio, pero es la base para que Google y los buscadores con IA te encuentren.</p>
+
+  <h2>Cómo comparar presupuestos</h2>
+  <p>Antes de elegir por precio, pide que cada presupuesto responda estas preguntas por escrito:</p>
+  <ol>
+    <li>¿Cuántas páginas incluye y cuáles son?</li>
+    <li>¿Quién escribe los textos y de dónde salen las imágenes?</li>
+    <li>¿Cuántas rondas de cambios incluye?</li>
+    <li>¿El dominio queda a nombre de mi empresa?</li>
+    <li>¿Qué incluye el SEO: solo lo básico o trabajo por página?</li>
+    <li>¿Dónde quedará alojada la web y cuánto cuesta al mes?</li>
+    <li>¿Tendré acceso para editarla o para llevármela a otro proveedor?</li>
+    <li>¿Cuál es el plazo y cómo se paga?</li>
+  </ol>
+  <p>Un presupuesto sin alcance escrito, con el dominio a nombre del proveedor o sin acceso a tu propia web son señales para pedir más detalle antes de firmar.</p>
+</Guia>

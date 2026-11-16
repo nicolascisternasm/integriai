@@ -25,7 +25,7 @@ const FILAS: [string, string[]][] = [
 const schema = [
   {
     '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#servicio',
-    name: 'Diseño y desarrollo de páginas web', serviceType: 'Diseño de páginas web', url,
+    name: 'Diseño de páginas web para empresas', serviceType: 'Diseño de páginas web', url,
     description: 'Páginas web para empresas en tres niveles: landing page, web corporativa y tienda online o web avanzada.',
     provider: { '@id': `${SITE_URL}/#org` }, areaServed: [{ '@type': 'Country', name: 'Chile' }, { '@type': 'Place', name: 'Latinoamérica' }],
     offers: {
@@ -44,14 +44,14 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: WEB_FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 ];
 ---
-<Base title="Páginas web para pymes en Chile: precios | IntegriAI" description={`Diseño de páginas web en Chile: landing page desde ${fmtCLP(PLANES[0].clp)}, web corporativa desde ${fmtCLP(PLANES[1].clp)} y tienda online desde ${fmtCLP(PLANES[2].clp)} + IVA. Precios en USD para otros países.`} schema={schema}>
+<Base title="Diseño de páginas web en Chile: planes y precios | IntegriAI" description={`Diseño de páginas web para empresas en Chile: landing page desde ${fmtCLP(PLANES[0].clp)}, web corporativa desde ${fmtCLP(PLANES[1].clp)} y tienda online desde ${fmtCLP(PLANES[2].clp)} + IVA. Precios en USD para otros países.`} schema={schema}>
 <section class="wrap lhero" aria-labelledby="t-h1">
   <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span>/</span><a href="/servicios/">Servicios</a><span>/</span><span aria-current="page">Páginas web</span></nav>
   <div class="lhero-grid">
     <div class="lhero-copy">
-      <span class="eyebrow">Páginas web · Planes y precios</span>
-      <h1 id="t-h1">Páginas web para empresas, <em>con precio claro.</em></h1>
-      <p class="def">Diseñamos y desarrollamos páginas web para empresas de Chile y Latinoamérica en tres niveles: una landing page para empezar, una web corporativa para aparecer en Google y una tienda online o web avanzada para vender y automatizar.</p>
+      <span class="eyebrow">Diseño web en Chile · Planes y precios</span>
+      <h1 id="t-h1">Diseño de páginas web para empresas, <em>con precio claro.</em></h1>
+      <p class="def">Diseñamos y desarrollamos páginas web para empresas de Chile y Latinoamérica en tres niveles: una landing page para empezar, una web corporativa para aparecer en Google y una tienda online o web avanzada para vender y automatizar. Diseño propio, adaptado a celular y preparado para Google desde el primer día.</p>
       <div class="ctas">
         <a class="btn btn-dark" href="#planes">Ver planes <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
         <a class="btn btn-light" href={WA_URL} target="_blank" rel="noopener" data-ev="whatsapp">Escribir por WhatsApp <span class="ic"><svg><use href="#i-arrow"/></svg></span></a>
@@ -84,7 +84,7 @@ const schema = [
       </article>
     ))}
   </div>
-  <p class="plan-nota">Precios de referencia "desde", sin IVA en Chile. Cada proyecto parte con una propuesta por escrito con alcance, plazo y precio final.</p>
+  <p class="plan-nota">Precios de referencia "desde", sin IVA en Chile. Cada proyecto parte con una propuesta por escrito con alcance, plazo y precio final. ¿Tu empresa está en Santiago? Mira cómo trabajamos el <a href="/diseno-web-santiago/">diseño web en Santiago</a>. ¿Quieres comparar precios del mercado? Lee <a href="/guias/cuanto-cuesta-una-pagina-web-en-chile/">cuánto cuesta una página web en Chile</a>.</p>
 </section>
 
 <section class="sec wrap" aria-labelledby="t-comp" style="padding-top:0">
