@@ -11,15 +11,18 @@ Sitio web de IntegriAI: sistemas a medida, automatización e IA para pymes.
 - `public/js/site.js`: robot del inicio, selector, acordeón, mapa y la marca deformable del pie.
 - `prototipos/`: maquetas aprobadas. Los documentos internos (`docs/`) quedan solo en el computador, fuera del repositorio.
 
+- `portal/`: **Portal IntegriAI**, el sistema de gestión (CRM, clientes y proyectos) que vive en `integriai.cl/app/`. Es una app React + Vite con su propio `package.json`; el build del sitio la compila dentro de `dist/app`. Los cambios de base de datos están en `portal/supabase/migrations/`.
+
 ## Trabajar en local
 ```bash
 npm install
-npm run dev
+npm run dev          # sitio
+npm run portal:dev   # portal, en http://localhost:5174/app/ (entra con un usuario real de Supabase)
 ```
 
 ## Publicación
 Railway publica solo cada vez que se sube un cambio a `main`:
-- Build: `npm run build`
+- Build: `npm run build` (compila el sitio con Astro y después el portal)
 - Start: `npm start` (sirve `dist/` en el puerto `$PORT`)
 
 ## Formulario de diagnóstico

@@ -1,0 +1,28 @@
+{
+  "name": "integriai-portal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portal de gestión de IntegriAI (CRM, clientes y proyectos). Se publica en integriai.cl/app/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/figtree": "^5.3.0",
+    "@fontsource/outfit": "^5.3.0",
+    "@supabase/supabase-js": "^2.119.0",
+    "@tanstack/react-query": "^5.108.0",
+    "lucide-react": "^1.74.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@vitejs/plugin-react": "^6.3.0",
+    "tailwindcss": "^4.3.5",
+    "vite": "^8.3.8"
+  }
+}

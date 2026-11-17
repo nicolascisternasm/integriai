@@ -74,6 +74,8 @@ h1,h2,h3{text-wrap:balance}
 .chev{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
 button[aria-expanded=true] .chev{transform:translateY(1px) rotate(-135deg)}
 .nav-end{display:flex;align-items:center;gap:8px}
+.login{font:600 .9rem/1 var(--f-body);color:var(--ink-2);text-decoration:none;padding:11px 14px;border-radius:999px;transition:background .2s,color .2s}
+.login:hover{background:var(--bg);color:var(--ink)}
 .burger{display:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--bg);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .burger span{width:18px;height:1.5px;background:var(--ink);transition:transform .2s}
 .burger[aria-expanded=true] span:first-child{transform:translateY(3.25px) rotate(45deg)}
@@ -415,7 +417,7 @@ h1 em{font-style:normal;color:var(--acc);display:block}
 @media (max-width: 1060px){
   .links{display:none}
   .burger{display:flex}
-  .nav-end .btn{display:none}
+  .nav-end .btn,.nav-end .login{display:none}
   .projs{grid-template-columns:repeat(2, minmax(0,1fr))}
   .why{grid-template-columns:1fr}
   .inds{grid-template-columns:repeat(2, minmax(0,1fr))}

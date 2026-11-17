@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "integriai", "runtimeExecutable": "npx", "runtimeArgs": ["serve", "dist", "-l", "4321", "--no-clipboard"], "port": 4321 }
+    { "name": "integriai", "runtimeExecutable": "npx", "runtimeArgs": ["serve", "dist", "-l", "4321", "--no-clipboard"], "port": 4321 },
+    { "name": "portal", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "portal", "run", "dev", "--", "--host", "127.0.0.1"], "port": 5174 }
   ]
 }

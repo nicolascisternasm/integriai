@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Portal de clientes y equipo: no es contenido público
+Disallow: /app/
 
 Sitemap: https://integriai.cl/sitemap-index.xml

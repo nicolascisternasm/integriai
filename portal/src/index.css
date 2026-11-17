@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Misma paleta y tipografías del sitio (src/styles/global.css), para que el portal se sienta parte de IntegriAI. */
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #f2f3f7;
+  --color-ink: #1f1c1d;
+  --color-ink-2: #3a3f47;
+  --color-mute: #646b76;
+  --color-line: #e3e5ec;
+  --color-acc: #4b3bff;
+  --color-acc-strong: #3a2be0;
+  --color-acc-50: #f0eeff;
+  --color-acc-100: #e2deff;
+  --color-night: #14112e;
+  --color-night-2: #1f1b45;
+  --color-night-line: #302b5e;
+  --color-on-night: #b6b2d6;
+  --color-warm: #ff7a3d;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-acc);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Barra de desplazamiento fina para el embudo */
+.scroll-fino {
+  scrollbar-width: thin;
+  scrollbar-color: #c9c6de transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

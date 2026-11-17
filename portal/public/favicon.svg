@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="116 40 408 408" role="img" aria-label="IntegriAI"><title>IntegriAI</title><defs>
+  <linearGradient id="ch" x1="168" y1="124" x2="472" y2="380" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#E6E5F2"/><stop offset="1" stop-color="#C9C6DE"/></linearGradient>
+  <linearGradient id="cb" x1="220" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3426D9"/><stop offset=".5" stop-color="#6151FF"/><stop offset="1" stop-color="#2E21C4"/></linearGradient>
+  <filter id="cg" x="-60%" y="-40%" width="220%" height="180%"><feGaussianBlur stdDeviation="9" result="b"/><feFlood flood-color="#7A6CFF" flood-opacity=".9"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <path d="M320 132 Q320 104 326 78" fill="none" stroke="#221E3D" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="326" cy="74" r="15" fill="#FF7A3D"/>
+  <ellipse cx="168" cy="256" rx="30" ry="44" fill="#221E3D"/>
+  <ellipse cx="472" cy="256" rx="30" ry="44" fill="#221E3D"/>
+  <rect x="168" y="124" width="304" height="256" rx="96" fill="url(#ch)" stroke="rgba(31,28,29,.12)" stroke-width="3"/>
+  <rect x="206" y="168" width="228" height="168" rx="64" fill="#16132B"/>
+  <rect x="224" y="182" width="92" height="26" rx="13" fill="#FFFFFF" fill-opacity=".07"/>
+  <g filter="url(#cg)" fill="#ABA2FF"><rect x="255" y="191" width="34" height="54" rx="17"/><rect x="351" y="191" width="34" height="54" rx="17"/></g>
+  <path d="M338.57521436104435 293.7881894895379 A22 22 0 0 1 301.42478563895565 293.78818948953796" fill="none" stroke="#ABA2FF" stroke-width="7" stroke-linecap="round"/></svg>
