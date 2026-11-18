@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FolderPlus, Pencil, Trash2 } from 'lucide-react'
 import { useEliminarOportunidad, useMoverOportunidad, useOportunidad } from '../../api/oportunidades.js'
+import CotizacionesCard from '../../components/CotizacionesCard.jsx'
 import OportunidadFormModal from '../../components/OportunidadFormModal.jsx'
 import ProyectoFormModal from '../../components/ProyectoFormModal.jsx'
 import { ActividadPanel, TareasPanel } from '../../components/Paneles.jsx'
@@ -129,6 +130,8 @@ export default function OportunidadPage() {
               </Button>
             </Card>
           )}
+
+          <CotizacionesCard oportunidad={op} />
 
           <Card className="p-5">
             <h2 className="mb-3 text-base font-bold">Seguimientos</h2>

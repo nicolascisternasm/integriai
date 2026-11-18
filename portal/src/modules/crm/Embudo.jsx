@@ -4,8 +4,8 @@ import { CalendarClock, Plus, Target } from 'lucide-react'
 import { useMoverOportunidad, useOportunidades } from '../../api/oportunidades.js'
 import OportunidadFormModal from '../../components/OportunidadFormModal.jsx'
 import ProyectoFormModal from '../../components/ProyectoFormModal.jsx'
-import { Badge, Button, Card, Cargando, ErrorCarga, Vacio, cx } from '../../components/ui.jsx'
-import { ETAPAS, ETAPAS_ABIERTAS, servicioLabel } from '../../lib/dominio.js'
+import { Badge, Button, Card, Cargando, ErrorCarga, Select, Vacio, cx } from '../../components/ui.jsx'
+import { ETAPAS, ETAPAS_ABIERTAS, ORIGENES, servicioLabel } from '../../lib/dominio.js'
 import { clp, clpCorto, diasHasta, fechaCorta } from '../../lib/format.js'
 import { toast } from '../../lib/toast.js'
 import { ModalGanada, ModalPerdida } from './ModalesEmbudo.jsx'
@@ -22,16 +22,20 @@ export default function Embudo() {
   const [ganada, setGanada] = useState(null)
   const [creandoProyecto, setCreandoProyecto] = useState(null)
   const [nueva, setNueva] = useState(false)
+  const [origen, setOrigen] = useState('todos')
+
+  const origenes = useMemo(() => [...new Set(ops.map((o) => o.origen))].filter(Boolean), [ops])
+  const visibles = useMemo(() => (origen === 'todos' ? ops : ops.filter((o) => o.origen === origen)), [ops, origen])
 
   const columnas = useMemo(() => {
     const limite = Date.now() - DIAS_CERRADAS * 86_400_000
     return ETAPAS.map((etapa) => ({
       ...etapa,
-      items: ops.filter((o) => o.etapa === etapa.id && (ETAPAS_ABIERTAS.includes(etapa.id) || (o.cerrada_at && new Date(o.cerrada_at).getTime() >= limite))),
+      items: visibles.filter((o) => o.etapa === etapa.id && (ETAPAS_ABIERTAS.includes(etapa.id) || (o.cerrada_at && new Date(o.cerrada_at).getTime() >= limite))),
     }))
-  }, [ops])
+  }, [visibles])
 
-  const abiertas = ops.filter((o) => ETAPAS_ABIERTAS.includes(o.etapa))
+  const abiertas = visibles.filter((o) => ETAPAS_ABIERTAS.includes(o.etapa))
   const valorAbierto = abiertas.reduce((s, o) => s + (Number(o.valor) || 0), 0)
 
   function soltar(etapa) {
@@ -53,9 +57,21 @@ export default function Embudo() {
           <b className="text-ink">{abiertas.length}</b> {abiertas.length === 1 ? 'oportunidad abierta' : 'oportunidades abiertas'} por{' '}
           <b className="text-ink">{clp(valorAbierto)}</b>. Arrastra las tarjetas entre columnas, o ábrelas para cambiar la etapa.
         </p>
-        <Button icono={Plus} onClick={() => setNueva(true)}>
-          Nueva oportunidad
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          {origenes.length > 1 && (
+            <Select value={origen} onChange={(e) => setOrigen(e.target.value)} className="w-auto font-semibold" aria-label="Filtrar por origen">
+              <option value="todos">Todos los orígenes</option>
+              {origenes.map((o) => (
+                <option key={o} value={o}>
+                  {ORIGENES[o] ?? o}
+                </option>
+              ))}
+            </Select>
+          )}
+          <Button icono={Plus} onClick={() => setNueva(true)}>
+            Nueva oportunidad
+          </Button>
+        </div>
       </div>
 
       {ops.length === 0 ? (
@@ -97,7 +113,7 @@ export default function Embudo() {
                   </h3>
                   {total > 0 && <span className="text-xs font-semibold text-mute">{clpCorto(total)}</span>}
                 </header>
-                <div className="space-y-2">
+                <div className="scroll-fino max-h-[calc(100dvh-19rem)] min-h-16 space-y-2 overflow-y-auto pr-0.5">
                   {col.items.map((op) => (
                     <Tarjeta key={op.id} op={op} arrastrada={arrastrando === op.id} onInicio={() => setArrastrando(op.id)} onFin={() => { setArrastrando(null); setSobre(null) }} />
                   ))}
@@ -152,7 +168,12 @@ function Tarjeta({ op, arrastrada, onInicio, onFin }) {
           </Badge>
         )}
       </div>
-      {op.servicio && <p className="mt-1.5 truncate text-[11px] text-mute">{servicioLabel(op.servicio)}</p>}
+      {op.servicio && (
+        <p className="mt-1.5 truncate text-[11px] text-mute">
+          {servicioLabel(op.servicio)}
+          {op.origen === 'prospeccion' && <span className="font-semibold text-acc-strong"> · Prospección</span>}
+        </p>
+      )}
     </Link>
   )
 }

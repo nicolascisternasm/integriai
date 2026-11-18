@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { Banknote, FolderKanban, Inbox, ListChecks, Rocket, Target, UserPlus } from 'lucide-react'
 import { useAuth } from '../../auth/AuthContext.jsx'
 import { useClientes } from '../../api/clientes.js'
+import { conIva, useCotizacionesEnviadas } from '../../api/cotizaciones.js'
+import { ChipVigencia } from '../../components/CotizacionesCard.jsx'
 import { useSolicitudes } from '../../api/leads.js'
 import { useOportunidades } from '../../api/oportunidades.js'
 import { avanceProyecto, resumenCobros, useCobrosPendientes, useProyectos } from '../../api/proyectos.js'
@@ -22,11 +24,12 @@ export default function InicioPage() {
     cobros: useCobrosPendientes(),
     clientes: useClientes(),
     solicitudes: useSolicitudes(org.recibe_leads_web),
+    cotizaciones: useCotizacionesEnviadas(),
   }
   const cargando = Object.values(consultas).some((c) => c.isLoading)
   const cambiarTarea = useCambiarTarea()
 
-  const { ops = [], proyectos = [], tareas = [], cobros = [], clientes = [], solicitudes = [] } = Object.fromEntries(Object.entries(consultas).map(([k, c]) => [k, c.data]))
+  const { ops = [], proyectos = [], tareas = [], cobros = [], clientes = [], solicitudes = [], cotizaciones = [] } = Object.fromEntries(Object.entries(consultas).map(([k, c]) => [k, c.data]))
 
   const usa = (id) => org.modulos?.includes(id)
   const primerNombre = (perfil?.nombre || user?.email || '').split(/[\s@]/)[0]
@@ -113,6 +116,26 @@ export default function InicioPage() {
                     ))}
                   </ul>
                 )}
+              </Panel>
+            )}
+
+            {usa('crm') && cotizaciones.length > 0 && (
+              <Panel titulo="Cotizaciones por responder" enlace={{ to: '/crm', texto: 'Ver embudo' }}>
+                <ul className="divide-y divide-line">
+                  {cotizaciones.slice(0, 6).map((q) => (
+                    <li key={q.id}>
+                      <Link to={q.oportunidad ? `/crm/oportunidades/${q.oportunidad.id}` : `/clientes/${q.cliente.id}`} className="flex items-center justify-between gap-3 px-5 py-2.5 hover:bg-paper/60">
+                        <span className="min-w-0">
+                          <span className="block truncate text-sm font-semibold">{q.cliente?.nombre}</span>
+                          <span className="block truncate text-xs text-mute">
+                            {q.numero} · {clp(conIva(q.neto))} con IVA
+                          </span>
+                        </span>
+                        <ChipVigencia cotizacion={q} />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </Panel>
             )}
 

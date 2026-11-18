@@ -62,5 +62,21 @@ export const TIPOS_ACTIVIDAD = [
 export const TIPO_ACTIVIDAD = Object.fromEntries(TIPOS_ACTIVIDAD.map((t) => [t.id, t]))
 export const TIPOS_MANUALES = TIPOS_ACTIVIDAD.filter((t) => !['etapa', 'sistema'].includes(t.id))
 
-export const ORIGENES = { manual: 'Manual', web: 'Sitio web', referido: 'Referido', redes: 'Redes sociales' }
+export const ORIGENES = { manual: 'Manual', web: 'Sitio web', prospeccion: 'Prospección', referido: 'Referido', redes: 'Redes sociales' }
+
+export const ESTADOS_COTIZACION = [
+  { id: 'borrador', label: 'Borrador', tono: 'slate' },
+  { id: 'enviada', label: 'Enviada', tono: 'blue' },
+  { id: 'aceptada', label: 'Aceptada', tono: 'green' },
+  { id: 'rechazada', label: 'Rechazada', tono: 'red' },
+  { id: 'vencida', label: 'Vencida', tono: 'amber' },
+]
+export const ESTADO_COTIZACION = Object.fromEntries(ESTADOS_COTIZACION.map((e) => [e.id, e]))
+
+// Semáforo del agente cotizador: quién puede cerrar la venta.
+export const SEMAFOROS = {
+  verde: { label: 'Vendedor cierra solo', punto: 'bg-emerald-500' },
+  amarillo: { label: 'Nico revisa antes de enviar', punto: 'bg-amber-400' },
+  rojo: { label: 'Reunión con Nico', punto: 'bg-red-500' },
+}
 export const ROLES = { propietario: 'Propietario', admin: 'Administrador', miembro: 'Miembro' }
